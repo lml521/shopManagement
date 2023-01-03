@@ -1,7 +1,6 @@
 import axios from 'axios'
 // 引入 enum  枚举值
 import  { keyToken } from "../enum/user.js"
-
 import { ElNotification } from 'element-plus'
 export function request(config) {
     // 1.创建axios的实例
@@ -12,15 +11,12 @@ export function request(config) {
     })
     // 2.1.请求拦截的作用
     instance.interceptors.request.use(config => {
-        console.log(config)
         const token =localStorage.getItem(keyToken)
-        console.log(token)
         if (token) {
             config.headers.token = token
           }
        return config
     }, err => {
-        console.log(err);
         return Promise.reject(err)
     })
     // 2.2.响应拦截
@@ -33,11 +29,7 @@ export function request(config) {
                 message: err.response.data.msg,
                 type: 'error',
               })
-
         }
-
-
-
         return Promise.reject(err)
     })
     // 3.发送真正的网络请求
