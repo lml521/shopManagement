@@ -1,8 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 // 引入 enum  枚举值
 import { keyToken } from "../enum/user.js";
-
 import { ElNotification } from "element-plus";
+// 引入 NProgress
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 const routes = [
   // 首页
   {
@@ -28,7 +31,18 @@ const router = createRouter({
   routes,
 });
 
+
+
+NProgress.configure({     
+  easing: 'ease',  // 动画方式    
+  speed: 500,  // 递增进度条的速度    
+  showSpinner: true, // 是否显示加载ico    
+  trickleSpeed: 200, // 自动递增间隔    
+  minimum: 0.3 // 初始化时的最小百分比
+})
+
 router.beforeEach((to, form, next) => {
+  NProgress.start();
   console.log(to, form);
   // 判断是否获取到token  如果获取到  再判断是否 是跳转跳转登录
   if (localStorage.getItem(keyToken)) {
@@ -56,4 +70,8 @@ router.beforeEach((to, form, next) => {
   }
 });
 
+router.afterEach(() => {  
+  // 在即将进入新的页面组件前，关闭掉进度条
+  NProgress.done()
+})
 export default router;

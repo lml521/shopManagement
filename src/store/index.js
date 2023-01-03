@@ -4,8 +4,7 @@ import { createStore } from 'vuex'
 const store = createStore({
   state () {
     return {
-        token:"",
-
+        token:localStorage.getItem(keyToken)||"",
     }
   },
   mutations: {
