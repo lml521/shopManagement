@@ -15,6 +15,12 @@ const router = createRouter({
         {
             path: '/contact',
             component: () => import('../views/Contact/index.vue')
+        },{
+            // 404页面
+            name:"404",
+            path: '/404',
+            component: () => import('../views/404/index.vue')
+
         }
     ]
 })
