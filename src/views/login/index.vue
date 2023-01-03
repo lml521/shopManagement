@@ -77,7 +77,7 @@
 import { reactive, ref } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 import { User, Lock } from "@element-plus/icons-vue";
-import { login } from "@/api/index"; //引入api
+import { login } from "../../api/index"; //引入api
 import { useStore } from "vuex";
 import { ElNotification } from 'element-plus'
 const formSize = ref("default");
@@ -106,6 +106,7 @@ const submitForm = async (formEl) => {
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       let res = await login(ruleForm);
+      console.log(res)
       if(res.data.token!=""){
          store.commit("setToken", res.data.token);
         ElNotification({
@@ -116,12 +117,7 @@ const submitForm = async (formEl) => {
         router.push('/')
         },300)
         }
-    //     if(!res){
-    //         ElNotification({
-    //          message: res.msg,
-    //          type: 'error',
-    //          })
-    //   }
+    
     } else {
       console.log("error submit!", fields);
     }
