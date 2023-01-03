@@ -6,23 +6,31 @@ import { ElNotification } from "element-plus";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+
+import getPageTitle from '@/utils/get-page-title'
 const routes = [
   // 首页
   {
     path: "/",
+    meta:{
+      title:"首页"
+    },
     component: () => import("@/views/Home/index.vue"),
   },
   // 登录页面
   {
     name: "login",
     path: "/login",
+    meta:{
+      title:"登录页"
+    },
     component: () => import("@/views/login/index.vue"),
   },
+  // 404页面
   {
-    // 404页面
-    name: "404",
-    path: "/404",
+    path:'/:catchAll(.*)',
     component: () => import("@/views/404/index.vue"),
+    hidden:true
   },
 ];
 
@@ -43,7 +51,9 @@ NProgress.configure({
 
 router.beforeEach((to, form, next) => {
   NProgress.start();
-  console.log(to, form);
+
+  // 设置页面标题
+  document.title=getPageTitle(to.meta.title)
   // 判断是否获取到token  如果获取到  再判断是否 是跳转跳转登录
   if (localStorage.getItem(keyToken)) {
     if (to.path == "/login") {
