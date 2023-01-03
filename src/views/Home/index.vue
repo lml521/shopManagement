@@ -1,8 +1,6 @@
-
-
 <template>
   <div>
-   2
+   首页
   </div>
 
 </template>

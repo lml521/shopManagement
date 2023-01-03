@@ -7,21 +7,23 @@ const routerHistory = createWebHistory();
 const router = createRouter({
     history: routerHistory,
     routes: [
+        // 首页
         {
-            path: '/home',
+            path: '/',
             component: () => import('../views/Home/index.vue'),
-            
         },
+        // 登录页面
         {
-            path: '/contact',
-            component: () => import('../views/Contact/index.vue')
+            name:"login",
+            path: '/login',
+            component: () => import('../views/login/index.vue')
         },{
             // 404页面
             name:"404",
             path: '/404',
             component: () => import('../views/404/index.vue')
 
-        }
+        },
     ]
 })
  
