@@ -6,7 +6,7 @@
       <AppHeader></AppHeader> 
       </el-header>
       <el-container>
-        <el-aside width="200px">
+        <el-aside width="250px">
           <AppAside></AppAside>
         </el-aside>
         <el-main>
@@ -45,7 +45,6 @@ const router =useRouter()
 }
 .el-aside{
   height: 100%;
-  background-color: pink;
 }
 .el-main {
   padding:0;

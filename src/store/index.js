@@ -8,6 +8,17 @@ const store = createStore({
         info:JSON.parse(localStorage.getItem(keyInfo))||{},
     }
   },
+  getters:{
+    // token
+    getToken(state){
+      return state.token
+    },
+    // info
+    getInfo(state){
+      console.log(state.info)
+      return state.info
+    }
+  },
   mutations: {
     // 存储token
     setToken(state,token){

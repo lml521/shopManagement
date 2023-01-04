@@ -1,5 +1,4 @@
 <!-- 首页头部  -->
-
 <template>
     <div class="AppHeader">
      <div class="left flex align-center justify-center h-100">
@@ -15,7 +14,6 @@
              <el-icon ><Expand /></el-icon>
           </div>
 
-     
       <el-tooltip
         class="box-item"
         effect="dark"
@@ -30,10 +28,7 @@
      </div>
     </div>
 
-
-
      <div class="right flex align-center justify-center">
-        
           <el-tooltip
           class="box-item  activeTooltip"
           effect="dark"
@@ -47,14 +42,15 @@
       </el-tooltip>
 
       <!-- 全屏 退出全屏  -->
-     <el-tooltip  class="item" placement="bottom"  >
+     <el-tooltip   placement="bottom"  >
       <template #content>{{screenfullData.title}}</template>
       <div @click="fullscreen" class="showname px-3 activeTooltip flex align-center"  
         style="height:60px">
+        <el-icon>
           <component :is="screenfullData.icon" style="width: 20px; height:20px;"/>
+        </el-icon>
         </div>
       </el-tooltip>
-
 
         <el-dropdown  @command="handleCommand" >
         <div class="el-dropdown-link text-fff flex align-center justify-center">
@@ -66,6 +62,7 @@
             <arrow-down />
           </el-icon>
         </div>
+        
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
@@ -115,7 +112,7 @@ const handleCommand = (e) => {
 };
 // 切换 全屏 、 退出全屏
 const fullscreen = () => {
-  // screenfull.isFullscreen; // 布尔值——当前页面是否全屏
+  // screenfull.isFullscreen; // 布尔值——当前页面是否全屏   false   true
   // screenfull.isEnabled; // 布尔值——当前浏览器是否支持全屏
   if (screenfull.isFullscreen) {
     screenfullData.icon = "FullScreen";
