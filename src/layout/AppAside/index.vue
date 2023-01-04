@@ -5,7 +5,7 @@
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
         :default-active="$route.path"
-        
+        router
         unique-opened
       >
       <MenuItem :menuList="menuList"></MenuItem>
@@ -21,9 +21,12 @@ import MenuItem from "./MenuItem.vue"
 const store = useStore();
 const router = useRouter();
 const menuList = computed(() => {
-  console.log(store.getters.getInfo.menus);
-  return store.getters.getInfo.menus;
+  console.log(store.state.routerList)
+  return store.state.routerList;
 });
 </script>
   <style scoped>
+  .AppAside,.el-menu-vertical-demo{
+    height: 100%;
+  }
 </style>

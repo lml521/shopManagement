@@ -11,7 +11,7 @@
 
         <div class="flex align-center justify-center"  >
           <div class="px-3 activeTooltip flex align-center "  style="height:60px">
-             <el-icon ><Expand /></el-icon>
+             <el-icon><Expand /></el-icon>
           </div>
 
       <el-tooltip
@@ -52,7 +52,7 @@
         </div>
       </el-tooltip>
 
-        <el-dropdown  @command="handleCommand" >
+        <el-dropdown  @command="handleCommand" class="ml-4">
         <div class="el-dropdown-link text-fff flex align-center justify-center">
              <img style="width:26px;height:26px;border-radius: 13px;"
         :src="$store.state.info.avatar||''" />

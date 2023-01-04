@@ -110,10 +110,7 @@ const submitForm = async (formEl) => {
          store.commit("setToken", res.data.token);
 
         //  获取用户信息
-        let info =await getinfo()
-        if(info.msg==="ok"){
-          store.commit('setInfo', info.data)
-        }
+       
         ElNotification({
           message: '登录成功',
           type: 'success',

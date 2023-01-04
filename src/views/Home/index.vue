@@ -2,22 +2,19 @@
       <!-- 首页 -->
     <div class="common-layout">
     <el-container>
-      <el-header > 
-      <AppHeader></AppHeader> 
+      <el-header>
+      <AppHeader></AppHeader>
       </el-header>
       <el-container>
         <el-aside width="250px">
           <AppAside></AppAside>
         </el-aside>
         <el-main>
-          <AppMain></AppMain>
+          <router-view ></router-view>
+          <!-- <AppMain></AppMain> -->
         </el-main>
       </el-container>
     </el-container>
-
-    <!-- <button class="btn ">按钮</button>
-    <button class="btn ">按钮</button>
-    <button class="btn hover:( bg-purple-900)">按钮</button> -->
   </div>
 </template>
 
