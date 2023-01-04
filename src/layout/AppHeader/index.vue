@@ -22,7 +22,8 @@
         content="刷新"
         placement="bottom"
       >
-      <div class="px-3 activeTooltip flex align-center" style="height:60px">
+      <div class="px-3 activeTooltip flex align-center" style="height:60px"
+      onclick="javascript:location.reload();">
         <el-icon ><Refresh /></el-icon>
        </div>
        </el-tooltip>
@@ -39,18 +40,21 @@
           content="点击查看完整开发教程"
           placement="bottom"
          >
-         <div class="px-3 activeTooltip flex align-center "  style="height:60px">
-      <el-icon><VideoCamera /></el-icon>
-      </div>
+         <a class="px-3 activeTooltip flex align-center " target="_blank" href="https://study.163.com/course/introduction.htm?courseId=1212775807&_trace_c_p_k2_=baaf4811eaef465089460c09077d4c58" 
+         style="height:60px">
+      <el-icon ><VideoCamera /></el-icon>
+      </a>
       </el-tooltip>
+
       <!-- 全屏 退出全屏  -->
-     <el-tooltip  class="item" placement="bottom">
+     <el-tooltip  class="item" placement="bottom"  >
       <template #content>{{screenfullData.title}}</template>
       <div @click="fullscreen" class="showname px-3 activeTooltip flex align-center"  
         style="height:60px">
           <component :is="screenfullData.icon" style="width: 20px; height:20px;"/>
         </div>
       </el-tooltip>
+
 
         <el-dropdown  @command="handleCommand" >
         <div class="el-dropdown-link text-fff flex align-center justify-center">
@@ -72,8 +76,6 @@
      </div>
     </div>
   </template>
-  
-  
   <script setup>
 import { logout } from "@/api/login"; //引入api
 import { useStore } from "vuex";
@@ -127,7 +129,7 @@ const fullscreen = () => {
   console.log(screenfullData.title, screenfullData.icon);
 };
 </script>
-  
+
   <style scoped lang="scss">
 .AppHeader {
   height: 100%;
