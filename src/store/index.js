@@ -1,24 +1,31 @@
 import { createStore } from 'vuex'
 // 引入 enum  枚举值
- import  { keyToken } from "../enum/user.js"
+ import  { keyToken , keyInfo} from "@/enum/user.js"
 const store = createStore({
   state () {
     return {
         token:localStorage.getItem(keyToken)||"",
+        info:JSON.parse(localStorage.getItem(keyInfo))||{},
     }
   },
   mutations: {
     // 存储token
     setToken(state,token){
-      state.token=token,
+      state.token=token
       localStorage.setItem(keyToken,token)
+    },
+    // 存储用户信息
+    setInfo(state,info){
+      state.info=info
+      
+      localStorage.setItem(keyInfo,JSON.stringify(info))
     },
     // 退出登录
     logout(state){
-      state.token="",
-      localStorage.removeItem(keyToken)
+      state.token=""
+      state.info={}
+      localStorage.clear()
     }
   }
 })
- 
 export default store;

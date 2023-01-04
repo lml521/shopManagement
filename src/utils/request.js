@@ -1,6 +1,6 @@
 import axios from 'axios'
 // 引入 enum  枚举值
-import  { keyToken } from "../enum/user.js"
+import  { keyToken } from "@/enum/user.js"
 import { ElNotification } from 'element-plus'
 export function request(config) {
     // 1.创建axios的实例

@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 // 引入 enum  枚举值
-import { keyToken } from "../enum/user.js";
+import { keyToken } from "@/enum/user.js";
+// 引入element-plus
 import { ElNotification } from "element-plus";
-// 引入 NProgress
+// 引入 NProgress  进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-
+// 设置页面标题
 import getPageTitle from '@/utils/get-page-title'
 const routes = [
   // 首页
@@ -50,6 +51,7 @@ NProgress.configure({
 })
 
 router.beforeEach((to, form, next) => {
+  // 开启进度条
   NProgress.start();
 
   // 设置页面标题
@@ -84,4 +86,5 @@ router.afterEach(() => {
   // 在即将进入新的页面组件前，关闭掉进度条
   NProgress.done()
 })
+
 export default router;

@@ -1,36 +1,58 @@
 <template>
-  <div>
-   首页
-   <button @click="getLogout">退出</button>
+      <!-- 首页 -->
+    <div class="common-layout">
+    <el-container>
+      <el-header > 
+      <AppHeader></AppHeader> 
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <AppAside></AppAside>
+        </el-aside>
+        <el-main>
+          <AppMain></AppMain>
+        </el-main>
+      </el-container>
+    </el-container>
+
+    <!-- <button class="btn ">按钮</button>
+    <button class="btn ">按钮</button>
+    <button class="btn hover:( bg-purple-900)">按钮</button> -->
   </div>
 </template>
 
 
 <script setup>
-import { logout } from "../../api/index"; //引入api
+
 import { useStore } from "vuex";
 import {useRouter} from "vue-router"
-import {ElMessageBox,ElNotification } from "element-plus";
+
+import AppHeader from "@/layout/AppHeader/index.vue"//首页头部
+import AppAside from "@/layout/AppAside/index.vue"//首页侧边栏
+import AppMain from "@/layout/AppMain/index.vue"//首页侧边栏
 const store = useStore();
 const router =useRouter()
-const getLogout = () => {
-  ElMessageBox.confirm("是否要退出登录?", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(async () => {
-    let res = await logout();
-    if (res.msg == "ok") {
-      store.commit("logout");
-      ElNotification({
-          message: '退出登录成功',
-          type: 'success',
-        })
-        router.push('/login')
-    }
-  });
-};
+
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.common-layout,.el-container{
+  height: 100%;
+  .el-header{
+    width: 100%;
+  background-color: #4338ca;
+  padding: 0;
+}
+.el-aside{
+  height: 100%;
+  background-color: pink;
+}
+.el-main {
+  padding:0;
+  }
+}
+
+
+
+
 </style>

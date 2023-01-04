@@ -1,6 +1,6 @@
 
 // 动态设置 页面标题
-import defaultSettings from '../settings'
+import defaultSettings from '@/settings'
 
 const title = defaultSettings.title || 'Vue Admin Template'
 

@@ -1,0 +1,10 @@
+// 解决vite + vue3 不能使用 @ 代替 路径  解决方法
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+        "@/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

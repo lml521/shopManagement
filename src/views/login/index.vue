@@ -6,7 +6,6 @@
         <el-col :span="24" :md="12" :lg="16" class="flex align-center justify-center" >
             <div style="width:100%" 
             class="px-10 sm:px-30 d-inline-block flex flex-column align-center justify-center">
-              
             <div class="
             sm:text-4xl 
                 xl:text-5xl 
@@ -45,11 +44,11 @@
 
             <!-- 用户名 -->
              <el-form-item prop="username">
-                 <el-input
-                    v-model="ruleForm.username"
-                    placeholder="请输入用户名"
-                    :prefix-icon="User"
-                    />
+                <el-input v-model="ruleForm.username"  placeholder="请输入用户名">
+                <template #prefix>
+                    <el-icon><User /></el-icon>
+                </template>
+                </el-input>
              </el-form-item>
 
              <!-- 密码 -->
@@ -76,8 +75,8 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-import { User, Lock } from "@element-plus/icons-vue";
-import { login } from "../../api/index"; //引入api
+// import { User, Lock } from "@element-plus/icons-vue";
+import { login , getinfo} from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { ElNotification } from 'element-plus'
 const formSize = ref("default");
@@ -109,6 +108,12 @@ const submitForm = async (formEl) => {
       console.log(res)
       if(res.data.token!=""){
          store.commit("setToken", res.data.token);
+
+        //  获取用户信息
+        let info =await getinfo()
+        if(info.msg==="ok"){
+          store.commit('setInfo', info.data)
+        }
         ElNotification({
           message: '登录成功',
           type: 'success',
@@ -117,7 +122,6 @@ const submitForm = async (formEl) => {
         router.push('/')
         },300)
         }
-    
     } else {
       console.log("error submit!", fields);
     }
