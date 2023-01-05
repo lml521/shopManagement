@@ -1,6 +1,6 @@
 <template>
   <div>
-    商品管理
+    会员等级
   </div>
 </template>
 

@@ -1,6 +1,5 @@
 <!-- 首页侧边栏  -->
 <template>
-    <div>
       <template v-for="(item,index) in menuList">
         <!-- {{item.children}} -->
         <el-sub-menu  v-if="item.children && item.children.length > 0" 
@@ -23,7 +22,6 @@
           </template>
       </el-menu-item>
         </template> 
-    </div>
   </template>
   <script setup>
 

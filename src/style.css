@@ -245,7 +245,7 @@ a{
 .content-stretch {
 	align-content: stretch;
 }
-
+/* 
 .flex-1 {
 	flex: 1 !important;
 }
@@ -401,7 +401,7 @@ a{
 .mr-5{margin-right: 50px;}
 .mr-6{margin-right: 60px;}
 .mr-7{margin-right: 70px;}
-.mr-8{margin-right: 80px;}
+.mr-8{margin-right: 80px;} */
 
 .mb-2{
   margin-bottom: 20px;

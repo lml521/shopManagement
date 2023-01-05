@@ -1,6 +1,6 @@
 <template>
   <div>
-    商品管理
+    优惠券管理
   </div>
 </template>
 

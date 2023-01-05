@@ -1,6 +1,6 @@
 <template>
   <div>
-    商品管理
+    交易设置
   </div>
 </template>
 

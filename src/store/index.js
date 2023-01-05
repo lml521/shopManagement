@@ -10,6 +10,8 @@ const store = createStore({
       menus: [], //路由权限
       ruleNames: [], //角色权限
       routerList: [],//侧边栏数据
+      isCollapse:false,//侧边栏展开收起
+      // false 是展开的  true 是收起的
     };
   },
   getters: {
@@ -41,6 +43,10 @@ const store = createStore({
     // 角色权限
     setRuleNames(state,ruleNames){
       state.ruleNames=ruleNames
+    },
+    // 侧边栏展开收起
+    setIsCollapse(state,isCollapse){
+      state.isCollapse=isCollapse
     },
 
     // 退出登录

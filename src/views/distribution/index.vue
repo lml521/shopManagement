@@ -1,6 +1,6 @@
 <template>
   <div>
-    商品管理
+    分销员管理
   </div>
 </template>
 

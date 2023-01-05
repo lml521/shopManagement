@@ -1,6 +1,6 @@
 <template>
   <div>
-    商品管理
+    权限管理
   </div>
 </template>
 

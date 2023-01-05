@@ -15,10 +15,11 @@ import router from './router/index'
 // 引入 store
 import store from './store/index'
 
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 
 const app = createApp(App)
 // 引入 图标 
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }

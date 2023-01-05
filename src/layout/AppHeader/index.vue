@@ -6,14 +6,17 @@
             <el-icon >
           <ElemeFilled style="width: 20px; height: 20px;"/>
             </el-icon>
-             <div class="ml-1 mr-5">帝莎编程</div>
+             <div class="ml-1 mr-20">帝莎编程</div>
         </div>
 
         <div class="flex align-center justify-center"  >
-          <div class="px-3 activeTooltip flex align-center "  style="height:60px">
-             <el-icon><Expand /></el-icon>
+          <div class="px-3 activeTooltip flex align-center "  style="height:60px"
+          @click="changeCollapse">
+         
+          <el-icon>
+          <component :is="data.isCollapse?'Expand':'Fold'" style="width: 20px; height:20px;"/>
+        </el-icon>
           </div>
-
       <el-tooltip
         class="box-item"
         effect="dark"
@@ -74,6 +77,7 @@
     </div>
   </template>
   <script setup>
+import { reactive,ref } from 'vue';
 import { logout } from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -84,15 +88,44 @@ import screenfull from "screenfull"; //引入 全屏
 const store = useStore();
 const router = useRouter();
 
+const data =reactive({
+  isCollapse:false
+})
+
+// 切换 侧边栏 展开 收起
+const changeCollapse =()=>{
+    data.isCollapse=!data.isCollapse
+    store.commit('setIsCollapse',data.isCollapse)
+}
+
+// 切换 全屏 、 退出全屏
 const screenfullData = {
   title: "全屏",
   icon: "FullScreen",
 };
 
+const fullscreen = () => {
+  // screenfull.isFullscreen; // 布尔值——当前页面是否全屏   false   true
+  // screenfull.isEnabled; // 布尔值——当前浏览器是否支持全屏
+  if (screenfull.isFullscreen) {
+    screenfullData.icon = "FullScreen";
+    screenfullData.title = "全屏";
+  } else {
+    screenfullData.title = "退出全屏";
+    screenfullData.icon = "Help";
+  }
+  // 布尔值——当前浏览器是否支持全屏
+  if (screenfull.isEnabled) screenfull.toggle();
+  console.log(screenfullData.title, screenfullData.icon);
+};
+
+
+// 修改密码  退出登录 
 const handleCommand = (e) => {
   console.log(e);
   // 退出
   if (e === "logout") {
+
     ElMessageBox.confirm("是否要退出登录?", {
       confirmButtonText: "确认",
       cancelButtonText: "取消",
@@ -108,23 +141,12 @@ const handleCommand = (e) => {
         router.push("/login");
       }
     });
+
   }
 };
-// 切换 全屏 、 退出全屏
-const fullscreen = () => {
-  // screenfull.isFullscreen; // 布尔值——当前页面是否全屏   false   true
-  // screenfull.isEnabled; // 布尔值——当前浏览器是否支持全屏
-  if (screenfull.isFullscreen) {
-    screenfullData.icon = "FullScreen";
-    screenfullData.title = "全屏";
-  } else {
-    screenfullData.title = "退出全屏";
-    screenfullData.icon = "Help";
-  }
-  // 布尔值——当前浏览器是否支持全屏
-  if (screenfull.isEnabled) screenfull.toggle();
-  console.log(screenfullData.title, screenfullData.icon);
-};
+
+
+
 </script>
 
   <style scoped lang="scss">
