@@ -76,6 +76,7 @@
      </el-dropdown>
 
       <i-drawer v-model.sync="data.drawerShow" :flag="data.flag" :title="data.title"
+      @handleClose="handleClose"
       style="color:#666">
         <template #form>
 
@@ -220,6 +221,7 @@ const handelLogout = () => {
 // 模态框 取消 按钮
 const handleClose=()=>{
   data.drawerShow = false;
+  ruleFormRef.value.ruleFormRef.resetFields()
 }
 const ruleFormRef=ref()
 // 模态框 提交 按钮
@@ -236,10 +238,7 @@ await ruleFormRef.value.ruleFormRef.validate((valid,fields)=>{
 }
 // 修改密码
 const handelUpPassword= async ()=>{
-  console.log(fromItem)
-  const ref =await updatePassword(fromItem)
-  console.log(ref)
-
+  await updatePassword(fromItem)
 }
 </script>
 
