@@ -30,6 +30,9 @@ http://shopadmin.dishawang.com/#/login
   - [x] 递归组件 实现侧边栏
   - [x] 实现菜单展开与收起功能
   - [x] 动态页面
+  - [x] element plue 抽屉模态框 二次封装
+  - [x] element plue 表单 二次封装
+  - [x] 验证 修改密码与确认密码 是否一致进行校验
   - [x] 实现标签导航栏
 * 权限校验
   - [x] 全局路由守卫，验证 token，无 token 则跳转登录页

@@ -4,11 +4,11 @@
         <!-- model-value  控制模态框 展示 与收起
             with-header 属性为 false 来控制是否显示标题
          -->
-     <el-drawer  :model-value="modelValue" :title="title"  :size="size"
-     @close="handleClose" >
-    
-<slot name="form" ></slot>
-  </el-drawer> 
+        <el-drawer  :model-value="modelValue" :title="title"  :size="size"
+        :close-on-click-modal="false"
+        @close="handleClose" >
+            <slot name="form" ></slot>
+        </el-drawer> 
     </div>
   </template>
 
@@ -33,12 +33,13 @@ const props = defineProps({
   //   当使用 string 类型时, 请传入 'x%', 否则便会以 number 类型解释
   size: {
     type: [String, Number],
-    default: "50%",
+    default: "45%",
   },
 });
 
 let $myemit = defineEmits(["update:modelValue"]);
 const handleClose = () => {
+  console.log(123);
   $myemit("update:modelValue", !props.modelValue);
 };
 </script>

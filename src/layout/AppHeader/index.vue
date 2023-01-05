@@ -76,9 +76,10 @@
      </el-dropdown>
 
       <i-drawer v-model.sync="data.drawerShow" :flag="data.flag" :title="data.title"
-      style="color:pink">
+      style="color:#666">
         <template #form>
-         
+         <i-form :formList="data.formList" :rules="data.rules" 
+         v-model="fromItem"> </i-form>
         </template>
       </i-drawer>
      </div>
@@ -86,29 +87,86 @@
     </div>
   </template>
   <script setup>
-import { reactive,ref } from 'vue';
+import { reactive, ref } from "vue";
 import { logout } from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElNotification } from "element-plus";
-import iDrawer from "@/components/i-drawer/i-drawer.vue"
+import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗
+import iForm from "@/components/i-form/i-form.vue"; //表单
 import screenfull from "screenfull"; //引入 全屏
 
 const store = useStore();
 const router = useRouter();
 
-const data =reactive({
-  isCollapse:false,
-  drawerShow:false,
-  flag:false,
-  title:"修改密码",
-})
+const validatePass2 = (rule, value, callback) => {
+  console.log(rule, value, callback)
+  console.log(value,fromItem.password,1)
+      if (!value) {
+        callback(new Error('请输入确认密码'))
+      } else if (value !== fromItem.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+
+
+const data = reactive({
+  isCollapse: false, // 控制侧边栏展开收起
+  drawerShow: false, //控制模态框展示
+  flag: false,
+  title: "修改密码", //模态框 标题
+  // 表单展示数据
+  formList: [
+    {
+      label: "旧密码",
+      prop: "oldpassword",
+      placeholder: "请输入旧密码",
+    },
+    {
+      label: "新密码",
+      prop: "password",
+      placeholder: "请输入密码",
+    },
+    {
+      label: "确认密码",
+      prop: "repassword",
+      placeholder: "请输入确认密码",
+    },
+  ],
+ 
+
+
+  // 表单验证
+  rules: {
+    oldpassword: {
+      required: true,
+      message: "旧密码必填",
+      trigger:  ["blur", "change"] ,
+    },
+    password: {
+      required: true,
+      message: "新密码必填",
+      trigger:  ["blur", "change"] ,
+    },
+    repassword: [{ required: true, validator:validatePass2, trigger:  ["blur", "change"]}],
+  },
+  // 表单v-model绑定的数据
+  
+});
+const fromItem = reactive({
+    oldpassword: "",
+    password: "",
+    repassword: "",
+  })
+
 
 // 切换 侧边栏 展开 收起
-const changeCollapse =()=>{
-    data.isCollapse=!data.isCollapse
-    store.commit('setIsCollapse',data.isCollapse)
-}
+const changeCollapse = () => {
+  data.isCollapse = !data.isCollapse;
+  store.commit("setIsCollapse", data.isCollapse);
+};
 
 // 切换 全屏 、 退出全屏
 const screenfullData = {
@@ -131,38 +189,35 @@ const fullscreen = () => {
   console.log(screenfullData.title, screenfullData.icon);
 };
 
-
-// 修改密码  退出登录 
+// 修改密码  退出登录
 const handleCommand = (e) => {
   console.log(e);
   // 退出
   if (e === "logout") {
-    handelLogout()
-  }else{
+    handelLogout();
+  } else {
     // 修改密码
-    data.drawerShow=true
+    data.drawerShow = true;
   }
 };
 
-const handelLogout=()=>{
+const handelLogout = () => {
   ElMessageBox.confirm("是否要退出登录?", {
-      confirmButtonText: "确认",
-      cancelButtonText: "取消",
-      type: "warning",
-    }).then(async () => {
-      let res = await logout();
-      if (res.msg == "ok") {
-        store.commit("logout");
-        ElNotification({
-          message: "退出登录成功",
-          type: "success",
-        });
-        router.push("/login");
-      }
-    });
-}
-
-
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    let res = await logout();
+    if (res.msg == "ok") {
+      store.commit("logout");
+      ElNotification({
+        message: "退出登录成功",
+        type: "success",
+      });
+      router.push("/login");
+    }
+  });
+};
 </script>
 
   <style scoped lang="scss">
