@@ -32,6 +32,7 @@ const store = createStore({
     },
     // 存储用户信息
     setInfo(state, info) {
+      console.log(info)
       state.info = info;
       localStorage.setItem(keyInfo, JSON.stringify(info));
     },

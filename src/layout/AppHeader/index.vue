@@ -2,6 +2,7 @@
 <template>
     <div class="AppHeader">
      <div class="left flex align-center justify-center h-100">
+      
         <div class="flex align-center justify-center" style="font-size: 20px;">
             <el-icon >
           <ElemeFilled style="width: 20px; height: 20px;"/>
@@ -30,7 +31,7 @@
        </el-tooltip>
      </div>
     </div>
-
+    
      <div class="right flex align-center justify-center">
           <el-tooltip
           class="box-item  activeTooltip"
@@ -66,14 +67,22 @@
           </el-icon>
         </div>
         
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
-        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+     </el-dropdown>
+
+      <i-drawer v-model.sync="data.drawerShow" :flag="data.flag" :title="data.title"
+      style="color:pink">
+        <template #form>
+         
+        </template>
+      </i-drawer>
      </div>
+    
     </div>
   </template>
   <script setup>
@@ -82,14 +91,17 @@ import { logout } from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElNotification } from "element-plus";
-
+import iDrawer from "@/components/i-drawer/i-drawer.vue"
 import screenfull from "screenfull"; //引入 全屏
 
 const store = useStore();
 const router = useRouter();
 
 const data =reactive({
-  isCollapse:false
+  isCollapse:false,
+  drawerShow:false,
+  flag:false,
+  title:"修改密码",
 })
 
 // 切换 侧边栏 展开 收起
@@ -125,8 +137,15 @@ const handleCommand = (e) => {
   console.log(e);
   // 退出
   if (e === "logout") {
+    handelLogout()
+  }else{
+    // 修改密码
+    data.drawerShow=true
+  }
+};
 
-    ElMessageBox.confirm("是否要退出登录?", {
+const handelLogout=()=>{
+  ElMessageBox.confirm("是否要退出登录?", {
       confirmButtonText: "确认",
       cancelButtonText: "取消",
       type: "warning",
@@ -141,10 +160,7 @@ const handleCommand = (e) => {
         router.push("/login");
       }
     });
-
-  }
-};
-
+}
 
 
 </script>

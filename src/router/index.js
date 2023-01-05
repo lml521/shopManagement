@@ -75,16 +75,16 @@ router.beforeEach(async (to, from, next) => {
       if (!menus.length) {
         // 获取用户信息 
         let res = await getinfo();
+        console.log(res,777)
         if(res.msg==="ok"){
+          console.log(res.data)
           store.commit('setInfo', res.data)
           store.commit("setMenu", res.data.menus);
           store.commit("setRuleNames", res.data.ruleNames);
         }
-
         // 首先把你需要动态路由的组件地址全部获取
         let modules = import.meta.glob('../views/**/*.vue')
         console.log(modules,'modules')
-
         let options = [];
         res.data.menus.forEach((item) => {
           //侧边栏
@@ -100,6 +100,7 @@ router.beforeEach(async (to, from, next) => {
               path: each.frontpath,
               icon: each.icon,
             });
+            // 动态路由表
             let eachRoute = {
               path: each.frontpath,
               name: each.desc,
@@ -116,7 +117,6 @@ router.beforeEach(async (to, from, next) => {
         });
         // 侧边栏
         store.state.routerList = options;
-
          next(to.path);
       }
     }
