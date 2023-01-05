@@ -6,8 +6,11 @@
          -->
         <el-drawer  :model-value="modelValue" :title="title"  :size="size"
         :close-on-click-modal="false"
-        @close="handleClose" >
+        @close="handleClose" class="el-drawer" >
             <slot name="form" ></slot>
+            <div class="buttons">
+            <slot name="buttons" ></slot>
+            </div>
         </el-drawer> 
     </div>
   </template>
@@ -37,12 +40,20 @@ const props = defineProps({
   },
 });
 
+// sync  修改 数据
 let $myemit = defineEmits(["update:modelValue"]);
 const handleClose = () => {
-  console.log(123);
-  $myemit("update:modelValue", !props.modelValue);
+  $myemit("update:modelValue", false);
 };
 </script>
   
   <style lang='scss' scoped>
+  .el-drawer{
+    position: relative;
+    .buttons{
+        position: absolute;
+        bottom: 30px;
+        left: 20px;
+    }
+  }
 </style>

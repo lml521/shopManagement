@@ -21,3 +21,12 @@ export const logout=()=>{
         method: "POST",
     })
 }
+
+// 修改密码
+export const updatePassword=(data)=>{
+    return request({
+        url:"/admin//updatepassword",
+        method: "POST",
+        data
+    })
+}

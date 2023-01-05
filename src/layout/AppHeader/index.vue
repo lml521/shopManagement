@@ -78,8 +78,14 @@
       <i-drawer v-model.sync="data.drawerShow" :flag="data.flag" :title="data.title"
       style="color:#666">
         <template #form>
+
          <i-form :formList="data.formList" :rules="data.rules" 
-         v-model="fromItem"> </i-form>
+         v-model="fromItem" ref="ruleFormRef"> </i-form>
+        </template>
+
+        <template #buttons>
+          <el-button type="primary" @click="submitForm">提交</el-button>
+          <el-button @click="handleClose">取消</el-button>
         </template>
       </i-drawer>
      </div>
@@ -88,7 +94,7 @@
   </template>
   <script setup>
 import { reactive, ref } from "vue";
-import { logout } from "@/api/login"; //引入api
+import { logout , updatePassword } from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElNotification } from "element-plus";
@@ -99,9 +105,8 @@ import screenfull from "screenfull"; //引入 全屏
 const store = useStore();
 const router = useRouter();
 
+// 验证 修改密码 与 确认密码 是否一致
 const validatePass2 = (rule, value, callback) => {
-  console.log(rule, value, callback)
-  console.log(value,fromItem.password,1)
       if (!value) {
         callback(new Error('请输入确认密码'))
       } else if (value !== fromItem.password) {
@@ -110,7 +115,6 @@ const validatePass2 = (rule, value, callback) => {
         callback()
       }
     }
-
 
 const data = reactive({
   isCollapse: false, // 控制侧边栏展开收起
@@ -135,9 +139,6 @@ const data = reactive({
       placeholder: "请输入确认密码",
     },
   ],
- 
-
-
   // 表单验证
   rules: {
     oldpassword: {
@@ -152,15 +153,13 @@ const data = reactive({
     },
     repassword: [{ required: true, validator:validatePass2, trigger:  ["blur", "change"]}],
   },
-  // 表单v-model绑定的数据
-  
 });
+// 表单v-model绑定的数据
 const fromItem = reactive({
     oldpassword: "",
     password: "",
     repassword: "",
   })
-
 
 // 切换 侧边栏 展开 收起
 const changeCollapse = () => {
@@ -173,7 +172,6 @@ const screenfullData = {
   title: "全屏",
   icon: "FullScreen",
 };
-
 const fullscreen = () => {
   // screenfull.isFullscreen; // 布尔值——当前页面是否全屏   false   true
   // screenfull.isEnabled; // 布尔值——当前浏览器是否支持全屏
@@ -189,6 +187,7 @@ const fullscreen = () => {
   console.log(screenfullData.title, screenfullData.icon);
 };
 
+
 // 修改密码  退出登录
 const handleCommand = (e) => {
   console.log(e);
@@ -200,7 +199,7 @@ const handleCommand = (e) => {
     data.drawerShow = true;
   }
 };
-
+// 退出
 const handelLogout = () => {
   ElMessageBox.confirm("是否要退出登录?", {
     confirmButtonText: "确认",
@@ -218,6 +217,30 @@ const handelLogout = () => {
     }
   });
 };
+// 模态框 取消 按钮
+const handleClose=()=>{
+  data.drawerShow = false;
+}
+const ruleFormRef=ref()
+// 模态框 提交 按钮
+const submitForm=async ()=>{
+// 使用 ref 获取子组件方法
+await ruleFormRef.value.ruleFormRef.validate((valid,fields)=>{
+  if(valid){
+    console.log('submit!')
+    handelUpPassword()
+  }else{
+    console.log('error submit!',fields)
+  }
+})
+}
+// 修改密码
+const handelUpPassword= async ()=>{
+  console.log(fromItem)
+  const ref =await updatePassword(fromItem)
+  console.log(ref)
+
+}
 </script>
 
   <style scoped lang="scss">
