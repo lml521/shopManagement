@@ -76,7 +76,7 @@
 import { reactive, ref } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 // import { User, Lock } from "@element-plus/icons-vue";
-import { login , getinfo} from "@/api/login"; //引入api
+import { login } from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { ElNotification } from 'element-plus'
 const formSize = ref("default");

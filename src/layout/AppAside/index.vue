@@ -1,6 +1,7 @@
 <!-- 首页侧边栏  -->
 <template>
-      <!-- {{$route.path}} -->
+  <div>
+      <!-- {{$route}} -->
       <el-menu
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
@@ -8,9 +9,19 @@
         router
         unique-opened
       >
+<a   target="_blank" href="https://study.163.com/course/introduction.htm?courseId=1212775807&_trace_c_p_k2_=baaf4811eaef465089460c09077d4c58" 
+         >
+      <el-menu-item index="">
+        <template #title>
+          <el-icon><VideoCamera /></el-icon>
+            <span>完整视频教程</span>
+          </template>
+      </el-menu-item>
+    </a>
       <MenuItem :menuList="menuList"></MenuItem>
       </el-menu>
-  </template>
+    </div>
+ </template>
   <script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
@@ -32,8 +43,8 @@ const isCollapse =computed(()=>{
 
 // 侧边栏展示数据
 const menuList = computed(() => {
-  console.log(store.state.routerList)
-  return store.state.routerList;
+  console.log(store.state.info.menus)
+  return store.state.info.menus;
 });
 
 

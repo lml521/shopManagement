@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 // 引入 enum  枚举值
 import { keyToken, keyInfo } from "@/enum/user.js";
-import router from "@/router";
+import { getinfo} from "@/api/login"; //引入api
 const store = createStore({
   state() {
     return {
@@ -57,5 +57,37 @@ const store = createStore({
       localStorage.clear();
     },
   },
+
+  actions: {
+    // 获取当前用户登录信息
+    // 等同于store.commit
+    async getinfo({ commit }) {
+      try {
+        const res = await getinfo();
+        commit("setInfo",res.data)
+        commit("setMenu", res.data.menus);
+        commit("setRuleNames", res.data.ruleNames);
+        return res.data
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+
+
+    // getinfo({ commit }){
+    //     return new Promise((resolve,reject)=>{
+    //         getinfo().then(res=>{
+    //           console.log(res.data.menus)
+    //             commit("setInfo",res.data)
+    //             commit("setMenu", res.data.menus);
+    //             commit("setRuleNames", res.data.ruleNames);
+    //             // 成功调用resolve
+    //             resolve(res.data)
+    //         }).catch(err=>reject(err))
+    //     })
+    // },
+
+  }
 });
 export default store;

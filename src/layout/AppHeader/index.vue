@@ -39,7 +39,8 @@
           content="点击查看完整开发教程"
           placement="bottom"
          >
-         <a class="px-3 activeTooltip flex align-center " target="_blank" href="https://study.163.com/course/introduction.htm?courseId=1212775807&_trace_c_p_k2_=baaf4811eaef465089460c09077d4c58" 
+         <a class="px-3 activeTooltip flex align-center "
+          target="_blank" href="https://study.163.com/course/introduction.htm?courseId=1212775807&_trace_c_p_k2_=baaf4811eaef465089460c09077d4c58" 
          style="height:60px">
       <el-icon ><VideoCamera /></el-icon>
       </a>

@@ -1,18 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-// 引入 enum  枚举值
-import { keyToken } from "@/enum/user.js";
-// 引入element-plus
-import { ElNotification } from "element-plus";
 
-import { getinfo } from "@/api/login"; //引入api
-
-import store from "@/store";
-// 引入 NProgress  进度条
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-
-// 设置页面标题
-import getPageTitle from "@/utils/get-page-title";
 const routes = [
   // 首页
   {
@@ -41,102 +28,169 @@ const routes = [
   },
 ];
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
 
-NProgress.configure({
-  easing: "ease", // 动画方式
-  speed: 500, // 递增进度条的速度
-  showSpinner: true, // 是否显示加载ico
-  trickleSpeed: 200, // 自动递增间隔
-  minimum: 0.3, // 初始化时的最小百分比
-});
 
-router.beforeEach(async (to, from, next) => {
-  // 开启进度条
-  NProgress.start();
-  const menus = store.state.menus;
-  // 设置页面标题
-  document.title = getPageTitle(to.meta.title);
+// 动态路由，用于匹配菜单动态添加路由，包含上面的子路由
+const asyncRoutes = [
+  {
+    path: "/",
+    // name值方便hasRoute进行查找
+    name: "/",
+    component: () => import("@/views/index.vue"),
+    meta: {
+      title: "后台首页",
+    },
+  },{
+    path: "/goods/list",
+    name: "/goods/list",
+    component: () => import("@/views/goods/list.vue"),
+    meta: {
+      title: "商品管理",
+    },
+  },{
+    path: "/category/list",
+    name: "/category/list",
+    component: () => import("@/views/category/list.vue"),
+    meta: {
+      title: "分类列表",
+    },
+  },{
+    path:"/skus/list",
+    name: "/skus/list",
+    component: () => import("@/views/skus/list.vue"),
+    meta: {
+      title: "规格列表",
+    },
+  },{
+    path: "/coupon/list",
+    name: "/coupon/list",
+    component: ()=>import("@/views/coupon/list.vue"),
+    meta: {
+      title: "优惠券列表",
+    },
+  },{
+    path: "/user/list",
+    name: "/user/list",
+    component: ()=>import("@/views/user/list.vue"),
+    meta: {
+      title: "用户列表",
+    },
+  },{
+    path: "/level/list",
+    name: "/level/list",
+    component: ()=>import("@/views/level/list.vue"),
+    meta: {
+      title: "会员等级",
+    },
+  },{
+    path: "/order/list",
+    name: "/order/list",
+    component: ()=>import("@/views/order/list.vue"),
+    meta: {
+      title: "订单列表",
+    },
+  },{
+    path: "/manager/list",
+    name: "/manager/list",
+    component: ()=>import("@/views/manager/list.vue"),
+    meta: {
+      title: "管理员管理",
+    },
+  },{
+    path: "/access/list",
+    name: "/access/list",
+    component: ()=>import("@/views/access/list.vue"),
+    meta: {
+      title: "权限管理",
+    },
+  },{
+    path: "/role/list",
+    name: "/role/list",
+    component: ()=>import("@/views/role/list.vue"),
+    meta: {
+      title: "角色管理",
+    },
+  },{
+    path: "/setting/buy",
+    name: "/setting/buy",
+    component: ()=>import("@/views/setting/buy.vue"),
+    meta: {
+      title: "交易设置",
+    },
+  },{
+    path: "/comment/list",
+    name: "/comment/list",
+    component: ()=>import("@/views/comment/list.vue"),
+    meta: {
+      title: "评价列表",
+    },
+  },{
+    path: "/image/list",
+    name: "/image/list",
+    component: ()=>import("@/views/image/list.vue") ,
+    meta: {
+      title: "图库列表",
+    },
+  },{
+    path: "/notice/list",
+    name: "/notice/list",
+    component: ()=>import("@/views/notice/list.vue"),
+    meta: {
+      title: "公告列表",
+    },
+  },{
+    path: "/setting/base",
+    name: "/setting/base",
+    component: ()=>import("@/views/setting/base.vue"),
+    meta: {
+      title: "配置",
+    },
+  },{
+    path: "/setting/ship",
+    name: "/setting/ship",
+    component: ()=>import("@/views/setting/ship.vue"),
+    meta: {
+      title: "物流设置",
+    },
+  },{
+    path: "/distribution/index",
+    name: "/distribution/index",
+    component: ()=>import("@/views/distribution/index.vue"),
+    meta: {
+      title: "分销员管理",
+    },
+  },{
+    path: "/distribution/setting",
+    name: "/distribution/setting",
+    component: ()=>import("@/views/distribution/setting.vue"),
+    meta: {
+      title: "分销设置",
+    },
+  },
+];
 
-  // 判断是否获取到token  如果获取到  再判断是否 是跳转跳转登录
-  if (localStorage.getItem(keyToken)) {
-    if (to.path == "/login") {
-      next(form.path);
-      //请勿重复登录
-      ElNotification({
-        message: "请勿重复登录",
-        type: "error",
-      });
-    } else {
-      next();
-      if (!menus.length) {
-        // 获取用户信息 
-        let res = await getinfo();
-        console.log(res,777)
-        if(res.msg==="ok"){
-          console.log(res.data)
-          store.commit('setInfo', res.data)
-          store.commit("setMenu", res.data.menus);
-          store.commit("setRuleNames", res.data.ruleNames);
-        }
-        // 首先把你需要动态路由的组件地址全部获取
-        let modules = import.meta.glob('../views/**/*.vue')
-        console.log(modules,'modules')
-        let options = [];
-        res.data.menus.forEach((item) => {
-          //侧边栏
-          let obj = {
-            name: item.name,
-            path: item.icon,
-            icon: item.icon,
-            children: [],
-          };
-          item.child.forEach((each) => {
-            obj.children.push({
-              name: each.name,
-              path: each.frontpath,
-              icon: each.icon,
-            });
-            // 动态路由表
-            let eachRoute = {
-              path: each.frontpath,
-              name: each.desc,
-              meta: {
-                title: each.name,
-              },
-               // 然后动态路由的时候这样来取
-                component : modules[`../views${each.frontpath}.vue`]
-            };
-            // 添加路由  home 是 添加到那个 children里面
-            router.addRoute("home", eachRoute);
-          });
-          options.push(obj);
-        });
-        // 侧边栏
-        store.state.routerList = options;
-         next(to.path);
+export const addRoutes=async(menus)=>{
+    // 首先把你需要动态路由的组件地址全部获取
+    // let modules = import.meta.glob('../views/**/*.vue')
+    let hasNewRoutes = false;
+    const findAndAddRouteByMenus = (arr) => {
+    arr.forEach((e) => {
+      console.log(e,asyncRoutes)
+      let item  = asyncRoutes.find((o) => o.path == e.frontpath);
+      console.log(item)
+      if (item && !router.hasRoute(item.path)) {
+        router.addRoute("home", item);
+        hasNewRoutes = true;
       }
-    }
-  } else {
-    if (to.path == "/login") {
-      next();
-    } else {
-      // 请先登录
-      next("/login");
-      ElNotification({
-        message: "请先登录",
-        type: "error",
-      });
-    }
+      if (e.child && e.child.length > 0) {
+        findAndAddRouteByMenus(e.child);
+      }
+    });
+   }
+    findAndAddRouteByMenus(menus);
+    return hasNewRoutes;
   }
-});
-
-router.afterEach(() => {
-  // 在即将进入新的页面组件前，关闭掉进度条
-  NProgress.done();
-});
-
-export default router;

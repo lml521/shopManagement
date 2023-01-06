@@ -10,12 +10,12 @@ import 'element-plus/dist/index.css'
 import 'virtual:windi.css'
 
 // 引入router
-import router from './router/index'
+import {router} from './router/index'
 
 // 引入 store
 import store from './store/index'
 
-
+import "./permission"
 
 const app = createApp(App)
 // 引入 图标 
