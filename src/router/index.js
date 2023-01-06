@@ -23,7 +23,7 @@ const routes = [
   // 404页面
   {
     path: "/:catchAll(.*)",
-    component: () => import("@/views/404/index.vue"),
+    component: () => import("@/views/404.vue"),
     hidden: true,
   },
 ];

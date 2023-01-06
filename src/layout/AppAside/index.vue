@@ -1,15 +1,16 @@
 <!-- 首页侧边栏  -->
 <template>
-  <div>
+  <div >
       <!-- {{$route}} -->
       <el-menu
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
         :default-active="$route.path"
+        :collapse-transition="false"
         router
         unique-opened
       >
-<a   target="_blank" href="https://study.163.com/course/introduction.htm?courseId=1212775807&_trace_c_p_k2_=baaf4811eaef465089460c09077d4c58" 
+      <!-- <a   target="_blank" href="https://study.163.com/course/introduction.htm?courseId=1212775807&_trace_c_p_k2_=baaf4811eaef465089460c09077d4c58" 
          >
       <el-menu-item index="">
         <template #title>
@@ -17,7 +18,7 @@
             <span>完整视频教程</span>
           </template>
       </el-menu-item>
-    </a>
+    </a> -->
       <MenuItem :menuList="menuList"></MenuItem>
       </el-menu>
     </div>

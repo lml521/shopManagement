@@ -32,9 +32,11 @@ http://shopadmin.dishawang.com/#/login
   - [x] 递归组件 实现侧边栏
   - [x] 动态页面
   - [x] 实现标签导航栏
+  - [x] 利用element tabs 标签页 封装tab
 * 封装
   - [x] element plue 抽屉模态框 二次封装
   - [x] element plue 表单 二次封装
+  - [ ] 
 * 权限校验
   - [x] 全局路由守卫，验证 token，无 token 则跳转登录页
   - [x] 有 token 情况下，打开登录页，直接跳转 '/'

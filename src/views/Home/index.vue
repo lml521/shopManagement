@@ -6,12 +6,15 @@
       <AppHeader></AppHeader>
       </el-header>
       <el-container>
-        <el-aside width="250px">
+        <!-- {{ $store.state.isCollapse }} -->
+        <el-aside :width="$store.state.isCollapse?'64px':'250px'">
           <AppAside></AppAside>
         </el-aside>
         <el-main>
-          <router-view ></router-view>
-          <!-- <AppMain></AppMain> -->
+        
+          <TabList></TabList>
+      
+         <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -26,10 +29,7 @@ import {useRouter} from "vue-router"
 
 import AppHeader from "@/layout/AppHeader/index.vue"//首页头部
 import AppAside from "@/layout/AppAside/index.vue"//首页侧边栏
-import AppMain from "@/layout/AppMain/index.vue"//首页侧边栏
-const store = useStore();
-const router =useRouter()
-
+import TabList from "@/layout/AppMain/TabList.vue"//首页侧边栏
 </script>
 
 <style scoped lang="scss">
@@ -37,18 +37,46 @@ const router =useRouter()
   height: 100%;
   .el-header{
     width: 100%;
-  background-color: #4338ca;
-  padding: 0;
+    background-color: #4338ca;
+    padding: 0;
 }
-.el-aside{
-  height: 100%;
-}
-.el-main {
-  padding:0;
+  .el-aside{
+    height: 100%;
+    background-color: #fff;
+    border-right:1px solid #ccc;
   }
 }
 
+.el-aside {
+    transition: all 0.2s;
+}
 
+/* 进入之前效果 */
+.fade-enter-from {
+    opacity: 0;
+}
+/* 进入之后效果 */
+.fade-enter-to {
+    opacity: 1;
+}
 
+/* 离开动画 */
+.fade-leave-from {
+    opacity: 1;
+}
 
+/* 离开之后 */
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.3s;
+}
+
+/* 进入动画时长延迟一下 */
+.fade-enter-active {
+    transition-delay: 0.3s;
+}
 </style>
