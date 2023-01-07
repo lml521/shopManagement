@@ -16,7 +16,10 @@
       </div> 
     </template>
     <div class="text item">
-      <div class="text-3xl font-bold text-gray-500">{{ item.value }}</div>
+      <div class="text-3xl font-bold text-gray-500">
+        <!-- {{ item.value }} -->
+        <count-to :start-val="0" :end-val="item.value" :duration="1500"></count-to>
+      </div>
       <el-divider></el-divider>
       <div class="flex justify-between  text-gray-500">
         <span>{{ item.subTitle }}</span>
@@ -41,7 +44,7 @@
   <script setup>
 import { ref, reactive } from "vue";
 import { statistics1 } from "@/api/index.js";
-
+import CountTo from '@/components/vue-count-to'
 const data = reactive({
   panels: [],
 });
