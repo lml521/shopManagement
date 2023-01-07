@@ -4,12 +4,14 @@
       class="tab-List"
       :style="$store.state.isCollapse ? 'left:64px' : 'left:250px'"
     >
-      <!-- {{ $route.path }} -->
+    <div style="min-width: 100px">
+
+   
       <el-tabs
         v-model="$route.path"
         type="card"
         class="flex-1"
-        style="min-width: 100px"
+        
         @tab-change="TabChange"
         @tab-remove="TabRemove"
       >
@@ -22,7 +24,8 @@
         >
         </el-tab-pane>
       </el-tabs>
-      
+    </div>
+    <div>
       <el-dropdown @command="handleCommand">
         <div class="tag-btn">
           <el-icon>
@@ -36,6 +39,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
+    </div>
     </div>
     <div style="height: 44px"></div>
   </div>
@@ -114,16 +118,34 @@ const handleCommand=(e)=>{
 
 <style lang="scss" scoped>
 .tab-List {
-  /* fixed固定，背景颜色浅灰色，flex布局，垂直方向居中 内间距2 */
-  @apply fixed bg-gray-100 flex items-center px-2;
-  /* 因为头部已经占了64px */
-  top: 75px;
+  --tw-bg-opacity: 1;
+    background-color: rgba(243,244,246,var(--tw-bg-opacity));
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: .5rem;
+    // padding-right: .5rem;
+    position: fixed;
+    right: 0px;
+    top: 60px;
+
   right: 0;
   height: 44px;
   z-index: 100;
+   
+  /* fixed固定，背景颜色浅灰色，flex布局，垂直方向居中 内间距2 */
+  @apply fixed bg-gray-100 flex items-center px-2;
+  /* 因为头部已经占了64px */
+ 
+  
 }
 .tag-btn {
-  margin-top: -20px;
+  margin-top:-7px ;
   height: 32px;
   /* 背景颜色，圆角 居于最右边 垂直水平居中*/
   @apply bg-white rounded ml-auto flex items-center justify-center px-2;
@@ -134,10 +156,8 @@ const handleCommand=(e)=>{
   border: 0 !important;
 }
 :deep(.el-tabs__header) {
-  // background-color: #fff;
   border-radius: 6px;
-  // border:0 !important;
-  // transition: color var(--el-transition-duration) var(--el-transition-function-ease-in-out-bezier),padding var(--el-transition-duration) var(--el-transition-function-ease-in-out-bezier);
+  margin:0 !important;
 }
 :deep(.el-tabs__nav-wrap),
 :deep(.el-tabs__nav-prev),

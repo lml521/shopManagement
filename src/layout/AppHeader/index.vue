@@ -18,6 +18,9 @@
           <component :is="data.isCollapse?'Expand':'Fold'" style="width: 20px; height:20px;"/>
         </el-icon>
           </div>
+
+          <!-- this.$router.go(0)
+               location.reload() -->
       <el-tooltip
         class="box-item"
         effect="dark"

@@ -11,8 +11,10 @@
           <AppAside></AppAside>
         </el-aside>
         <el-main>
+        <div>
+            <TabList></TabList>
+        </div>
         
-          <TabList></TabList>
       
          <router-view></router-view>
         </el-main>
@@ -35,6 +37,7 @@ import TabList from "@/layout/AppMain/TabList.vue"//首页侧边栏
 <style scoped lang="scss">
 .common-layout,.el-container{
   height: 100%;
+  overflow: hidden;
   .el-header{
     width: 100%;
     background-color: #4338ca;
@@ -44,6 +47,9 @@ import TabList from "@/layout/AppMain/TabList.vue"//首页侧边栏
     height: 100%;
     background-color: #fff;
     border-right:1px solid #ccc;
+  }
+  .el-main{
+    
   }
 }
 

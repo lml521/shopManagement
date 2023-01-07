@@ -914,6 +914,14 @@
   "resolved" "https://registry.npmmirror.com/depd/-/depd-1.1.2.tgz"
   "version" "1.1.2"
 
+"echarts@^5.4.1":
+  "integrity" "sha512-9ltS3M2JB0w2EhcYjCdmtrJ+6haZcW6acBolMGIuf01Hql1yrIV01L1aRj7jsaaIULJslEP9Z3vKlEmnJaWJVQ=="
+  "resolved" "https://registry.npmmirror.com/echarts/-/echarts-5.4.1.tgz"
+  "version" "5.4.1"
+  dependencies:
+    "tslib" "2.3.0"
+    "zrender" "5.4.1"
+
 "electron-to-chromium@^1.4.251":
   "integrity" "sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA=="
   "resolved" "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz"
@@ -2422,6 +2430,11 @@
   "resolved" "https://registry.npmmirror.com/true-case-path/-/true-case-path-2.2.1.tgz"
   "version" "2.2.1"
 
+"tslib@2.3.0":
+  "integrity" "sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg=="
+  "resolved" "https://registry.npmmirror.com/tslib/-/tslib-2.3.0.tgz"
+  "version" "2.3.0"
+
 "type-fest@^0.18.0":
   "integrity" "sha512-OIAYXk8+ISY+qTOwkHtKqzAuxchoMiD9Udx+FSGQDuiRR+PJKJHc2NJAXlbhkGwTt/4/nKZxELY1w3ReWOL8mw=="
   "resolved" "https://registry.npmmirror.com/type-fest/-/type-fest-0.18.1.tgz"
@@ -2514,11 +2527,6 @@
     "rollup" "^3.7.0"
   optionalDependencies:
     "fsevents" "~2.3.2"
-
-"vue-count-to@^1.0.13":
-  "integrity" "sha512-6R4OVBVNtQTlcbXu6SJ8ENR35M2/CdWt3Jmv57jOUM+1ojiFmjVGvZPH8DfHpMDSA+ITs+EW5V6qthADxeyYOQ=="
-  "resolved" "https://registry.npmmirror.com/vue-count-to/-/vue-count-to-1.0.13.tgz"
-  "version" "1.0.13"
 
 "vue-demi@*":
   "integrity" "sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A=="
@@ -2658,3 +2666,10 @@
     "string-width" "^4.2.3"
     "y18n" "^5.0.5"
     "yargs-parser" "^21.1.1"
+
+"zrender@5.4.1":
+  "integrity" "sha512-M4Z05BHWtajY2241EmMPHglDQAJ1UyHQcYsxDNzD9XLSkPDqMq4bB28v9Pb4mvHnVQ0GxyTklZ/69xCFP6RXBA=="
+  "resolved" "https://registry.npmmirror.com/zrender/-/zrender-5.4.1.tgz"
+  "version" "5.4.1"
+  dependencies:
+    "tslib" "2.3.0"
