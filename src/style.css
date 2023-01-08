@@ -498,3 +498,25 @@ a{
   position: relative;
   box-sizing: border-box;
 }
+
+
+// 设置滚动条的样式
+::-webkit-scrollbar {
+  width: 3px;
+}
+ 
+::-webkit-scrollbar-track {
+  background-color: #f3f3f3;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+ 
+::-webkit-scrollbar-thumb:active {
+  background-color: #aaa;
+}

@@ -17,9 +17,15 @@ import 'animate.css';
 // 引入 store
 import store from './store/index'
 
+// 封装的事件
 import "./permission"
+// Vue3一兄弟组件传值之mitt
+import mitt from 'mitt'
+// vue3挂载到全局
 
 const app = createApp(App)
+app.config.globalProperties.$mitt = mitt();
+
 // 引入 图标 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

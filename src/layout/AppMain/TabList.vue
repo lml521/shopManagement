@@ -25,9 +25,9 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div>
-      <el-dropdown @command="handleCommand">
-        <div class="tag-btn">
+    
+      <el-dropdown class="tag-btn" @command="handleCommand">
+        <div >
           <el-icon>
             <arrow-down />
           </el-icon>
@@ -39,7 +39,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-    </div>
+   
     </div>
     <div style="height: 44px"></div>
   </div>
