@@ -1,7 +1,7 @@
 import axios from 'axios'
 // 引入 enum  枚举值
 import  { keyToken } from "@/enum/user.js"
-import { ElNotification } from 'element-plus'
+import { toast } from "@/common/util"
 export function request(config) {
     // 1.创建axios的实例
     const instance = axios.create({
@@ -24,11 +24,8 @@ export function request(config) {
         console.log(res)
         return Promise.resolve(res.data)
     }, err => {
-        if(err.response.data.errorCode==20000){
-            ElNotification({
-                message: err.response.data.msg,
-                type: 'error',
-              })
+        if(err.response.data.errorCode==20000||err.response.data.errorCode==40000){
+            toast(err.response.data.msg,'error',)
         }
         return Promise.reject(err)
     })

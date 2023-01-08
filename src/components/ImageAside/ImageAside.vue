@@ -1,37 +1,42 @@
 <template>
-    <div ref="imageAside" >
-
-        <el-aside width="200px" v-loading="loading" >
-        <div class="top"  >
-            <AsideList   :active="data.activeId== item.id" 
-            @click.stop="handleItem(item)"
-            @handleEdit="handleEdit(item)" 
-            @handleDelete="handleDelete(item.id)"
-            v-for="(item,index) in data.nameList" :key="index">
-                {{ item.name }}
-            </AsideList>
-        </div>
-        <!-- 分页器 -->
-        <div class="button">
-            <el-pagination background layout="prev, next" 
-            :page-size="data.pageSize" :current-page="data.current" 
-            :total="data.totalCount"  @current-change="currentChange"/>
-        </div>
-        </el-aside>
-    </div>
+  <div ref="imageAside">
+    <el-aside width="200px" v-loading="loading">
+      <div class="top">
+        <AsideList
+          :active="data.activeId == item.id"
+          @click.stop="handleItem(item)"
+          @handleEdit="handleEdit(item)"
+          @handleDelete="handleDelete(item.id)"
+          v-for="(item, index) in data.nameList"
+          :key="index"
+        >
+          {{ item.name }}
+        </AsideList>
+      </div>
+      <!-- 分页器 -->
+      <div class="button">
+        <el-pagination
+          background
+          layout="prev, next"
+          :page-size="data.pageSize"
+          :current-page="data.current"
+          :total="data.totalCount"
+          @current-change="currentChange"
+        />
+      </div>
+    </el-aside>
+  </div>
 </template>
 
-
 <script setup>
-import { imageNameList } from "@/api/image";
+import { imageNameList, deleteName } from "@/api/image";
 import AsideList from "@/components/AsideList/AsideList.vue";
 
-import { getCurrentInstance, ref ,reactive} from 'vue';
+import { getCurrentInstance, ref, reactive } from "vue";
+import { toast } from "@/common/util"
+const { appContext } = getCurrentInstance();
 
-const { appContext } = getCurrentInstance() ;
 
-
- 
 const loading = ref(false);
 const data = reactive({
   nameList: [], //总数据
@@ -46,7 +51,7 @@ const currentChange = (e) => {
   data.current = e;
   getNameList();
 };
-let imageAside=ref(null)
+let imageAside = ref(null);
 // 获取 侧边栏数据
 const getNameList = async () => {
   loading.value = true;
@@ -55,68 +60,76 @@ const getNameList = async () => {
     if (res.msg == "ok") {
       data.nameList = res.data.list;
       data.totalCount = res.data.totalCount;
-      await handleItem(res.data.list[0])
+      await handleItem(res.data.list[0]);
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   } finally {
     loading.value = false;
   }
 };
 getNameList();
 // 切换 每一项
-const handleItem=(item)=>{
-    data.activeId=item.id
-    // data.current=1
-    // getNameList()
-    appContext.config.globalProperties.$mitt.emit('moneyEvent',item.id);
-}
-// 修改  
-const handleEdit =(item)=>{
-    console.log(123,item)
-}
+const handleItem = (item) => {
+  data.activeId = item.id;
+  appContext.config.globalProperties.$mitt.emit("moneyEvent", item.id);
+};
+// 修改
+const handleEdit = (item) => {
+  console.log(123, item);
+};
 // 删除
-const handleDelete=(id)=>{
-    console.log(id)
-}
+const handleDelete = async (id) => {
+  console.log(id);
+  try {
+    let res = await deleteName(id);
+    console.log(res);
+    if(res.msg=="ok"){
+      getNameList();
+      // toast("删除成功","success")
+    }else{
+      toast(res.msg,"error")
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+  }
+};
 </script>
 
-<style lang='scss' scoped>
-
-
-:deep(.el-aside){
-    overflow: auto;
-    transition: all .2s;
-    border-right: 1px solid #eeeeee;
-    position: relative !important;
-    height: 100%;
+<style lang="scss" scoped>
+:deep(.el-aside) {
+  overflow: auto;
+  transition: all 0.2s;
+  border-right: 1px solid #eeeeee;
+  position: relative !important;
+  height: 100%;
 }
-.top{
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 50px;
-    overflow-y: auto;
+.top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 50px;
+  overflow-y: auto;
 }
 .button {
-    position: absolute;
-    bottom: 0;
-    height: 50px;
-    left: 0;
-    right: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  left: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
-
 </style>

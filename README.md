@@ -15,8 +15,12 @@ http://shopadmin.dishawang.com/#/login
 * `scss`
 * `axios` 接口请求库，进行二次封装，采用 Hooks 风格
 * `WindiCSS` 引入WindiCSS，工具库和配置，安装代码提示
+* `animate.css`引入 animate.css 动画库
 * `NProgress`  引入NProgress，进度条 实现 跳转页面进度条加载
-
+* `screenfull` 引入screenfull 进行全屏退出全屏切换
+* `vue-count-to` 引入 vue-count-to , 数字滚动动画
+* `mitt` 引入mitt 进行兄弟传值
+* `echarts` 引入echarts
 ## 页面
 * 登录
   - [x] 用户名校验(不能为空)

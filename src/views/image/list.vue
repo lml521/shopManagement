@@ -4,7 +4,7 @@
     <el-card class="box-card" >
     <template #header>
       <div class="card-header">
-        <el-button type="primary" size="small">新增图片分类</el-button>
+        <el-button type="primary" size="small" @click="">新增图片分类</el-button>
         <el-button  type="warning" size="small">上传图片</el-button>
       </div>
     </template>
