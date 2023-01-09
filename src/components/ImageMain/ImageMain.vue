@@ -25,7 +25,8 @@
 
               <div style="padding: 10px">
                 <div class="bottom text-green-400 flex justify-center">
-                  <el-button text type="primary" size="small">重命名</el-button>
+                  <el-button text type="primary" size="small"
+                  @click="handleRename(item.name,item.id)">重命名</el-button>
 
                   <el-popconfirm
                     confirm-button-text="确认"
@@ -62,7 +63,9 @@
   </div>
 </template>
 <script setup>
-import { getImageList , deleteImage} from "@/api/image.js";
+import { getImageList , deleteImage ,getHandleRename} from "@/api/image.js";
+import { ElMessageBox } from 'element-plus'
+import { toast } from "@/common/util"
 import {
   ref,
   reactive,
@@ -115,12 +118,11 @@ const currentChange = (e) => {
 
 // 删除 确认按钮
 const confirmEvent = async (item) => {
- 
   try {
     let res = await deleteImage({ids:[item.id] })
     console.log(res);
     if(res.msg=="ok"){
-      getNameList();
+      init();
       toast("删除成功","success")
     }else{
       toast(res.msg,"error")
@@ -134,7 +136,30 @@ const confirmEvent = async (item) => {
 const cancelEvent = () => {
   console.log("取消删除该图片");
 };
-
+// 重命名
+const handleRename=(name,id)=>{
+  ElMessageBox.prompt(  '重命名', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    autofocus:true,
+    dangerouslyUseHTMLString:true,
+    inputValue:name
+  }).then(async ({ value }) => {
+      console.log(value,id)
+     let res =await getHandleRename(value,id)
+     console.log(res)
+     if(res.msg=="ok"){
+      init()
+      toast("重命名成功","success")
+      
+     }else{
+      toast(res.msg,"error")
+    }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
 
 </script>
 

@@ -21,7 +21,7 @@
     <!-- 计数器 -->
     <el-form-item v-else-if="item.type=='inputNumber'"  
     :label="item.label" >
-    <el-input-number v-model="modelValue[item.prop]" :min="1" :max="100"
+    <el-input-number v-model="modelValue[item.prop]" :min="1" :max="1000"
      @change="handleChange" />
       </el-form-item>
     </template>

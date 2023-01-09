@@ -10,16 +10,19 @@ export const getSubmit =(data)=>{
     })
 }
 
-
-
-
-
-
 // 图库管理 侧边数据
 export const imageNameList = (page) => {
     return request({
         url:`/admin/image_class/${page}`,
         method: "GET",
+    })
+}
+// 修改 侧边名称
+export const getName = (data) => {
+    return request({
+        url:`/admin/image_class/${data.id}`,
+        method: "POST",
+        data,
     })
 }
 //  删除 侧边数据
@@ -37,6 +40,16 @@ export const  getImageList =(id,page)=>{
     })
 }
 
+// 重命名
+export const getHandleRename = (name,id) => {
+    return request({
+        url:`/admin/image/${id}`,
+        method: "POST",
+        data:{
+            name,
+        }
+    })
+}
 // 删除 图片
 export const deleteImage = (data) => {
     return request({

@@ -59,9 +59,9 @@
       <div>
         <el-container style="height: 500px">
           <!-- 侧边数据 -->
-          <ImageAside></ImageAside>
+          <ImageAside ref="RefChilde"></ImageAside>
 
-          <ImageMain></ImageMain>
+          <ImageMain ></ImageMain>
         </el-container>
       </div>
     </el-card>
@@ -74,8 +74,8 @@ import ImageMain from "@/components/ImageMain/ImageMain.vue";
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗
 import iForm from "@/components/i-form/i-form.vue"; //表单
 import { ref, reactive } from "vue";
-import {getSubmit} from "@/api/image"
-import { toast } from "@/common/util"
+import { getSubmit } from "@/api/image";
+import { toast } from "@/common/util";
 const ruleFormRef = ref(null);
 const loading = ref(false);
 const data = reactive({
@@ -110,54 +110,58 @@ const fromItem = reactive({
   name: "",
   order: "50",
 });
-
+// 侧边 ref 数据 
+const RefChilde = ref(null); 
 
 // 点击新增按钮
 const addImgName = () => {
-  data.drawerShow = true;
   data.title = "新增";
+  fromItem.order="50";
+  data.drawerShow = true;
 };
 // 点击上传图片按钮
 const handleUpload = () => {
-  data.drawerShow = true;
   data.title = "上传图片";
+  data.drawerShow = true;
 };
 
 // 模态框 取消 按钮
 const handleClose = () => {
   data.drawerShow = false;
-
-  ruleFormRef.value.ruleFormRef.resetFields()
+  if (data.title == "新增") {
+    ruleFormRef.value.ruleFormRef.resetFields();
+  }
+  
 };
 // 模态框 提交 按钮
-const submitForm=async ()=>{
-// 使用 ref 获取子组件方法
-await ruleFormRef.value.ruleFormRef.validate((valid,fields)=>{
-  if(valid){
-    console.log('submit!')
-    handleSubmit()
-  }else{
-    console.log('error submit!',fields)
+const submitForm = async () => {
+  // 使用 ref 获取子组件方法
+  await ruleFormRef.value.ruleFormRef.validate((valid, fields) => {
+    if (valid) {
+      console.log("submit!");
+      handleSubmit();
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
+};
+// 提交 按钮 事件
+const handleSubmit = async () => {
+  loading.value = true;
+  try {
+    let res = await getSubmit(fromItem);
+    console.log(res);
+    if (res.msg === "ok") {
+      handleClose();
+      toast("新增成功", "success");
+      RefChilde.value.getNameList()
+    }
+  } catch (error) {
+    consloe.log(error);
+  } finally {
+    loading.value = false;
   }
-})
-}
-
-const handleSubmit=async ()=>{
-  loading.value=true
-  try{
-let res =await getSubmit(fromItem)
-console.log(res)
-if(res.msg==="ok"){
-  toast("新增成功",'success')
-  handleClose()
-}
-  } catch(error){
-    consloe.log(error)
-  }finally{
-    loading.value=false
-  }
-
-}
+};
 </script>
 
 <style lang="scss" scoped>
