@@ -500,7 +500,7 @@ a{
 }
 
 
-// 设置滚动条的样式
+/* 设置滚动条的样式 */
 ::-webkit-scrollbar {
   width: 3px;
 }

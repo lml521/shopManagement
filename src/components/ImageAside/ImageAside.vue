@@ -183,7 +183,7 @@ const handleDelete = async (id) => {
 };
 
 //暴露子组件的方法或者数据  父组件使用 ref 调用子组件 事件
-defineExpose({getNameList})
+defineExpose({getNameList,data})
 </script>
 
 <style lang="scss" scoped>

@@ -12,7 +12,8 @@
             <el-card>
               <!-- 图片预览 -->
               <el-image
-                style="width: 177px; height: 150px"
+              class="h-[150px]"
+                style="width: 100%;"
                 :src="item.url"
                 :zoom-rate="1.2"
                 :preview-src-list="[item.url]"
@@ -160,7 +161,7 @@ const handleRename=(name,id)=>{
       console.log(error)
     })
 }
-
+defineExpose({init})
 </script>
 
 <style lang="scss" scoped>

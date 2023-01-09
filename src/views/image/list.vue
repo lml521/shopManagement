@@ -31,11 +31,20 @@
           </div>
           <div v-else-if="data.title=='上传图片'">
             <el-upload
-    class="upload-demo"
-    drag
-    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-    multiple
-  >
+            :limit="1"
+            action="#"
+            list-type="picture"
+            :auto-upload="false"
+            accept="image/png,image/gif,image/jpg,image/jpeg"
+            :on-success="handleSuccess"
+            :on-change="imgSaveToUrl"
+            :show-file-list='true'
+            ref='frontUpload'
+            class="upload-demo"
+            drag
+            multiple
+        >
+
     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
     <div class="el-upload__text">
       讲文件拖到此处,或<em>点击上传</em>
@@ -61,7 +70,7 @@
           <!-- 侧边数据 -->
           <ImageAside ref="RefChilde"></ImageAside>
 
-          <ImageMain ></ImageMain>
+          <ImageMain ref="MainChilde"></ImageMain>
         </el-container>
       </div>
     </el-card>
@@ -74,9 +83,11 @@ import ImageMain from "@/components/ImageMain/ImageMain.vue";
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗
 import iForm from "@/components/i-form/i-form.vue"; //表单
 import { ref, reactive } from "vue";
-import { getSubmit } from "@/api/image";
+import { getSubmit , upload} from "@/api/image";
 import { toast } from "@/common/util";
+import axios from 'axios'
 const ruleFormRef = ref(null);
+const MainChilde=ref(null)
 const loading = ref(false);
 const data = reactive({
   drawerShow: false,
@@ -104,6 +115,7 @@ const data = reactive({
     },
   },
 });
+const  picfileList=[{}] //保存图片的fileList
 // 表单v-model绑定的数据
 const fromItem = reactive({
   id: null,
@@ -162,6 +174,64 @@ const handleSubmit = async () => {
     loading.value = false;
   }
 };
+
+
+const imageFrontUrl = ref('')
+
+function imgSaveToUrl (file) {
+	imageFrontUrl.value = URL.createObjectURL(file.raw)
+	const fileSize = file.size
+	const fileType = file.raw.type
+	if (!fileSize) {
+	// 是否为空
+		// ElMessage({
+    //         type: 'error',
+    //         showClose: true,
+    //         message: '无效的文件，请重新选择！',
+    //     })
+    console.log('无效的文件，请重新选择！')
+		logoPicRemove()
+		return
+	}
+	if (fileSize / 1024 / 1024 > 10) {
+	// 图片大小
+	  // ElMessage({
+    //         type: 'error',
+    //         showClose: true,
+    //         message: '请上传小于10M的图片！',
+    //     })
+    console.log('请上传小于10M的图片！')
+        logoPicRemove()
+		return
+	}
+	if (fileType.indexOf('image') === -1) { 
+	// 如果不是图片格式
+		// ElMessage({
+    //         type: 'error',
+    //         showClose: true,
+    //         message: '不是有效的图片文件，或格式不支持，请重新选择!',
+    //     })
+    console.log('不是有效的图片文件，或格式不支持，请重新选择!')
+		logoPicRemove()
+		return
+	}
+		imageUpload(file)
+	}
+
+  function logoPicRemove() { // 清空内容
+	frontUpload.value.clearFiles()
+	imageFrontUrl.value = ''
+}
+async function imageUpload (file) {
+  console.log(file)
+  console.log( RefChilde.value.data.activeId)
+  let res = await upload({image_class_id:RefChilde.value.data.activeId,
+    img:file.raw})
+  console.log(res)
+  if(res.msg=="ok"){
+    MainChilde.value.init()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
