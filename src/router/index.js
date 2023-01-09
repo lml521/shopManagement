@@ -179,9 +179,7 @@ export const addRoutes=async(menus)=>{
     let hasNewRoutes = false;
     const findAndAddRouteByMenus = (arr) => {
     arr.forEach((e) => {
-      console.log(e,asyncRoutes)
       let item  = asyncRoutes.find((o) => o.path == e.frontpath);
-      console.log(item)
       if (item && !router.hasRoute(item.path)) {
         router.addRoute("home", item);
         hasNewRoutes = true;

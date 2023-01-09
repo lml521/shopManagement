@@ -18,7 +18,7 @@
                 :zoom-rate="1.2"
                 :preview-src-list="[item.url]"
                 :initial-index="4"
-                fit="none"
+                fit="cover"
               />
               <div class="ImgTitle">
                 {{ item.name }}

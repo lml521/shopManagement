@@ -189,13 +189,11 @@ const fullscreen = () => {
   }
   // 布尔值——当前浏览器是否支持全屏
   if (screenfull.isEnabled) screenfull.toggle();
-  console.log(screenfullData.title, screenfullData.icon);
 };
 
 
 // 修改密码  退出登录
 const handleCommand = (e) => {
-  console.log(e);
   // 退出
   if (e === "logout") {
     handleLogout();

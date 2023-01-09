@@ -75,13 +75,10 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRoute, useRouter } from 'vue-router'
-// import { User, Lock } from "@element-plus/icons-vue";
 import { login } from "@/api/login"; //引入api
 import { useStore } from "vuex";
 import { ElNotification } from 'element-plus'
 const formSize = ref("default");
-// import type { FormInstance, FormRules } from 'element-plus'
-
 const ruleFormRef = ref();
 const route=useRoute()
 const router=useRouter()
@@ -108,9 +105,7 @@ const submitForm = async (formEl) => {
       console.log(res)
       if(res.data.token!=""){
          store.commit("setToken", res.data.token);
-
         //  获取用户信息
-       
         ElNotification({
           message: '登录成功',
           type: 'success',

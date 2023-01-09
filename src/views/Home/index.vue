@@ -25,10 +25,6 @@
 
 
 <script setup>
-
-import { useStore } from "vuex";
-import {useRouter} from "vue-router"
-
 import AppHeader from "@/layout/AppHeader/index.vue"//首页头部
 import AppAside from "@/layout/AppAside/index.vue"//首页侧边栏
 import TabList from "@/layout/AppMain/TabList.vue"//首页侧边栏

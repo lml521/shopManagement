@@ -32,13 +32,11 @@ const store = createStore({
     },
     // 存储用户信息
     setInfo(state, info) {
-      console.log(info)
       state.info = info;
       localStorage.setItem(keyInfo, JSON.stringify(info));
     },
     //路由权限 信息
     setMenu(state,menu){
-      console.log('vuex',menu)
       state.menus=menu
     },
     // 角色权限
@@ -72,22 +70,6 @@ const store = createStore({
         console.log(error);
       }
     },
-
-
-
-    // getinfo({ commit }){
-    //     return new Promise((resolve,reject)=>{
-    //         getinfo().then(res=>{
-    //           console.log(res.data.menus)
-    //             commit("setInfo",res.data)
-    //             commit("setMenu", res.data.menus);
-    //             commit("setRuleNames", res.data.ruleNames);
-    //             // 成功调用resolve
-    //             resolve(res.data)
-    //         }).catch(err=>reject(err))
-    //     })
-    // },
-
   }
 });
 export default store;

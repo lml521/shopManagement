@@ -58,11 +58,3 @@ export const deleteImage = (data) => {
         data
     })
 }
-
-export const upload=(data)=>{
-    return request({
-        url:'/admin/image/upload',
-        method: "POST",
-        data
-    })
-}

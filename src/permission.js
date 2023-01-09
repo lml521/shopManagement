@@ -36,8 +36,6 @@ router.beforeEach(async (to, from, next)=>{
     let title = (to.meta.title ? to.meta.title : "") + "-商品后台"
     // 给document.title赋值
     document.title = title
-
-    console.log(to.fullPath,'to.fullPath')
     // 如果有新的路由手动指定路由，否则调用next
     hasNewRoutes ? next(to.fullPath) : next()
 })

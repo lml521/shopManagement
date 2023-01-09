@@ -8,11 +8,6 @@ export function request(config) {
         baseURL:'/api',
         timeout: 50000,
         method:config.method||"GET",
-        filePath: config.file || "",
-		name: config.name || "file",
-        headers:{
-            'Content-Type': 'multipart/form-data'
-        }
     })
     // 2.1.请求拦截的作用
     instance.interceptors.request.use(config => {
@@ -26,7 +21,6 @@ export function request(config) {
     })
     // 2.2.响应拦截
     instance.interceptors.response.use(res => {
-        console.log(res)
         return Promise.resolve(res.data)
     }, err => {
         if(err.response.data.errorCode==20000||err.response.data.errorCode==40000){

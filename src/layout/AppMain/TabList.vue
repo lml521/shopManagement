@@ -57,15 +57,13 @@ const TabsList = reactive(
 );
 watch(
   route,
-  (newVal, oldVal) => {
-    console.log(newVal.path);
+  (newVal) => {
     if (newVal.path === "/") return;
     let obj = {
       path: newVal.path,
       title: newVal.meta.title,
     };
     let i = TabsList.findIndex((item) => item.path === obj.path);
-    console.log(obj, TabsList, i);
     if (i < 0) {
       TabsList.push(obj);
       localStorage.setItem("tabsList", JSON.stringify(TabsList));
@@ -95,12 +93,10 @@ const TabRemove = (name) => {
 
 // 关闭其他 全部关闭
 const handleCommand=(e)=>{
-  console.log(e)
   let list =[
     { path: "/", title: "后台首页" },
     ]
   if(e=="closeRests"){
-    console.log(route.path)
     if(route.path=="/"){
       TabsList.splice(1,TabsList.length-1)
       return 

@@ -74,10 +74,8 @@ const data = reactive({
   pageSize: 10, //每页显示条目个数
   current: 1, //当前页数
   activeId: 0,
-
   drawerShow: false,
   title: "新增",
-
   // 表单展示数据
   formList: [
     {
