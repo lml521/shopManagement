@@ -1,5 +1,5 @@
 <template>
-  <div ref="imageAside">
+  <div>
     <el-aside width="200px" v-loading="loading">
       <div class="top">
         <AsideList
@@ -51,7 +51,7 @@ const currentChange = (e) => {
   data.current = e;
   getNameList();
 };
-let imageAside = ref(null);
+
 // 获取 侧边栏数据
 const getNameList = async () => {
   loading.value = true;
@@ -86,7 +86,7 @@ const handleDelete = async (id) => {
     console.log(res);
     if(res.msg=="ok"){
       getNameList();
-      // toast("删除成功","success")
+      toast("删除成功","success")
     }else{
       toast(res.msg,"error")
     }

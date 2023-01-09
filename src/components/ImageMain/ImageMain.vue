@@ -111,7 +111,20 @@ const currentChange = (e) => {
 
 // 删除 确认按钮
 const confirmEvent = async (item) => {
-  await deleteImage({ids:[item.id] })
+ 
+  try {
+    let res = await deleteImage({ids:[item.id] })
+    console.log(res);
+    if(res.msg=="ok"){
+      getNameList();
+      toast("删除成功","success")
+    }else{
+      toast(res.msg,"error")
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+  }
 };
 // 删除 取消按钮
 const cancelEvent = () => {

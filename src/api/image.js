@@ -1,4 +1,20 @@
 import { request } from "../utils/request";
+
+
+// 新增图片分类 提交
+export const getSubmit =(data)=>{
+    return request({
+        url:'/admin/image_class',
+        method: "POST",
+        data
+    })
+}
+
+
+
+
+
+
 // 图库管理 侧边数据
 export const imageNameList = (page) => {
     return request({

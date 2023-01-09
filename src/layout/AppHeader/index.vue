@@ -79,10 +79,10 @@
         </template>
      </el-dropdown>
 
-      <i-drawer v-model.sync="data.drawerShow" :flag="data.flag" :title="data.title"
+      <i-drawer v-model.sync="data.drawerShow"  :title="data.title"
       @handleClose="handleClose"
-      style="color:#666">
-        <template #form>
+      >
+        <template #content>
 
          <i-form :formList="data.formList" :rules="data.rules" 
          v-model="fromItem" ref="ruleFormRef"> </i-form>
@@ -124,7 +124,7 @@ const validatePass2 = (rule, value, callback) => {
 const data = reactive({
   isCollapse: false, // 控制侧边栏展开收起
   drawerShow: false, //控制模态框展示
-  flag: false,
+ 
   title: "修改密码", //模态框 标题
   // 表单展示数据
   formList: [
@@ -198,14 +198,14 @@ const handleCommand = (e) => {
   console.log(e);
   // 退出
   if (e === "logout") {
-    handelLogout();
+    handleLogout();
   } else {
     // 修改密码
     data.drawerShow = true;
   }
 };
 // 退出
-const handelLogout = () => {
+const handleLogout = () => {
   ElMessageBox.confirm("是否要退出登录?", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
@@ -234,14 +234,14 @@ const submitForm=async ()=>{
 await ruleFormRef.value.ruleFormRef.validate((valid,fields)=>{
   if(valid){
     console.log('submit!')
-    handelUpPassword()
+    handleUpPassword()
   }else{
     console.log('error submit!',fields)
   }
 })
 }
 // 修改密码
-const handelUpPassword= async ()=>{
+const handleUpPassword= async ()=>{
   await updatePassword(fromItem)
 }
 </script>

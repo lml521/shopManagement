@@ -63,7 +63,9 @@
               ></count-to>
 
             </div>
+
             <el-divider></el-divider>
+
             <div class="flex justify-between text-gray-500">
               <span>{{ item.subTitle }}</span>
               <span>{{ item.subValue }}</span>

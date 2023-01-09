@@ -11,13 +11,19 @@
     :size="formSize"
   >
 
-  <template v-for="item in formList" >
+  <template v-for="(item,index) in formList" >
     <!-- 一般数据 -->
-     <el-form-item :label="item.label" :prop="item.prop" >
+     <el-form-item v-if="!item.type" :label="item.label" :prop="item.prop" :key="index">
       <el-input v-model="modelValue[item.prop]" :placeholder="item.placeholder"
       />
     </el-form-item> 
 
+    <!-- 计数器 -->
+    <el-form-item v-else-if="item.type=='inputNumber'"  
+    :label="item.label" >
+    <el-input-number v-model="modelValue[item.prop]" :min="1" :max="100"
+     @change="handleChange" />
+      </el-form-item>
     </template>
 
     <!-- <el-form-item>
