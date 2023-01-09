@@ -44,6 +44,10 @@
             </el-card>
           </el-col>
         </el-row>
+
+        <div v-if="data.total==0">
+          <el-empty description="暂无图片" />
+        </div>
       </div>
 
       <div class="button">
@@ -88,7 +92,7 @@ onMounted(() => {
 onBeforeMount(() => {
   appContext.config.globalProperties.$mitt.off("moneyEvent");
 });
-
+loading.value = true;
 // 初始化 获取 图片 数据
 const init = async () => {
   loading.value = true;

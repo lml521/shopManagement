@@ -2,7 +2,7 @@
   <div>
     <el-aside width="200px" v-loading="loading">
       <div class="top">
-        <AsideList
+         <AsideList
           :active="data.activeId == item.id"
           @click.stop="handleItem(item)"
           @handleEdit="handleEdit(item)"
@@ -11,7 +11,8 @@
           :key="index"
         >
           {{ item.name }}
-        </AsideList>
+        </AsideList> 
+        
       </div>
       <!-- 分页器 -->
       <div class="button">
