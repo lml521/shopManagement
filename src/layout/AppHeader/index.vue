@@ -121,6 +121,7 @@ const validatePass2 = (rule, value, callback) => {
       }
     }
 
+    const ruleFormRef=ref()
 const data = reactive({
   isCollapse: false, // 控制侧边栏展开收起
   drawerShow: false, //控制模态框展示
@@ -225,7 +226,7 @@ const handleClose=()=>{
   data.drawerShow = false;
   ruleFormRef.value.ruleFormRef.resetFields()
 }
-const ruleFormRef=ref()
+
 // 模态框 提交 按钮
 const submitForm=async ()=>{
 // 使用 ref 获取子组件方法
