@@ -37,15 +37,6 @@
       </template>
         </el-table-column>
 
-
-
-
-
-
-
-
-
-
         <!-- 状态 开关  -->
         <el-table-column
           :label="item.label"
@@ -59,6 +50,7 @@
           :active-value="item.active"
           :inactive-value="item.inactive"
            v-model="scope.row[item.prop]"
+          @change="$emit(item.event,scope.row.id,scope.row.status)"
         />
       </template>
         </el-table-column>
@@ -132,6 +124,8 @@ const props = defineProps({
     default: true,
   },
 });
+
+
 </script>
 
 <style lang="scss" scoped></style>

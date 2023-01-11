@@ -14,11 +14,10 @@ label-width="80px" :size="size">
     <el-col :span="8" :offset="offset" >
          <div class="flex items-center justify-end" >
        
-          <el-button type="primary"  class="ml-auto"  >
+          <el-button type="primary"  class="ml-auto" @click="handleSearch" >
           搜索
           </el-button> 
-           <el-button >重置</el-button> 
-
+           <el-button @click="handleReset">重置</el-button> 
             <!-- <el-button type="primary" text @click="$emit('isUnfold')" v-if="num>1"> 
             {{ !unfold?'收起':'展开' }}
             <el-icon><component :is="isIcon"/></el-icon>
@@ -52,6 +51,30 @@ const props = defineProps({
     default: false,
   },
 });
+const emit = defineEmits(["handleSearch","handleReset"]); 
+const handleSearch=()=>{
+    console.log('搜索',props.modelValue)
+     emit('handleSearch',props.modelValue)
+}
+
+const handleReset=()=>{
+    handleReset
+    emit('handleReset' )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const num = computed(() => {
   return props.formList.length;
 });
