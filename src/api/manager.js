@@ -42,3 +42,11 @@ export const getAdd=(data)=>{
         data,
     })
 }
+// 修改 
+export const getEdit=(id,data)=>{
+    return request({
+        url:`/admin/manager/${id}`,
+        method:"POST",
+        data
+    })
+}
