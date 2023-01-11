@@ -39,6 +39,7 @@
           <i-form
             :formList="data.formList"
             :rules="data.rules"
+            :rolesList="rolesList"
             v-model="fromItem"
             ref="ruleFormRef"
             formSize="default"
@@ -116,7 +117,6 @@ const data = reactive({
         },
         {
           name: "删除",
-
           title:"是否要删除改管理员?",
           confirm:"确认",
           cancel:"取消",
@@ -141,31 +141,49 @@ const data = reactive({
   // 表单展示数据
   formList: [
     {
-      label: "管路",
-      prop: "title",
-      placeholder: "请填写公告标题",
+      label: "用户名",
+      prop: "username",
+      placeholder: "请填写用户名",
     },
     {
-      label: "公告内容",
-      type: "textarea",
-      prop: "content",
-      placeholder: "请填写公告内容",
+      label: "密码",
+      prop: "password",
+      placeholder: "请填写密码",
+    },
+    {
+      label: "头像",
+      type:"uploadImg",
+      prop: "avatar",
+      placeholder: "请填写密码",
+    },
+    {
+      label: "所属角色",
+      type:"select",
+      prop: "role_id",
+      placeholder: "请填写密码",
+    },
+    {
+      label: "状态",
+      type:"switch",
+      prop: "status",
+       
     },
   ],
   // 表单验证
-  rules: {
-    title: {
-      required: true,
-      message: "公告标题必填",
-      trigger: ["blur", "change"],
-    },
-    content: {
-      required: true,
-      message: "公告内容必填",
-      trigger: ["blur", "change"],
-    },
-  },
+  // rules: {
+  //   title: {
+  //     required: true,
+  //     message: "公告标题必填",
+  //     trigger: ["blur", "change"],
+  //   },
+  //   content: {
+  //     required: true,
+  //     message: "公告内容必填",
+  //     trigger: ["blur", "change"],
+  //   },
+  // },
 });
+const rolesList =ref([])
 const id = ref(0);
 // 头部表单 按钮  展示数据
 const RequestList = ref([
@@ -179,6 +197,7 @@ const RequestList = ref([
 // 头部 表单 v-model 绑定的数据
 const RequestItem = ref({
   title: "",
+  
 });
 
 const headerButton = ref([
@@ -204,8 +223,11 @@ const headerButton = ref([
 const ruleFormRef = ref(); //模态框表单 ref
 // 表单v-model绑定的数据
 const fromItem = reactive({
-  title: "",
-  content: "",
+  username: "",
+  password:"",
+  avatar:"",
+  role_id:"",
+  status:1,
 });
 
 const loading = ref(false);
@@ -217,7 +239,10 @@ const init = () => {
   console.log(loading.value);
   try {
     getTableList(data.current).then((res) => {
+
       if (res.msg == "ok") {
+        console.log(res)
+        rolesList.value=res.data.roles
         data.tableData = res.data.list;
         data.total = res.data.totalCount;
       }

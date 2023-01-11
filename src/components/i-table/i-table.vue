@@ -54,9 +54,6 @@
         />
       </template>
         </el-table-column>
-
-
-
         <!-- 按钮 -->
         <el-table-column 
           v-else-if="item.type == 'button'"

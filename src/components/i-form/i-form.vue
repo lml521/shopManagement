@@ -2,7 +2,6 @@
     <div>
         <!-- 封装表单 -->
     <el-form
-    
     ref="ruleFormRef"
     :model="modelValue"
     :rules="rules"
@@ -12,20 +11,6 @@
   >
  
   <template v-for="(item,index) in formList" >
-<!-- <template v-if="inline" >
-  
-    <el-form-item v-if="!item.type  " :label="item.label" :prop="item.prop" :key="index"
-     v-bind="item" style="float:left;">
-      <el-input :style="{width:item.width}" v-model="modelValue[item.prop]" :placeholder="item.placeholder"
-      />
-    </el-form-item> 
-
-    <el-form-item v-else-if="item.type=='button'" :style="{width:item.width}" 
-    style="float:right; ">
-        <el-button  >123</el-button> 
-  </el-form-item> 
-</template> -->
-
 
 <el-form-item v-if="!item.type  " :label="item.label" :prop="item.prop" :key="index"
      v-bind="item" >
@@ -44,7 +29,35 @@
     <el-form-item v-else-if="item.type=='textarea'" :prop="item.prop"  :label="item.label"   >
       <el-input v-model="modelValue[item.prop]" :rows="3" type="textarea" :placeholder="item.placeholder" />
     </el-form-item>
-  </template>
+
+    <!-- 上传图片  -->
+    
+    <el-form-item v-else-if="item.type=='uploadImg'" :prop="item.prop"  :label="item.label"   >
+     
+      <el-image  v-if="modelValue[item.prop]" fit="cover" :src="modelValue[item.prop] " class="w-[100px] h-[100px]  mb-2 mr-2">
+      </el-image>
+      <div class="image-btn  ">
+        <el-icon class="el-icon" text-gray-500  style="font-size:25px">
+          <Plus />
+        </el-icon>
+      </div>
+    </el-form-item>
+
+    <!-- 下拉菜单  -->
+    <el-form-item v-else-if="item.type=='select'" :prop="item.prop"  :label="item.label"   >
+        <el-select v-model="modelValue[item.prop]" 
+        :placeholder="item.placeholder">
+        <el-option :label="ele.name" :value="ele.id"  v-for="ele in rolesList"/> 
+      </el-select>  
+   </el-form-item>
+
+
+    <!-- 开关  -->
+    <el-form-item v-else-if="item.type=='switch'" :prop="item.prop"  :label="item.label"   >
+      <el-switch  v-model="modelValue[item.prop]" :active-value="1" :inactive-value="0"/>
+</el-form-item>
+</template>
+ 
   </el-form>
     </div>
   </template>
@@ -71,11 +84,16 @@ const props = defineProps({
     type: String,
     default: "small",
   },
+  rolesList:{
+    type: Array,
+    default: [],
+  },
   // 是否行内表格
   inline: {
     type: Boolean,
     default: false,
   },
+
 });
 const ruleFormRef = ref();
 /**
@@ -89,4 +107,18 @@ defineExpose({
 </script>
   
   <style lang='scss' scoped>
+  .image-btn {
+     width: 100px;
+    height: 100px;
+    border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px 10px 0;
+
+  &:hover {
+    background-color: #f3f4f6; 
+}
+  } 
 </style>
