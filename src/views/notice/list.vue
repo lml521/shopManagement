@@ -4,9 +4,11 @@
     <el-card class="box-card">
       <!-- 头部 按钮  -->
       <div class="flex items-center mb-4">
+
        <el-button type="primary" size="small" @click="handleAdd">新增</el-button>
-       <span class="ml-auto">
-          <el-link href="" class="px-2">
+
+       <div class="ml-auto"  >
+          <el-link class="px-2"  @click="init">
           <el-tooltip
             class="box-item"
             effect="dark"
@@ -18,16 +20,13 @@
             </el-icon>
       </el-tooltip>
     </el-link>
-       </span>
+       </div>
       </div>
 
       <!-- 表格  -->
     <iTable   v-loading="loading" :tableHeader="data.tableHeader " :tableData="data.tableData"
      :stripe="data.stripe" @handleEdit="handleEdit" @handleDelete="handleDelete">
   </iTable>
-
-
-
   <i-drawer
         :title="data.title"
         v-model="data.drawerShow"
@@ -72,7 +71,6 @@ const data = reactive({
       prop: "title",
       label: "公告标题",
       rowspan: 2,
-      colspan: 1,
     },
     {},
     {
@@ -189,7 +187,6 @@ const handleEdit=(e)=>{
   fromItem.content=e.content
   id.value=e.id
 }
-
 // 删除
 const handleDelete = async (e) => {
   let res = await getDelete(e.id);
@@ -198,7 +195,6 @@ const handleDelete = async (e) => {
     init();
   }
 };
-
 // 模态框 取消 按钮
 const handleClose = () => {
   data.drawerShow = false;
@@ -216,7 +212,6 @@ await ruleFormRef.value.ruleFormRef.validate((valid,fields)=>{
     }else{
       handleEditSubmit()
     }
-    
   }else{
     console.log('error submit!',fields)
   }
@@ -236,8 +231,6 @@ const handleAddSubmit=async()=>{
   }catch(error){
     console.log(error)
   }
-
-
 }
 
 // 编辑 提交事件

@@ -1,8 +1,8 @@
 <template>
     <div>
         <!-- 封装表单 -->
-<!-- {{formList}} -->
     <el-form
+    
     ref="ruleFormRef"
     :model="modelValue"
     :rules="rules"
@@ -10,14 +10,29 @@
     status-icon
     :size="formSize"
   >
-
+ 
   <template v-for="(item,index) in formList" >
-    <!-- 一般数据 -->
-     <el-form-item v-if="!item.type" :label="item.label" :prop="item.prop" :key="index">
-      <el-input v-model="modelValue[item.prop]" :placeholder="item.placeholder"
+<!-- <template v-if="inline" >
+  
+    <el-form-item v-if="!item.type  " :label="item.label" :prop="item.prop" :key="index"
+     v-bind="item" style="float:left;">
+      <el-input :style="{width:item.width}" v-model="modelValue[item.prop]" :placeholder="item.placeholder"
       />
     </el-form-item> 
 
+    <el-form-item v-else-if="item.type=='button'" :style="{width:item.width}" 
+    style="float:right; ">
+        <el-button  >123</el-button> 
+  </el-form-item> 
+</template> -->
+
+
+<el-form-item v-if="!item.type  " :label="item.label" :prop="item.prop" :key="index"
+     v-bind="item" >
+      <el-input :style="{width:item.width}" v-model="modelValue[item.prop]"
+       :placeholder="item.placeholder"
+      />
+    </el-form-item> 
     <!-- 计数器 -->
     <el-form-item v-else-if="item.type=='inputNumber'"  
     :label="item.label"  >
@@ -26,16 +41,11 @@
       </el-form-item>
 
        <!-- 文本域 -->
-
     <el-form-item v-else-if="item.type=='textarea'" :prop="item.prop"  :label="item.label"   >
       <el-input v-model="modelValue[item.prop]" :rows="3" type="textarea" :placeholder="item.placeholder" />
     </el-form-item>
-    </template>
-
- 
-
+  </template>
   </el-form>
-
     </div>
   </template>
   <script setup>
@@ -60,6 +70,11 @@ const props = defineProps({
   formSize: {
     type: String,
     default: "small",
+  },
+  // 是否行内表格
+  inline: {
+    type: Boolean,
+    default: false,
   },
 });
 const ruleFormRef = ref();

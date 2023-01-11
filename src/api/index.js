@@ -1,3 +1,4 @@
+// 主控台页面
 import { request } from "../utils/request";
 // 主控台 首页 头部数据
 export const getStatistics1 = () => {

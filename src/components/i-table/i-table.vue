@@ -3,15 +3,67 @@
     <!-- 封装表格 -->
     <el-table :data="tableData" :stripe="stripe" style="width: 100%">
       <template v-for="item in tableHeader"  >
+        <!-- 一般数据 -->
         <el-table-column
           v-if="!item.type"
           :prop="item.prop"
           :label="item.label"
           :width="item.width"
+          :align="item.align"
           :rowspan="item.rowspan"
           :key="item.prop"
         >
         </el-table-column>
+        <!-- userInfo 用户信息 头像  -->
+        <el-table-column
+          :label="item.label"
+          :width="item.width"
+          :align="item.align"
+          :rowspan="item.rowspan"
+          v-else-if="item.type=='userInfo'"
+        >
+        <template #default="scope">
+        <div class="flex items-center">
+          <div>
+          <el-image class="w-10 h-10 rounded-1/2 border mr-3" 
+          :src="scope.row.avatar||'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'" 
+          fit="cover"></el-image>
+        </div>
+        <div>
+          <div>{{ scope.row.username }}</div>
+          <div>ID:{{ scope.row.id }}</div>
+        </div>
+      </div>
+      </template>
+        </el-table-column>
+
+
+
+
+
+
+
+
+
+
+        <!-- 状态 开关  -->
+        <el-table-column
+          :label="item.label"
+          :width="item.width"
+          :align="item.align"
+          :rowspan="item.rowspan"
+          v-else-if="item.type=='switch'"
+        >
+        <template #default="scope">
+          <el-switch
+          :active-value="item.active"
+          :inactive-value="item.inactive"
+           v-model="scope.row[item.prop]"
+        />
+      </template>
+        </el-table-column>
+
+
 
         <!-- 按钮 -->
         <el-table-column 
@@ -80,9 +132,6 @@ const props = defineProps({
     default: true,
   },
 });
-
-
-
 </script>
 
 <style lang="scss" scoped></style>

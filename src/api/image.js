@@ -1,6 +1,5 @@
+// 图书管理
 import { request } from "../utils/request";
-
-
 // 新增图片分类 提交
 export const getSubmit =(data)=>{
     return request({
