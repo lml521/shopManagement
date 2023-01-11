@@ -96,6 +96,9 @@ const data = reactive({
         {
           name: "删除",
           size: "small",
+          title:"是否要删除该公告?",
+          confirm:"确认",
+          cancel:"取消",
           type: "primary",
           text: "primary",
           event: "handleDelete",

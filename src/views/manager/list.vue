@@ -73,7 +73,7 @@ import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗
 import iForm from "@/components/i-form/i-form.vue"; //表单
 
 import iPagination from "@/components/i-pagination/i-pagination.vue"; //分页
-import { getTableList, getSearch, getChangeStatus } from "@/api/manager.js";
+import { getTableList, getSearch, getChangeStatus,getDelete } from "@/api/manager.js";
 import { reactive, ref } from "vue";
 import { toast } from "@/common/util";
 const data = reactive({
@@ -116,6 +116,10 @@ const data = reactive({
         },
         {
           name: "删除",
+
+          title:"是否要删除改管理员?",
+          confirm:"确认",
+          cancel:"取消",
           size: "small",
           type: "primary",
           text: "primary",

@@ -69,17 +69,17 @@
           <template #default="scope">
 
             <template v-for=" ele in item.buttons" >
-           
+           <!-- {{ ele }} -->
               <el-popconfirm
               :key="ele.name"
                 v-if="ele.popconfirm"
-                confirm-button-text="确认"
-                cancel-button-text="取消"
-                title="是否要删除该记录?"
+                :confirm-button-text="ele.confirm"
+                :cancel-button-text="ele.cancel"
+                :title="ele.title"
                 @confirm="$emit('handleDelete', scope.row)"
  
               >
- 
+ {{ ele.title }}
               <!-- @click.native.prevent="$emit(ele.event, scope.row)" -->
                 <template #reference>
                   <el-button

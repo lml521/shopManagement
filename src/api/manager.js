@@ -23,7 +23,14 @@ export const getChangeStatus=(id,status)=>{
         method: "POST",
         data:{
             status,
-
         }
+    })
+}
+
+// 删除
+export const getDelete =(id)=>{
+    return request({
+        url:`/admin/manager/${id}/delete`,
+        method:"POST"
     })
 }
