@@ -1,17 +1,15 @@
 <template>
-  <div>
+  <div  class="bg-light-50">
     <!-- 图库管理 -->
-    <el-card class="box-card">
-      <template #header>
+
         <div class="card-header">
           <el-button type="primary" size="small" @click="addImgName"
-            >新增图片分类</el-button
-          >
+            >新增图片分类</el-button >
+            
           <el-button type="warning" size="small" @click="handleUpload"
-            >上传图片</el-button
-          >
+            >上传图片</el-button >
         </div>
-      </template>
+      
       <!-- 新增图片分类 模态框  -->
       <i-drawer
         :title="data.title"
@@ -68,10 +66,10 @@
           <!-- 侧边数据 -->
           <ImageAside ref="RefChilde"></ImageAside>
 
-          <ImageMain ref="MainChilde"></ImageMain>
+          <ImageMain ref="MainChilde" @changeImage="changeImage"></ImageMain>
         </el-container>
       </div>
-    </el-card>
+     
   </div>
 </template>
 
@@ -184,11 +182,23 @@ function handleSuccess(res) {
   }
 }
 
+const emit = defineEmits(["changeImage"]);
+const changeImage=(e)=>{
+  console.log(e) 
+  emit("changeImage",e)
+
+}
 </script>
 
 <style lang="scss" scoped>
 :deep(.el-card__body),
 :deep(.el-main) {
   padding: 0 !important;
+}
+.card-header{
+  padding-left:20px ;
+  height: 60px;
+  line-height: 60px;
+  border-bottom: 1px solid #ccc;
 }
 </style>

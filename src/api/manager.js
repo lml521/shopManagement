@@ -34,3 +34,11 @@ export const getDelete =(id)=>{
         method:"POST"
     })
 }
+// 添加
+export const getAdd=(data)=>{
+    return request({
+        url:"/admin/manager",
+        method:"POST",
+        data,
+    })
+}

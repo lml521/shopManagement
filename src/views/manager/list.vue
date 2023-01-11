@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 管理员管理 -->
-    <el-card class="box-card">
+  <el-card>
       <!-- 头部 搜索数据 -->
       <i-header-form
         :formList="RequestList"
@@ -12,6 +12,7 @@
       >
       </i-header-form>
 
+      <!-- 头部 添加 按钮 -->
       <i-header-add
         :buttonList="headerButton"
         @handleAdd="handleAdd"
@@ -30,11 +31,14 @@
         @changeStatus="changeStatus"
       >
       </iTable>
+
+     <!-- 抽屉 模态框  -->
       <i-drawer
         :title="data.title"
         v-model="data.drawerShow"
         @handleClose="handleClose"
       >
+       <!-- 模态框 内容 -->
         <template #content>
           <i-form
             :formList="data.formList"
@@ -43,10 +47,11 @@
             v-model="fromItem"
             ref="ruleFormRef"
             formSize="default"
+            @uploadImg="uploadImg"
           >
           </i-form>
         </template>
-
+        <!-- 模态框 按钮 -->
         <template #buttons>
           <el-button type="primary" @click="submitForm" :loading="loading"
             >提交</el-button
@@ -62,7 +67,23 @@
         :pageSize="data.pageSize"
         @handleCurrentChange="handleCurrentChange"
       ></i-pagination>
-    </el-card>
+
+ 
+      <i-dialog v-model="dialogList.dialogVisible" 
+      :title="dialogList.title"
+      :width="dialogList.width"
+      :buttons="dialogList.buttons"
+      @handleCloseImg="handleCloseImg"
+      @handleSubmit="handleSubmit"
+      >
+    
+      <template #content>
+        <imageList @changeImage="changeImage"></imageList>
+       
+      </template>
+    
+    </i-dialog>
+  </el-card>
   </div>
 </template>
 
@@ -72,7 +93,8 @@ import iHeaderAdd from "@/components/i-header-add/i-header-add.vue";
 import iTable from "@/components/i-table/i-table.vue"; //表格
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗
 import iForm from "@/components/i-form/i-form.vue"; //表单
-
+import iDialog from "@/components/i-dialog/i-dialog.vue"
+import imageList from "@/views/image/list.vue"
 import iPagination from "@/components/i-pagination/i-pagination.vue"; //分页
 import { getTableList, getSearch, getChangeStatus,getDelete } from "@/api/manager.js";
 import { reactive, ref } from "vue";
@@ -153,6 +175,7 @@ const data = reactive({
     {
       label: "头像",
       type:"uploadImg",
+      event:"uploadImg",
       prop: "avatar",
       placeholder: "请填写密码",
     },
@@ -183,6 +206,21 @@ const data = reactive({
   //   },
   // },
 });
+
+const dialogList =reactive({
+  dialogVisible:false,
+  title:"选择图片",
+  width:"80%",
+  buttons:[{
+    name:"取消",
+    event:"handleCloseImg",
+  },{
+    type:"primary",
+    event:"handleSubmit",
+     name:"确定",
+
+  }]
+})
 const rolesList =ref([])
 const id = ref(0);
 // 头部表单 按钮  展示数据
@@ -196,8 +234,7 @@ const RequestList = ref([
 ]);
 // 头部 表单 v-model 绑定的数据
 const RequestItem = ref({
-  title: "",
-  
+  title: "", 
 });
 
 const headerButton = ref([
@@ -208,8 +245,7 @@ const headerButton = ref([
     size: "small",
     align: "left",
   },
-  {
-    name: "新增",
+  { 
     icon: "Refresh",
     event: "init",
     class: "ml-auto",
@@ -229,7 +265,11 @@ const fromItem = reactive({
   role_id:"",
   status:1,
 });
+const url=ref()
+const changeImage=(e)=>{
+  url.value=e
 
+}
 const loading = ref(false);
 
 // 获取 表格数据
@@ -285,7 +325,20 @@ const changeStatus = async (id, status) => {
     toast("修改状态成功", "success");
   }
 };
-
+// 打开图片模态框
+const uploadImg=()=>{
+  console.log(12345678)
+  dialogList.dialogVisible=true
+}
+// 关闭 图片模态框
+const handleCloseImg =()=>{
+  dialogList.dialogVisible=false
+}
+const handleSubmit=()=>{
+  fromItem.avatar=url.value
+  console.log(123,fromItem)
+  dialogList.dialogVisible=false
+}
 // 添加表格数据
 const handleAdd = () => {
   data.drawerShow = true;
@@ -307,6 +360,8 @@ const handleDelete = async (e) => {
     init();
   }
 };
+
+
 // 模态框 取消 按钮
 const handleClose = () => {
   data.drawerShow = false;

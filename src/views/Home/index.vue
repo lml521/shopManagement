@@ -14,9 +14,9 @@
         <div>
             <TabList></TabList>
         </div>
-        
-      
+  
          <router-view></router-view>
+ 
         </el-main>
       </el-container>
     </el-container>
@@ -48,7 +48,6 @@ import TabList from "@/layout/AppMain/TabList.vue"//首页侧边栏
     
   }
 }
-
 .el-aside {
     transition: all 0.2s;
 }

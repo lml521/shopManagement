@@ -34,9 +34,10 @@
     
     <el-form-item v-else-if="item.type=='uploadImg'" :prop="item.prop"  :label="item.label"   >
      
-      <el-image  v-if="modelValue[item.prop]" fit="cover" :src="modelValue[item.prop] " class="w-[100px] h-[100px]  mb-2 mr-2">
+      <el-image  v-if="modelValue[item.prop]" fit="cover" :src="modelValue[item.prop] " 
+      class="w-[100px] h-[100px]  mb-2 mr-2">
       </el-image>
-      <div class="image-btn  ">
+      <div class="image-btn" @click="$emit(item.event)">
         <el-icon class="el-icon" text-gray-500  style="font-size:25px">
           <Plus />
         </el-icon>

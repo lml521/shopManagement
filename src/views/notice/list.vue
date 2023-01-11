@@ -1,7 +1,7 @@
 <template>
   <div>
        <!-- 公告管理 -->
-    <el-card class="box-card">
+       <el-card>
       <!-- 头部 按钮  -->
       <div class="flex items-center mb-4">
 
@@ -53,7 +53,7 @@
       :total="data.total" 
       :pageSize="data.pageSize" 
       @handleCurrentChange="handleCurrentChange"></i-pagination>
-  </el-card>
+    </el-card>
   </div>
 </template>
 

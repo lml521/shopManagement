@@ -137,7 +137,7 @@ const asyncRoutes = [
     },
   },{
     path: "/notice/list",
-    name: "/notice/list",
+    name: "noticelist",
     component: ()=>import("@/views/notice/list.vue"),
     meta: {
       title: "公告列表",

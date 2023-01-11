@@ -26,6 +26,17 @@
 
               <div style="padding: 10px">
                 <div class="bottom text-green-400 flex justify-center">
+
+                  <el-checkbox-group :model-value="checkbox">
+               <el-checkbox :true-label="item.url" false-label="" 
+               :label="item.url" size="large" 
+               v-if="$route.path !== '/image/list'" 
+               @change="changeImg(item.url)">
+               <!-- {{ item }} -->
+              <br/>
+              </el-checkbox>
+            </el-checkbox-group>
+
                   <el-button text type="primary" size="small"
                   @click="handleRename(item.name,item.id)">重命名</el-button>
 
@@ -64,9 +75,10 @@
   </div>
 </template>
 <script setup>
-import { getImageList , deleteImage ,getHandleRename} from "@/api/image.js";
-import { ElMessageBox } from 'element-plus'
-import { toast } from "@/common/util"
+import { getImageList, deleteImage, getHandleRename } from "@/api/image.js";
+import { ElMessageBox } from "element-plus";
+import { toast } from "@/common/util";
+
 import {
   ref,
   reactive,
@@ -80,6 +92,8 @@ const data = reactive({
   page: 1, //当前页
   id: 0, //侧边数据 id
 });
+const emit = defineEmits(["CurrentChange", "uplodOk", "changebox","changeImage"]);
+const checkbox = ref([]);
 // loading 加载
 const loading = ref(false);
 const { appContext } = getCurrentInstance();
@@ -120,13 +134,13 @@ const currentChange = (e) => {
 // 删除 确认按钮
 const confirmEvent = async (item) => {
   try {
-    let res = await deleteImage({ids:[item.id] })
+    let res = await deleteImage({ ids: [item.id] });
     console.log(res);
-    if(res.msg=="ok"){
+    if (res.msg == "ok") {
       init();
-      toast("删除成功","success")
-    }else{
-      toast(res.msg,"error")
+      toast("删除成功", "success");
+    } else {
+      toast(res.msg, "error");
     }
   } catch (error) {
     console.log(error);
@@ -138,30 +152,43 @@ const cancelEvent = () => {
   console.log("取消删除该图片");
 };
 // 重命名
-const handleRename=(name,id)=>{
-  ElMessageBox.prompt(  '重命名', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
-    autofocus:true,
-    dangerouslyUseHTMLString:true,
-    inputValue:name
-  }).then(async ({ value }) => {
-      console.log(value,id)
-     let res =await getHandleRename(value,id)
-     console.log(res)
-     if(res.msg=="ok"){
-      init()
-      toast("重命名成功","success")
-      
-     }else{
-      toast(res.msg,"error")
-    }
+const handleRename = (name, id) => {
+  ElMessageBox.prompt("重命名", {
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    autofocus: true,
+    dangerouslyUseHTMLString: true,
+    inputValue: name,
+  })
+    .then(async ({ value }) => {
+      console.log(value, id);
+      let res = await getHandleRename(value, id);
+      console.log(res);
+      if (res.msg == "ok") {
+        init();
+        toast("重命名成功", "success");
+      } else {
+        toast(res.msg, "error");
+      }
     })
     .catch((error) => {
-      console.log(error)
-    })
-}
-defineExpose({init})
+      console.log(error);
+    });
+};
+const changeImg = (item) => {
+  let index = checkbox.value.findIndex((ele) => ele == item);
+  if (index > -1) {
+    checkbox.value.splice(0, 1); 
+  } else if (checkbox.value.length >= 1) {
+    toast("最多只能选中1张", "error"); 
+  } else {
+    console.log(124) 
+    emit("changeImage",item)
+    checkbox.value.push(item);
+  }
+};
+
+defineExpose({ init });
 </script>
 
 <style lang="scss" scoped>
@@ -219,5 +246,8 @@ defineExpose({init})
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+:deep(.el-checkbox.el-checkbox--large) {
+  height: 24px !important;
 }
 </style>
