@@ -139,9 +139,6 @@
           </el-option>
           </el-select> 
         </el-form-item>
-
-
-
         <!-- 开关  -->
         <el-form-item
           v-else-if="item.type == 'switch'"

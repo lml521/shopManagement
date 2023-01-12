@@ -16,6 +16,7 @@ export const imageNameList = (page) => {
         method: "GET",
     })
 }
+
 // 修改 侧边名称
 export const getName = (data) => {
     return request({
@@ -24,6 +25,7 @@ export const getName = (data) => {
         data,
     })
 }
+
 //  删除 侧边数据
 export const deleteName = (id) => {
     return request({
@@ -31,6 +33,7 @@ export const deleteName = (id) => {
         method: "POST",
     })
 }
+
 // 图库管理 右侧数据
 export const  getImageList =(id,page)=>{
     return request({
@@ -49,6 +52,7 @@ export const getHandleRename = (name,id) => {
         }
     })
 }
+
 // 删除 图片
 export const deleteImage = (data) => {
     return request({

@@ -15,6 +15,7 @@ export const getinfo=()=>{
         method: "POST",
     })
 }
+
 // 退出登录
 export const logout=()=>{
     return request({

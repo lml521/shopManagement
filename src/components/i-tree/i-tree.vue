@@ -15,9 +15,7 @@
             </el-icon>
                 <span>{{ node.label }}</span>
             </div>
-            <slot  :data="data">
-
-            </slot>
+            <slot  :data="data"> </slot>
         </span>
       </template>
         </el-tree>

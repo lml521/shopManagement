@@ -34,6 +34,7 @@ export const getDelete =(id)=>{
         method:"POST"
     })
 }
+
 // 添加
 export const getAdd=(data)=>{
     return request({
@@ -42,7 +43,8 @@ export const getAdd=(data)=>{
         data,
     })
 }
-// 修改 
+
+// 修改
 export const getEdit=(id,data)=>{
     return request({
         url:`/admin/manager/${id}`,

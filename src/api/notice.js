@@ -7,6 +7,7 @@ export const getTableList =(page)=>{
         method:"GET"
     })
 }
+
 // 添加
 export const getAdd=(data)=>{
     return request({
@@ -15,6 +16,7 @@ export const getAdd=(data)=>{
         data,
     })
 }
+
 // 删除
 export const getDelete =(id)=>{
     return request({
@@ -22,7 +24,8 @@ export const getDelete =(id)=>{
         method:"POST"
     })
 }
-// 修改 
+
+// 修改
 export const getEdit=(id,data)=>{
     return request({
         url:`/admin/notice/${id}`,
