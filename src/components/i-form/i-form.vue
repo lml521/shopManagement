@@ -1,68 +1,178 @@
 <template>
-    <div>
-        <!-- 封装表单 -->
+  <div>
+    <!-- 封装表单 -->
     <el-form
-    ref="ruleFormRef"
-    :model="modelValue"
-    :rules="rules"
-    label-width="auto"
-    status-icon
-    :size="formSize"
-  >
- 
-  <template v-for="(item,index) in formList" >
+      ref="ruleFormRef"
+      :model="modelValue"
+      :rules="rules"
+      label-width="auto"
+      status-icon
+      :size="formSize"
+    >
+      <template v-for="(item, index) in formList">
 
-<el-form-item v-if="!item.type  " :label="item.label" :prop="item.prop" :key="index"
-     v-bind="item" >
-      <el-input :style="{width:item.width}" v-model="modelValue[item.prop]"
-       :placeholder="item.placeholder"
-      />
-    </el-form-item> 
-    <!-- 计数器 -->
-    <el-form-item v-else-if="item.type=='inputNumber'"  
-    :label="item.label"  >
-    <el-input-number v-model="modelValue[item.prop]" :min="1" :max="1000"
-     @change="handleChange" />
-      </el-form-item>
+        <!-- 一般数据 -->
+        <el-form-item
+          v-if="!item.type"
+          :label="item.label"
+          :prop="item.prop"
+          :key="index"
+          v-bind="item"
+        >
+          <el-input
+            :style="{ width: item.width }"
+            v-model="modelValue[item.prop]"
+            :placeholder="item.placeholder"
+          />
+        </el-form-item>
 
-       <!-- 文本域 -->
-    <el-form-item v-else-if="item.type=='textarea'" :prop="item.prop"  :label="item.label"   >
-      <el-input v-model="modelValue[item.prop]" :rows="3" type="textarea" :placeholder="item.placeholder" />
-    </el-form-item>
+        <!-- 计数器 -->
+        <el-form-item
+          v-else-if="item.type == 'inputNumber'"
+          :label="item.label"
+        >
+          <el-input-number
+            v-model="modelValue[item.prop]"
+            :min="1"
+            :max="1000"
+            @change="handleChange"
+          />
+        </el-form-item>
 
-    <!-- 上传图片  -->
-    
-    <el-form-item v-else-if="item.type=='uploadImg'" :prop="item.prop"  :label="item.label"   >
-     
-      <el-image  v-if="modelValue[item.prop]" fit="cover" :src="modelValue[item.prop] " 
-      class="w-[100px] h-[100px]  mb-2 mr-2">
-      </el-image>
-      <div class="image-btn" @click="$emit(item.event)">
-        <el-icon class="el-icon" text-gray-500  style="font-size:25px">
-          <Plus />
-        </el-icon>
-      </div>
-    </el-form-item>
+        <!-- 带框 的 单选  -->
+        <el-form-item
+          v-else-if="item.type == 'borderRadio'"
+          :label="item.label"
+        >
+          <el-radio-group v-model="modelValue[item.prop]" @change="changeRadio">
+            <el-radio :label="0" border>菜单</el-radio>
+            <el-radio :label="1" border>规则</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-    <!-- 下拉菜单  -->
-    <el-form-item v-else-if="item.type=='select'" :prop="item.prop"  :label="item.label"   >
-        <el-select v-model="modelValue[item.prop]" 
-        :placeholder="item.placeholder">
-        <el-option :label="ele.name" :value="ele.id"  v-for="ele in rolesList"/> 
-      </el-select>  
-   </el-form-item>
+        <!-- 文本域 -->
+        <el-form-item
+          v-else-if="item.type == 'textarea'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          <el-input
+            v-model="modelValue[item.prop]"
+            :rows="3"
+            type="textarea"
+            :placeholder="item.placeholder"
+          />
+        </el-form-item>
+
+        <!-- 上传图片  -->
+        <el-form-item
+          v-else-if="item.type == 'uploadImg'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          <el-image
+            v-if="modelValue[item.prop]"
+            fit="cover"
+            :src="modelValue[item.prop]"
+            class="w-[100px] h-[100px] mb-2 mr-2"
+          >
+          </el-image>
+          <div class="image-btn" @click="$emit(item.event)">
+            <el-icon class="el-icon" text-gray-500 style="font-size: 25px">
+              <Plus />
+            </el-icon>
+          </div>
+        </el-form-item>
+
+        <!-- 级联选择器  -->
+        <el-form-item
+          v-else-if="item.type == 'cascader'"
+          :prop="item.prop"
+          :label="item.label"
+        > 
+        <el-cascader :options="options"
+        :placeholder="item.placeholder"
+         :props="defaultParams"
+         v-model="modelValue[item.prop]"
+         @change="changeCascader"
+         clearable />
+        </el-form-item>
+
+        <!-- 下拉菜单  -->
+        <el-form-item
+          v-else-if="item.type == 'select'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          <el-select
+            v-model="modelValue[item.prop]"
+            :placeholder="item.placeholder"
+          >
+            <el-option
+              :label="ele.name"
+              :value="ele.id"
+              v-for="ele in rolesList"
+            >  
+          </el-option>
+          </el-select>
+        </el-form-item>
 
 
-    <!-- 开关  -->
-    <el-form-item v-else-if="item.type=='switch'" :prop="item.prop"  :label="item.label"   >
-      <el-switch  v-model="modelValue[item.prop]" :active-value="1" :inactive-value="0"/>
-</el-form-item>
+        <!-- 图标下拉菜单 数据  -->
+        <el-form-item
+          v-else-if="item.type == 'iconSelect'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+       
+         <el-icon :size="16" class="mr-3"> 
+                <component :is="modelValue[item.prop]"></component>
+              </el-icon>
+        
+      
+          <el-select
+            v-model="modelValue[item.prop]"
+            :placeholder="item.placeholder"
+            
+          >
+            <el-option
+              :label="ele.name"
+              :value="ele.id"  v-for="ele in rolesList"
+            >
+            <div class="flex justify-between align-center">
+              <el-icon> 
+                <component :is="ele.name"></component>
+              </el-icon>
+              <span>
+                {{ele.name}}
+              </span>
+            </div>
+
+          </el-option>
+
+
+          </el-select> 
+        </el-form-item>
+
+
+
+        <!-- 开关  -->
+        <el-form-item
+          v-else-if="item.type == 'switch'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          <el-switch
+            v-model="modelValue[item.prop]"
+            :active-value="1"
+            :inactive-value="0"
+          />
+        </el-form-item>
+      </template>
+    </el-form>
+  </div>
 </template>
- 
-  </el-form>
-    </div>
-  </template>
-  <script setup>
+<script setup>
 import { reactive, ref } from "vue";
 const props = defineProps({
   // 表单展示数据
@@ -85,17 +195,36 @@ const props = defineProps({
     type: String,
     default: "small",
   },
-  rolesList:{
+  // 下拉菜单 展示数据
+  rolesList: {
     type: Array,
     default: [],
+  },
+  // 级联选择器 数据
+  options: {
+    type: Array,
+    default: [],
+  },
+  defaultParams: {
+    type: Object,
+    default: {},
   },
   // 是否行内表格
   inline: {
     type: Boolean,
     default: false,
   },
-
 });
+const emit = defineEmits(["changeRadio","changeCascader"]);
+const changeRadio = (e) => {
+  emit("changeRadio", e);
+};
+
+const changeCascader=(e)=>{
+  console.log(12356,e)
+  emit("changeCascader", e);
+}
+
 const ruleFormRef = ref();
 /**
  * 这个方法是vue3 3.2+ 版本新增的，
@@ -106,12 +235,12 @@ defineExpose({
   ruleFormRef,
 });
 </script>
-  
-  <style lang='scss' scoped>
-  .image-btn {
-     width: 100px;
-    height: 100px;
-    border: 1px solid #e5e7eb;
+
+<style lang="scss" scoped>
+.image-btn {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #e5e7eb;
   border-radius: 6px;
   display: flex;
   justify-content: center;
@@ -119,7 +248,7 @@ defineExpose({
   margin: 0 10px 10px 0;
 
   &:hover {
-    background-color: #f3f4f6; 
+    background-color: #f3f4f6;
+  }
 }
-  } 
 </style>

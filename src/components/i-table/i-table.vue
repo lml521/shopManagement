@@ -76,7 +76,6 @@
                 @confirm="$emit('handleDelete', scope.row)"
  
               >
- {{ ele.title }}
               <!-- @click.native.prevent="$emit(ele.event, scope.row)" -->
                 <template #reference>
                   <el-button

@@ -1,11 +1,11 @@
 <template>
     <div>
       <!-- 封装 Tree 树形控件 -->
-      <el-tree :data="tableData" :props="defaultProps" 
+      <el-tree :data="tableData" :props="defaultProps"
       node-key="id"
       :accordion="true"
       :default-expanded-keys="defaultShowNodes"
-      @node-click="handleNodeClick" > 
+      @node-click="handleNodeClick" >
        <template #default="{ node, data }">
         <span class="custom-tree-node">
             <div>
@@ -16,19 +16,13 @@
             </el-icon>
                 <span>{{ node.label }}</span>
             </div>
-            
-          <slot name="buttons">
-            
-          </slot>
+          <slot name="buttons"></slot>
         </span>
-      </template> 
-
+      </template>
         </el-tree>
-
     </div>
   </template>
   <script setup>
-import { reactive, ref } from "vue";
 const props = defineProps({
   // 展示数据
   tableData: {
@@ -47,7 +41,6 @@ const props = defineProps({
   },
 });
 </script>
-  
   <style lang="scss" scoped>
 .custom-tree-node {
   flex: 1;
@@ -61,4 +54,3 @@ const props = defineProps({
   height: 32px !important;
 }
 </style>
-  

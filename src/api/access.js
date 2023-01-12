@@ -37,7 +37,7 @@ export const getDelete =(id)=>{
 // 添加
 export const getAdd=(data)=>{
     return request({
-        url:"/admin/manager",
+        url:"admin/rule",
         method:"POST",
         data,
     })

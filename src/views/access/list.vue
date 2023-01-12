@@ -15,15 +15,16 @@
       <!-- 插槽 展示 按钮数据 -->
          <template #buttons>
            <div>
+                 <el-switch
+                  v-model="value"
+                  size="large"
+                  class="mr-4"/>
           <el-button type="primary" @click.stop="add" link size="small">修改</el-button>
           <el-button type="primary" @click.stop="add" link size="small">增加</el-button>
           <el-button type="primary" @click.stop="add" link size="small">删除</el-button>
         </div>
         </template>
      </i-tree>
-
-     
-
 
       <!-- 抽屉 模态框  -->
       <i-drawer
@@ -36,12 +37,15 @@
         <template #content>
           <i-form
             :formList="data.formList"
+            :options="options"
+            :defaultParams="defaultParams"
             :rules="data.rules"
             :rolesList="rolesList"
             v-model="fromItem"
             ref="ruleFormRef"
             formSize="default"
-            @uploadImg="uploadImg"
+            @changeRadio="changeRadio"
+            @changeCascader="changeCascader"
           >
           </i-form>
         </template>
@@ -53,7 +57,6 @@
           <el-button @click="handleClose">取消</el-button>
         </template>
       </i-drawer>
-
     </el-card>
   </div>
 </template>
@@ -73,7 +76,8 @@ import {
   getEdit,
 } from "@/api/access.js"; //api
 import { reactive, ref } from "vue";
-
+import { useStore } from "vuex";
+const store = useStore();
 const defaultProps = {
   children: "child",
   label: "name",
@@ -106,49 +110,85 @@ const data = reactive({
   title: "新增", //模态框 标题
   drawerShow: false, //抽屉模态框 显示隐藏
   defaultShowNodes: [],
+
   // 表单展示数据
   formList: [
     {
-      label: "用户名",
-      prop: "username",
-      placeholder: "请填写用户名",
+      label: "上级菜单",
+      type:"cascader",
+      prop: "rule_id",
+      placeholder: "请选择上级菜单",
     },
     {
-      label: "密码",
-      prop: "password",
-      placeholder: "请填写密码",
+      label: "菜单/规则",
+      prop: "menu",
+      type:"borderRadio",
+      event:"changeRadio"
     },
     {
-      label: "头像",
-      type: "uploadImg",
-      event: "uploadImg",
-      prop: "avatar",
-      placeholder: "请填写密码",
+      label: "名称",
+      prop: "name",
+      width:"25%", 
+      placeholder: "请填写名称",
     },
-    {
-      label: "所属角色",
+    // {
+    //   label: "菜单图标",
+    //   type: "iconSelect",
+    //   prop: "icon",
+    //   placeholder: "请选择图标",
+    // },
+     {
+      label: "后端规则",
+      prop: "condition",
+      placeholder: "请选择图标",
+    },{
+      label: "请求方式",
       type: "select",
-      prop: "role_id",
-      placeholder: "请填写密码",
+      prop: "method", 
     },
     {
-      label: "状态",
-      type: "switch",
-      prop: "status",
+      label: "排序",
+      type: "inputNumber",
+      prop: "order",
     },
   ],
 });
+const options=ref([])
+const   defaultParams= {
+        label: "name",
+        value: "id",
+        children: "child",
+        checkStrictly: true,
+        emitPath:false,
+}
+
 
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
-  username: "",
-  password: "",
-  avatar: "",
-  role_id: "",
-  status: 1,
+  rule_id: "",
+  menu:1,
+  icon:"",
+  name:"",
+  order: 50, 
+  condition:"",
+  frontpath:"",
+  method:"GET",
+  status:1,
 });
 
-const rolesList = ref([]); // 表单中 下拉菜单 展示 数据
+const rolesList = ref([ {
+    name:"GET",
+    id:"GET",
+  },{
+    name:"POST",
+    id:"POST",
+  },{
+    name:"PUT",
+    id:"PUT",
+  },{
+    name:"DELETE",
+    id:"DELETE",
+  }]); // 表单中 下拉菜单 展示 数据
 const id = ref(0); //id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
 const loading = ref(false); //loading 加载 开关
@@ -159,7 +199,8 @@ const init = () => {
   try {
     getTableList(data.current).then((res) => {
       if (res.msg == "ok") {
-        rolesList.value = res.data.roles;
+        options.value = res.data.rules;
+        console.log( res.data.rules)
         data.tableData = res.data.list;
         data.total = res.data.totalCount;
         getDefaultShowNodes(2, res.data.list);
@@ -183,6 +224,81 @@ const getDefaultShowNodes = (num, children) => {
     }
   }
 };
+
+const changeRadio=(e)=>{
+  fromItem.menu=e
+  if(e==0){
+
+    if(fromItem.rule_id){
+    data.formList.splice(4,0,{
+      label: "前端路由", 
+      prop: "frontpath",
+      placeholder: "请选择路由",
+    },)
+
+  }
+    rolesList.value=store.state.iconList
+    data.formList.splice(3,2,{
+      label: "菜单图标",
+      type: "iconSelect",
+      prop: "icon",
+      placeholder: "请选择图标",
+    },)
+  }else{
+    rolesList.value=[ {
+    name:"GET",
+    id:"GET",
+  },{
+    name:"POST",
+    id:"POST",
+  },{
+    name:"PUT",
+    id:"PUT",
+  },{
+    name:"DELETE",
+    id:"DELETE",
+  }]
+
+  if(fromItem.rule_id){
+    data.formList.splice(3,2, {
+      label: "后端规则",
+      prop: "condition",
+      placeholder: "请选择图标",
+    },{
+      label: "请求方式",
+      type: "select",
+      prop: "method", 
+    },)
+    return 
+  }
+
+
+    data.formList.splice(3,1, {
+      label: "后端规则",
+      prop: "condition",
+      placeholder: "请选择图标",
+    },{
+      label: "请求方式",
+      type: "select",
+      prop: "method", 
+    },)
+  }
+}
+
+const changeCascader=(e)=>{
+  console.log(e)
+  fromItem.rule_id=e
+  if(fromItem.rule_id&&fromItem.menu==0){
+    data.formList.splice(4,0,{
+      label: "前端路由", 
+      prop: "frontpath",
+      placeholder: "请选择路由",
+    },)
+
+  }
+
+}
+
 
 // 添加表格数据
 const handleAdd = () => {

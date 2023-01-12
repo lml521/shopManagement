@@ -10,7 +10,6 @@ import 'element-plus/dist/index.css'
 import 'virtual:windi.css'
 
 
-
 // 引入router
 import {router} from './router/index'
 import 'animate.css';
@@ -27,9 +26,19 @@ const app = createApp(App)
 app.config.globalProperties.$mitt = mitt();
 
 // 引入 图标 
+const iconList =[]
+
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  console.log(key, component)
+
+  let item ={name:key,id:key}
+  iconList.push(item)
   app.component(key, component)
 }
+
+console.log(iconList)
+store.commit("setIconList",iconList)
+
 
 app.use(store).use(router).use(ElementPlus).mount('#app')

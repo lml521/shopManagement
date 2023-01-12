@@ -11,6 +11,7 @@ const store = createStore({
       ruleNames: [], //角色权限
       routerList: [],//侧边栏数据
       isCollapse:false,//侧边栏展开收起
+      iconList:[]
       // false 是展开的  true 是收起的
     };
   },
@@ -54,6 +55,10 @@ const store = createStore({
       state.info = {};
       localStorage.clear();
     },
+
+    setIconList(state,list){
+      state.iconList=list
+    }
   },
 
   actions: {
