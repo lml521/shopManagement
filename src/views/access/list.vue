@@ -13,15 +13,39 @@
       <i-tree :tableData="data.tableData" :defaultProps="defaultProps"
       :defaultShowNodes="data.defaultShowNodes">
       <!-- 插槽 展示 按钮数据 -->
-         <template #buttons>
+         <template #default="{data}"  >
            <div>
                  <el-switch
-                  v-model="value"
+                 :active-value="1"
+                 :inactive-value	="0"
+                 @change="changeStatus(data.id,data.status)"
+                  v-model="data.status"
                   size="large"
                   class="mr-4"/>
-          <el-button type="primary" @click.stop="add" link size="small">修改</el-button>
-          <el-button type="primary" @click.stop="add" link size="small">增加</el-button>
-          <el-button type="primary" @click.stop="add" link size="small">删除</el-button>
+
+
+          <el-button type="primary" @click.stop="handleEdit(data)" 
+           link size="small">修改</el-button>
+          <el-button type="primary" @click.stop="handleAdd" link size="small">增加</el-button>
+        
+
+
+          <el-popconfirm
+              
+                confirm-button-text="确认"
+                cancel-button-text="取消"
+                title="是否要删除该记录?"
+                @confirm="handleDelete(data)">
+                
+                <template #reference>
+                  <el-button type="primary"  link size="small">删除</el-button>
+                </template>
+              </el-popconfirm>
+              
+        
+          
+
+
         </div>
         </template>
      </i-tree>
@@ -69,7 +93,6 @@ import iTree from "@/components/i-tree/i-tree.vue";
 import { toast } from "@/common/util"; //文字 提示信息
 import {
   getTableList,
-  getSearch,
   getChangeStatus,
   getDelete,
   getAdd,
@@ -101,9 +124,7 @@ const headerButton = ref([
     placement: "top",
   },
 ]);
-const add =()=>{
-  
-}
+
 
 const data = reactive({
   tableData: [], //表格展示数据
@@ -115,37 +136,67 @@ const data = reactive({
   formList: [
     {
       label: "上级菜单",
-      type:"cascader",
+      type: "cascader",
       prop: "rule_id",
+      event:"changeCascader",
       placeholder: "请选择上级菜单",
     },
     {
       label: "菜单/规则",
       prop: "menu",
-      type:"borderRadio",
-      event:"changeRadio"
+      type: "borderRadio",
+      event: "changeRadio",
+      button: [
+        {
+          value: "菜单",
+          label: 1,
+        },
+        {
+          value: "规则",
+          label: 0,
+        },
+      ],
     },
     {
       label: "名称",
       prop: "name",
-      width:"25%", 
+      width: "25%",
       placeholder: "请填写名称",
     },
-    // {
-    //   label: "菜单图标",
-    //   type: "iconSelect",
-    //   prop: "icon",
-    //   placeholder: "请选择图标",
-    // },
-     {
+
+    // 规则
+    {
+      // 3
       label: "后端规则",
       prop: "condition",
+      hidden: false, //是否隐藏
       placeholder: "请选择图标",
-    },{
+    },
+    {
+      // 4
       label: "请求方式",
       type: "select",
-      prop: "method", 
+      hidden: false, //是否隐藏
+      prop: "method",
     },
+
+    // 菜单
+    {
+      // 5
+      label: "菜单图标",
+      type: "iconSelect",
+      hidden: true, //是否隐藏
+      prop: "icon",
+      placeholder: "请选择图标",
+    },
+    {
+      // 6
+      label: "前端路由",
+      prop: "frontpath",
+      hidden: true, //是否隐藏
+      placeholder: "请选择路由",
+    },
+
     {
       label: "排序",
       type: "inputNumber",
@@ -153,42 +204,46 @@ const data = reactive({
     },
   ],
 });
-const options=ref([])
-const   defaultParams= {
-        label: "name",
-        value: "id",
-        children: "child",
-        checkStrictly: true,
-        emitPath:false,
-}
-
+const options = ref([]);
+const defaultParams = {
+  label: "name",
+  value: "id",
+  children: "child",
+  checkStrictly: true,
+  emitPath: false,
+};
 
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
   rule_id: "",
-  menu:1,
-  icon:"",
-  name:"",
-  order: 50, 
-  condition:"",
-  frontpath:"",
-  method:"GET",
-  status:1,
+  menu: 0,
+  icon: "",
+  name: "",
+  order: 50,
+  condition: "",
+  frontpath: "",
+  method: "GET",
+  status: 1,
 });
 
-const rolesList = ref([ {
-    name:"GET",
-    id:"GET",
-  },{
-    name:"POST",
-    id:"POST",
-  },{
-    name:"PUT",
-    id:"PUT",
-  },{
-    name:"DELETE",
-    id:"DELETE",
-  }]); // 表单中 下拉菜单 展示 数据
+const rolesList = ref([
+  {
+    name: "GET",
+    id: "GET",
+  },
+  {
+    name: "POST",
+    id: "POST",
+  },
+  {
+    name: "PUT",
+    id: "PUT",
+  },
+  {
+    name: "DELETE",
+    id: "DELETE",
+  },
+]); // 表单中 下拉菜单 展示 数据
 const id = ref(0); //id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
 const loading = ref(false); //loading 加载 开关
@@ -200,7 +255,7 @@ const init = () => {
     getTableList(data.current).then((res) => {
       if (res.msg == "ok") {
         options.value = res.data.rules;
-        console.log( res.data.rules)
+        console.log(res.data.rules);
         data.tableData = res.data.list;
         data.total = res.data.totalCount;
         getDefaultShowNodes(2, res.data.list);
@@ -225,80 +280,27 @@ const getDefaultShowNodes = (num, children) => {
   }
 };
 
-const changeRadio=(e)=>{
-  fromItem.menu=e
-  if(e==0){
-
-    if(fromItem.rule_id){
-    data.formList.splice(4,0,{
-      label: "前端路由", 
-      prop: "frontpath",
-      placeholder: "请选择路由",
-    },)
-
+const changeRadio = (e) => {
+  fromItem.menu = e;
+  // 菜单
+  if (e == 1) {
+    rolesList.value = store.state.iconList;
+    data.formList[6].hidden = fromItem.rule_id ? false : true;
+    data.formList[3].hidden = true;
+    data.formList[4].hidden = true;
+    data.formList[5].hidden = false;
+  } else {
+    data.formList[3].hidden = false;
+    data.formList[4].hidden = false;
+    data.formList[5].hidden = true;
+    data.formList[6].hidden=true
   }
-    rolesList.value=store.state.iconList
-    data.formList.splice(3,2,{
-      label: "菜单图标",
-      type: "iconSelect",
-      prop: "icon",
-      placeholder: "请选择图标",
-    },)
-  }else{
-    rolesList.value=[ {
-    name:"GET",
-    id:"GET",
-  },{
-    name:"POST",
-    id:"POST",
-  },{
-    name:"PUT",
-    id:"PUT",
-  },{
-    name:"DELETE",
-    id:"DELETE",
-  }]
+};
 
-  if(fromItem.rule_id){
-    data.formList.splice(3,2, {
-      label: "后端规则",
-      prop: "condition",
-      placeholder: "请选择图标",
-    },{
-      label: "请求方式",
-      type: "select",
-      prop: "method", 
-    },)
-    return 
-  }
-
-
-    data.formList.splice(3,1, {
-      label: "后端规则",
-      prop: "condition",
-      placeholder: "请选择图标",
-    },{
-      label: "请求方式",
-      type: "select",
-      prop: "method", 
-    },)
-  }
-}
-
-const changeCascader=(e)=>{
-  console.log(e)
-  fromItem.rule_id=e
-  if(fromItem.rule_id&&fromItem.menu==0){
-    data.formList.splice(4,0,{
-      label: "前端路由", 
-      prop: "frontpath",
-      placeholder: "请选择路由",
-    },)
-
-  }
-
-}
-
+const changeCascader = (e) => {
+  fromItem.rule_id = e;
+  data.formList[6].hidden =fromItem.menu? false : true;
+};
 
 // 添加表格数据
 const handleAdd = () => {
@@ -307,21 +309,41 @@ const handleAdd = () => {
 };
 // 编辑
 const handleEdit = (e) => {
-  data.drawerShow = true;
+  console.log(e,e.rule_id)
+
+  fromItem.rule_id=e.rule_id
+  fromItem.menu=e.menu
+  fromItem.icon=e.icon
+  fromItem.name=e.name
+  fromItem.order=e.order
+  fromItem.condition=e.condition
+  fromItem.frontpath=e.frontpath
+  fromItem.method=e.method
+  fromItem.status=e.status
   data.title = "修改";
-  (fromItem.username = e.username),
-    (fromItem.password = e.password),
-    (fromItem.avatar = e.avatar),
-    (fromItem.role_id = e.role_id),
-    (fromItem.status = e.status),
-    (id.value = e.id);
+  data.drawerShow = true;
+  id.value = e.id
+  changeRadio(fromItem.menu)
+    
 };
 // 删除
 const handleDelete = async (e) => {
+
   let res = await getDelete(e.id);
   if (res.msg == "ok") {
     toast("删除成功", "success");
     init();
+  }
+};
+
+
+// 表格 修改状态
+const changeStatus = async (id, status) => {
+  console.log(id, status);
+  let res = await getChangeStatus(id, status);
+  console.log(res);
+  if (res.msg == "ok") {
+    toast("修改状态成功", "success");
   }
 };
 
@@ -367,7 +389,6 @@ const handleEditSubmit = async () => {
     console.log(error);
   }
 };
-
 </script>
 
 <style lang="scss" scoped>

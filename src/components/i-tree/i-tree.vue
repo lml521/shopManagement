@@ -9,14 +9,15 @@
        <template #default="{ node, data }">
         <span class="custom-tree-node">
             <div>
-
                 <el-tag :type="data.menu==1?'':'info'">{{data.menu==1?'菜单':'权限'}}</el-tag>
                 <el-icon style="margin-left:10px;">
                 <component :is="data.icon"></component>
             </el-icon>
                 <span>{{ node.label }}</span>
             </div>
-          <slot name="buttons"></slot>
+            <slot  :data="data">
+
+            </slot>
         </span>
       </template>
         </el-tree>

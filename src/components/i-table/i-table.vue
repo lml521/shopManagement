@@ -5,7 +5,7 @@
       <template v-for="item in tableHeader"  >
         <!-- 一般数据 -->
         <el-table-column
-          v-if="!item.type"
+          v-if="!item.type&&!item.hidden"
           :prop="item.prop"
           :label="item.label"
           :width="item.width"
@@ -47,6 +47,7 @@
         >
         <template #default="scope">
           <el-switch
+         
           :active-value="item.active"
           :inactive-value="item.inactive"
            v-model="scope.row[item.prop]"
@@ -66,17 +67,14 @@
           <template #default="scope">
 
             <template v-for=" ele in item.buttons" >
-           <!-- {{ ele }} -->
               <el-popconfirm
               :key="ele.name"
                 v-if="ele.popconfirm"
                 :confirm-button-text="ele.confirm"
                 :cancel-button-text="ele.cancel"
                 :title="ele.title"
-                @confirm="$emit('handleDelete', scope.row)"
- 
-              >
-              <!-- @click.native.prevent="$emit(ele.event, scope.row)" -->
+                @confirm="$emit('handleDelete', scope.row)">
+                
                 <template #reference>
                   <el-button
                     :size="ele.size"

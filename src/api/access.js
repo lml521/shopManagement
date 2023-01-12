@@ -8,18 +8,10 @@ export const getTableList = (page=1) => {
     })
 }
 
-// 搜索 
-export const getSearch=(page,title)=>{
-    return request({
-        url:`admin/manager/${page}?keyword=${title}`,
-        method: "GET",
-    })
-}
-
 // 切换 状态 值 
-export const getChangeStatus=(id,status)=>{
+export const getChangeStatus =(id,status)=>{
     return request({
-        url:`/admin/manager/${id}/update_status`,
+        url:`/admin/rule/${id}/update_status`,
         method: "POST",
         data:{
             status,
@@ -27,10 +19,12 @@ export const getChangeStatus=(id,status)=>{
     })
 }
 
+ 
+
 // 删除
 export const getDelete =(id)=>{
     return request({
-        url:`/admin/manager/${id}/delete`,
+        url:`/admin/rule/${id}/delete`,
         method:"POST"
     })
 }
@@ -45,7 +39,7 @@ export const getAdd=(data)=>{
 // 修改 
 export const getEdit=(id,data)=>{
     return request({
-        url:`/admin/manager/${id}`,
+        url:`/admin/rule/${id}`,
         method:"POST",
         data
     })

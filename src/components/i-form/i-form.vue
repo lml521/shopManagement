@@ -13,7 +13,7 @@
 
         <!-- 一般数据 -->
         <el-form-item
-          v-if="!item.type"
+          v-if="!item.type&&!item.hidden"
           :label="item.label"
           :prop="item.prop"
           :key="index"
@@ -44,9 +44,9 @@
           v-else-if="item.type == 'borderRadio'"
           :label="item.label"
         >
-          <el-radio-group v-model="modelValue[item.prop]" @change="changeRadio">
-            <el-radio :label="0" border>菜单</el-radio>
-            <el-radio :label="1" border>规则</el-radio>
+          <el-radio-group v-model="modelValue[item.prop]" 
+          @change="$emit(item.event,$event)">
+            <el-radio :label="ele.label" border v-for="ele in item.button">{{ele.value}}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -94,13 +94,13 @@
         :placeholder="item.placeholder"
          :props="defaultParams"
          v-model="modelValue[item.prop]"
-         @change="changeCascader"
-         clearable />
+         @change="$emit(item.event,$event)"
+          />
         </el-form-item>
 
         <!-- 下拉菜单  -->
         <el-form-item
-          v-else-if="item.type == 'select'"
+          v-else-if="item.type == 'select'&&!item.hidden"
           :prop="item.prop"
           :label="item.label"
         >
@@ -120,37 +120,23 @@
 
         <!-- 图标下拉菜单 数据  -->
         <el-form-item
-          v-else-if="item.type == 'iconSelect'"
+          v-else-if="item.type == 'iconSelect'&&!item.hidden"
           :prop="item.prop"
-          :label="item.label"
-        >
-       
+          :label="item.label">
          <el-icon :size="16" class="mr-3"> 
                 <component :is="modelValue[item.prop]"></component>
               </el-icon>
-        
-      
           <el-select
             v-model="modelValue[item.prop]"
-            :placeholder="item.placeholder"
-            
-          >
+            :placeholder="item.placeholder">
             <el-option
               :label="ele.name"
-              :value="ele.id"  v-for="ele in rolesList"
-            >
+              :value="ele.id"  v-for="ele in rolesList">
             <div class="flex justify-between align-center">
-              <el-icon> 
-                <component :is="ele.name"></component>
-              </el-icon>
-              <span>
-                {{ele.name}}
-              </span>
+              <el-icon><component :is="ele.name"></component></el-icon>
+              <span>{{ele.name}}</span>
             </div>
-
           </el-option>
-
-
           </el-select> 
         </el-form-item>
 
@@ -215,15 +201,6 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(["changeRadio","changeCascader"]);
-const changeRadio = (e) => {
-  emit("changeRadio", e);
-};
-
-const changeCascader=(e)=>{
-  console.log(12356,e)
-  emit("changeCascader", e);
-}
 
 const ruleFormRef = ref();
 /**

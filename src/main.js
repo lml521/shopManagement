@@ -30,8 +30,6 @@ const iconList =[]
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  console.log(key, component)
-
   let item ={name:key,id:key}
   iconList.push(item)
   app.component(key, component)
