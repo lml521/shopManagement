@@ -2,8 +2,6 @@
   <div>
     <!-- 管理员管理 -->
     <el-card>
-      
-
       <!-- 头部 添加 按钮 -->
       <i-header-add
         :buttonList="headerButton"
@@ -78,16 +76,16 @@
   </div>
 </template>
 
-<script setup> 
-import iHeaderAdd from "@/components/i-header-add/i-header-add.vue";//头部 添加 按钮 部分
+<script setup>
+import iHeaderAdd from "@/components/i-header-add/i-header-add.vue"; //头部 添加 按钮 部分
 import iTable from "@/components/i-table/i-table.vue"; //表格
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗 抽屉
 import iForm from "@/components/i-form/i-form.vue"; //表单
-import iDialog from "@/components/i-dialog/i-dialog.vue";// 模态框  对话框
+import iDialog from "@/components/i-dialog/i-dialog.vue"; // 模态框  对话框
 import iPagination from "@/components/i-pagination/i-pagination.vue"; //分页
 import imageList from "@/views/image/list.vue"; // 图片 模态框  页面
 
-import { toast } from "@/common/util";//文字 提示信息
+import { toast } from "@/common/util"; //文字 提示信息
 import {
   getTableList,
   getSearch,
@@ -97,9 +95,6 @@ import {
   getEdit,
 } from "@/api/role.js"; //api
 import { reactive, ref } from "vue";
-
-
- 
 
 // 添加按钮 部分数据
 const headerButton = ref([
@@ -121,19 +116,18 @@ const headerButton = ref([
   },
 ]);
 
-
 const data = reactive({
   //表格头部数据
   tableHeader: [
     {
-      prop:"name",
+      prop: "name",
       label: "角色名称",
     },
     {
       prop: "desc",
       label: "角色描述",
-      
-    },{},
+    },
+    {},
     {
       prop: "status",
       active: 1,
@@ -152,7 +146,7 @@ const data = reactive({
       align: "center",
       width: "180px",
       buttons: [
-      {
+        {
           name: "配置权限",
           size: "small",
           type: "primary",
@@ -168,7 +162,7 @@ const data = reactive({
         },
         {
           name: "删除",
-          title: "是否要删除改管理员?",
+          title: "是否要删除改角色?",
           confirm: "确认",
           cancel: "取消",
           size: "small",
@@ -179,14 +173,14 @@ const data = reactive({
         },
       ],
     },
-  ], 
+  ],
   tableData: [], //表格展示数据
   stripe: false, //表格是否带斑马纹
-  total: 0,//总条数
-  title: "新增",//模态框 标题
+  total: 0, //总条数
+  title: "新增", //模态框 标题
   pageSize: 10, //每页显示多少条
   current: 1, //当前页数
-  drawerShow: false,//抽屉模态框 显示隐藏
+  drawerShow: false, //抽屉模态框 显示隐藏
 
   // 表单展示数据
   formList: [
@@ -197,7 +191,7 @@ const data = reactive({
     },
     {
       label: "角色描述",
-      type:"textarea",
+      type: "textarea",
       prop: "desc",
       placeholder: "请填写角色描述",
     },
@@ -207,22 +201,21 @@ const data = reactive({
       prop: "status",
     },
   ],
- // 表单验证
- rules: {
+  // 表单验证
+  rules: {
     name: {
       required: true,
       message: "角色名称必填",
       trigger: ["blur", "change"],
     },
- }
-
+  },
 });
 
 // 模态框 对话框 数据
 const dialogList = reactive({
-  dialogVisible: false,//对话框 展示隐藏
-  title: "选择图片",//对话框 标题
-  width: "80%",//对话框 宽度
+  dialogVisible: false, //对话框 展示隐藏
+  title: "选择图片", //对话框 标题
+  width: "80%", //对话框 宽度
   // 对话框 底部按钮 数据
   buttons: [
     {
@@ -239,25 +232,24 @@ const dialogList = reactive({
 
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
-  username: "",
-  password: "",
-  avatar: "",
-  role_id: "",
-  status: 1,
+  desc:"",
+  name:"",
+  status:"",
+
 });
 
-const rolesList = ref([]);// 表单中 下拉菜单 展示 数据
-const id = ref(0);//id 点击 当前行 获取 当前行的id
+const rolesList = ref([]); // 表单中 下拉菜单 展示 数据
+const id = ref(0); //id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
-const url = ref();// 点击 选中的图片 路径  
-const loading = ref(false);//loading 加载 开关
+const url = ref(); // 点击 选中的图片 路径
+const loading = ref(false); //loading 加载 开关
 
 // 获取 表格数据
-const init = () => { 
-  loading.value = true; 
+const init = () => {
+  loading.value = true;
   try {
     getTableList(data.current).then((res) => {
-      if (res.msg == "ok") { 
+      if (res.msg == "ok") {
         rolesList.value = res.data.roles;
         data.tableData = res.data.list;
         data.total = res.data.totalCount;
@@ -269,7 +261,7 @@ const init = () => {
   }
 };
 init();
- 
+
 // 表格 修改状态
 const changeStatus = async (id, status) => {
   console.log(id, status);
@@ -289,12 +281,11 @@ const handleAdd = () => {
 const handleEdit = (e) => {
   data.drawerShow = true;
   data.title = "修改";
-  (fromItem.username = e.username),
-    (fromItem.password = e.password),
-    (fromItem.avatar = e.avatar),
-    (fromItem.role_id = e.role_id),
-    (fromItem.status = e.status),
-    (id.value = e.id);
+  fromItem.desc=e.desc
+  fromItem.name=e.name
+  fromItem.status=e.status
+  id.value = e.id
+  console.log(e)
 };
 // 删除
 const handleDelete = async (e) => {
@@ -312,21 +303,21 @@ const handleClose = () => {
 };
 
 // 模态框 提交 按钮
-const submitForm=async ()=>{
-// 使用 ref 获取子组件方法
-await ruleFormRef.value.ruleFormRef.validate((valid,fields)=>{
-  if(valid){
-    console.log('submit!')
-    if(data.title=='新增'){
-      handleAddSubmit()
-    }else{
-      handleEditSubmit()
+const submitForm = async () => {
+  // 使用 ref 获取子组件方法
+  await ruleFormRef.value.ruleFormRef.validate((valid, fields) => {
+    if (valid) {
+      console.log("submit!");
+      if (data.title == "新增") {
+        handleAddSubmit();
+      } else {
+        handleEditSubmit();
+      }
+    } else {
+      console.log("error submit!", fields);
     }
-  }else{
-    console.log('error submit!',fields)
-  }
-})
-}
+  });
+};
 
 // 添加 提交 事件
 const handleAddSubmit = async () => {
@@ -357,7 +348,7 @@ const handleEditSubmit = async () => {
 };
 
 // 打开图片模态框
-const uploadImg = () => { 
+const uploadImg = () => {
   dialogList.dialogVisible = true;
 };
 // 关闭 图片模态框
@@ -366,7 +357,7 @@ const handleCloseImg = () => {
 };
 // 图片模态框 确认事件
 const handleSubmit = () => {
-  fromItem.avatar = url.value; 
+  fromItem.avatar = url.value;
   dialogList.dialogVisible = false;
 };
 // 当在图片模态框中点击 确认修改图片 把图片的id 赋值给 表单数据中

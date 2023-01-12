@@ -19,7 +19,7 @@ export const getSearch=(page,title)=>{
 // 切换 状态 值 
 export const getChangeStatus=(id,status)=>{
     return request({
-        url:`/admin/manager/${id}/update_status`,
+        url:`/admin/role/${id}/update_status`,
         method: "POST",
         data:{
             status,
@@ -30,7 +30,7 @@ export const getChangeStatus=(id,status)=>{
 // 删除
 export const getDelete =(id)=>{
     return request({
-        url:`/admin/manager/${id}/delete`,
+        url:`/admin/role/${id}/delete`,
         method:"POST"
     })
 }
@@ -47,7 +47,7 @@ export const getAdd=(data)=>{
 // 修改
 export const getEdit=(id,data)=>{
     return request({
-        url:`/admin/manager/${id}`,
+        url:`/admin/role/${id}`,
         method:"POST",
         data
     })
