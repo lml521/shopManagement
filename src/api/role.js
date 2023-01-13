@@ -7,6 +7,21 @@ export const getTableList = (page) => {
         method: "GET",
     })
 }
+// 请求 权限 数据 
+export const getRuleList = (page) => {
+    return request({
+        url:`/admin/rule/1`,
+        method: "GET",
+    })
+}
+// 设置权限
+export const setRules = (data) => {
+    return request({
+        url:`admin/role/set_rules`,
+        method: "POST",
+        data
+    })
+}
 
 // 搜索 
 export const getSearch=(page,title)=>{

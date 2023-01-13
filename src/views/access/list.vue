@@ -10,15 +10,18 @@
       </i-header-add>
 
       <!-- 树形控件  -->
-      <i-tree :tableData="data.tableData" :defaultProps="defaultProps"
-      :defaultShowNodes="data.defaultShowNodes">
+      <i-tree
+      :tableData="data.tableData"
+      :defaultProps="defaultProps"
+      :defaultShowNodes="data.defaultShowNodes"  >
       <!-- 插槽 展示 按钮数据 -->
          <template #default="{data}"  >
            <div>
                  <el-switch
                  :active-value="1"
                  :inactive-value	="0"
-                 @change="changeStatus(data.id,data.status)"
+                 :label="data.label"
+                 @change="changeStatus(data)"
                   v-model="data.status"
                   size="large"
                   class="mr-4"/>
@@ -27,24 +30,15 @@
           <el-button type="primary" @click.stop="handleEdit(data)" 
            link size="small">修改</el-button>
           <el-button type="primary" @click.stop="handleAdd" link size="small">增加</el-button>
-        
-
-
           <el-popconfirm
-              
                 confirm-button-text="确认"
                 cancel-button-text="取消"
                 title="是否要删除该记录?"
                 @confirm="handleDelete(data)">
-                
                 <template #reference>
                   <el-button type="primary"  link size="small">删除</el-button>
                 </template>
               </el-popconfirm>
-              
-        
-          
-
 
         </div>
         </template>
@@ -338,12 +332,18 @@ const handleDelete = async (e) => {
 
 
 // 表格 修改状态
-const changeStatus = async (id, status) => {
-  console.log(id, status);
-  let res = await getChangeStatus(id, status);
-  console.log(res);
-  if (res.msg == "ok") {
-    toast("修改状态成功", "success");
+const changeStatus = async (item) => {
+  item.loading=true
+  console.log(item)
+  try{
+    let res = await getChangeStatus(item.id, item.status);
+    if (res.msg == "ok") {
+      toast("修改状态成功", "success");
+      item.loading=false
+    }
+  }catch(error){
+    item.loading=false
+    console.log(error)
   }
 };
 

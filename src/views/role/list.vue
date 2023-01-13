@@ -15,10 +15,10 @@
         v-loading="loading"
         :tableHeader="data.tableHeader"
         :tableData="data.tableData"
-        :stripe="data.stripe"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         @changeStatus="changeStatus"
+        @handleRight="handleRight"
       >
       </iTable>
 
@@ -31,16 +31,30 @@
 
         <!-- 模态框 内容 表单-->
         <template #content>
+          <div  v-if="data.title!== '权限配置'">
           <i-form
             :formList="data.formList"
             :rules="data.rules"
-            :rolesList="rolesList"
             v-model="fromItem"
             ref="ruleFormRef"
             formSize="default"
             @uploadImg="uploadImg"
           >
           </i-form>
+        </div>
+        <div v-else>
+
+          <i-tree 
+          :tableData="rightList" 
+          :defaultProps="defaultProps"
+          :defaultShowNodes="data.defaultShowNodes"
+          :iconHidden="true" 
+          :showCheckbox="true"
+          :activeRulesList="activeRulesList"
+          @currentChange="currentChange"
+      >
+      </i-tree>
+        </div>
         </template>
 
         <!-- 模态框 按钮 -->
@@ -58,20 +72,7 @@
         :pageSize="data.pageSize"
         @handleCurrentChange="handleCurrentChange"
       ></i-pagination>
-
-      <!-- 图片 模态框  -->
-      <i-dialog
-        v-model="dialogList.dialogVisible"
-        :title="dialogList.title"
-        :width="dialogList.width"
-        :buttons="dialogList.buttons"
-        @handleCloseImg="handleCloseImg"
-        @handleSubmit="handleSubmit"
-      >
-        <template #content>
-          <imageList @changeImage="changeImage"></imageList>
-        </template>
-      </i-dialog>
+ 
     </el-card>
   </div>
 </template>
@@ -80,19 +81,18 @@
 import iHeaderAdd from "@/components/i-header-add/i-header-add.vue"; //头部 添加 按钮 部分
 import iTable from "@/components/i-table/i-table.vue"; //表格
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗 抽屉
-import iForm from "@/components/i-form/i-form.vue"; //表单
-import iDialog from "@/components/i-dialog/i-dialog.vue"; // 模态框  对话框
+import iForm from "@/components/i-form/i-form.vue"; //表单 
 import iPagination from "@/components/i-pagination/i-pagination.vue"; //分页
-import imageList from "@/views/image/list.vue"; // 图片 模态框  页面
-
+import iTree from "@/components/i-tree/i-tree.vue"
 import { toast } from "@/common/util"; //文字 提示信息
 import {
   getTableList,
-  getSearch,
   getChangeStatus,
   getDelete,
+  getRuleList,
   getAdd,
   getEdit,
+  setRules,
 } from "@/api/role.js"; //api
 import { reactive, ref } from "vue";
 
@@ -123,6 +123,7 @@ const data = reactive({
       prop: "name",
       label: "角色名称",
     },
+    {},
     {
       prop: "desc",
       label: "角色描述",
@@ -151,7 +152,7 @@ const data = reactive({
           size: "small",
           type: "primary",
           text: "primary",
-          event: "handleEdit",
+          event: "handleRight",
         },
         {
           name: "修改",
@@ -175,13 +176,12 @@ const data = reactive({
     },
   ],
   tableData: [], //表格展示数据
-  stripe: false, //表格是否带斑马纹
   total: 0, //总条数
   title: "新增", //模态框 标题
   pageSize: 10, //每页显示多少条
   current: 1, //当前页数
   drawerShow: false, //抽屉模态框 显示隐藏
-
+  defaultShowNodes: [],
   // 表单展示数据
   formList: [
     {
@@ -210,39 +210,27 @@ const data = reactive({
     },
   },
 });
-
-// 模态框 对话框 数据
-const dialogList = reactive({
-  dialogVisible: false, //对话框 展示隐藏
-  title: "选择图片", //对话框 标题
-  width: "80%", //对话框 宽度
-  // 对话框 底部按钮 数据
-  buttons: [
-    {
-      name: "取消",
-      event: "handleCloseImg",
-    },
-    {
-      type: "primary",
-      event: "handleSubmit",
-      name: "确定",
-    },
-  ],
-});
-
+ 
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
-  desc:"",
   name:"",
-  status:"",
-
+  desc:"",
+  status:1
 });
 
-const rolesList = ref([]); // 表单中 下拉菜单 展示 数据
 const id = ref(0); //id 点击 当前行 获取 当前行的id
-const ruleFormRef = ref(); //模态框表单 ref
-const url = ref(); // 点击 选中的图片 路径
+const ruleFormRef = ref(); //模态框表单 ref 
 const loading = ref(false); //loading 加载 开关
+
+// 权限数据 
+const rightList =ref([])
+
+const activeRulesList=ref([])
+
+const defaultProps = {
+  children: "child",
+  label: "name",
+};
 
 // 获取 表格数据
 const init = () => {
@@ -250,7 +238,6 @@ const init = () => {
   try {
     getTableList(data.current).then((res) => {
       if (res.msg == "ok") {
-        rolesList.value = res.data.roles;
         data.tableData = res.data.list;
         data.total = res.data.totalCount;
       }
@@ -262,13 +249,22 @@ const init = () => {
 };
 init();
 
+let changeRulesList =ref([])
+const currentChange=(e)=>{
+  changeRulesList.value =e
+}
 // 表格 修改状态
-const changeStatus = async (id, status) => {
-  console.log(id, status);
-  let res = await getChangeStatus(id, status);
-  console.log(res);
-  if (res.msg == "ok") {
-    toast("修改状态成功", "success");
+const changeStatus = async (item) => {
+  item.loading=true
+  try{
+    let res = await getChangeStatus(item.id, item.status);
+    if (res.msg == "ok") {
+      toast("修改状态成功", "success");
+      item.loading=false
+    }
+  }catch(error){
+    item.loading=false
+    console.log(error)
   }
 };
 
@@ -287,6 +283,38 @@ const handleEdit = (e) => {
   id.value = e.id
   console.log(e)
 };
+// 点击 权限 设置 按钮
+const handleRight=async(e)=>{
+  id.value=e.id
+  let nodeKey=''
+  e.rules.forEach(item=>{
+    nodeKey=item.id
+    activeRulesList.value.push(nodeKey)
+  })
+ 
+  console.log(activeRulesList.value)
+
+  let res = await getRuleList()
+  if (res.msg == "ok") {
+  rightList.value= res.data.rules
+  getDefaultShowNodes(2, res.data.rules);
+  }
+  data.drawerShow = true;
+  data.title = "权限配置";
+}
+const getDefaultShowNodes = (num, children) => {
+  --num;
+  if (num >= 0) {
+    for (var i = 0; i < children.length; i++) {
+      data.defaultShowNodes.push(children[i].id);
+      if (children[i].children) {
+        getDefaultShowNodes(num, children[i].children);
+      }
+    }
+  }
+};
+
+
 // 删除
 const handleDelete = async (e) => {
   let res = await getDelete(e.id);
@@ -299,11 +327,25 @@ const handleDelete = async (e) => {
 // 模态框 取消 按钮
 const handleClose = () => {
   data.drawerShow = false;
-  ruleFormRef.value.ruleFormRef.resetFields();
+  if(data.title!="权限配置"){
+     ruleFormRef.value.ruleFormRef.resetFields();
+  }
+ 
 };
 
 // 模态框 提交 按钮
 const submitForm = async () => {
+  if(data.title=="权限配置"){
+    let res =await setRules({id:id.value,rule_ids:changeRulesList.value})
+    if (res.msg == "ok") {
+      toast("配置成功", "success");
+      init();
+      handleClose();
+    }
+    return
+  }
+
+
   // 使用 ref 获取子组件方法
   await ruleFormRef.value.ruleFormRef.validate((valid, fields) => {
     if (valid) {
@@ -347,24 +389,7 @@ const handleEditSubmit = async () => {
   }
 };
 
-// 打开图片模态框
-const uploadImg = () => {
-  dialogList.dialogVisible = true;
-};
-// 关闭 图片模态框
-const handleCloseImg = () => {
-  dialogList.dialogVisible = false;
-};
-// 图片模态框 确认事件
-const handleSubmit = () => {
-  fromItem.avatar = url.value;
-  dialogList.dialogVisible = false;
-};
-// 当在图片模态框中点击 确认修改图片 把图片的id 赋值给 表单数据中
-const changeImage = (e) => {
-  url.value = e;
-};
-
+ 
 // 切换分页 当前页 数据
 const handleCurrentChange = (e) => {
   data.current = e;

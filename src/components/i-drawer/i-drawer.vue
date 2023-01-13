@@ -8,7 +8,10 @@
         <el-drawer  :model-value="modelValue" :title="title"  :size="size"
         :close-on-click-modal="false"
         @close="$emit('handleClose')" class="el-drawer" >
-            <slot name="content" ></slot>
+        <div class="content">
+          <slot name="content" ></slot>
+        </div>
+            
             <div class="buttons">
             <slot name="buttons" ></slot>
             </div>
@@ -46,8 +49,23 @@ const props = defineProps({
 </script>
   
   <style lang='scss' scoped>
+  
+
+
+
   .el-drawer{
     position: relative;
+      .content{
+       
+        position: relative;
+         overflow-y: scroll;
+          will-change: transform;
+           direction: ltr; 
+           height: 542px;
+      
+      }
+
+
     .buttons{
         position: absolute;
         bottom: 30px;

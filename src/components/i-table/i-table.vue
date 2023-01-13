@@ -47,11 +47,11 @@
         >
         <template #default="scope">
           <el-switch
-         
+         :loading=" scope.row.loading"
           :active-value="item.active"
           :inactive-value="item.inactive"
            v-model="scope.row[item.prop]"
-          @change="$emit(item.event,scope.row.id,scope.row.status)"
+          @change="$emit(item.event,scope.row )"
         />
       </template>
         </el-table-column>
@@ -74,7 +74,6 @@
                 :cancel-button-text="ele.cancel"
                 :title="ele.title"
                 @confirm="$emit('handleDelete', scope.row)">
-                
                 <template #reference>
                   <el-button
                     :size="ele.size"

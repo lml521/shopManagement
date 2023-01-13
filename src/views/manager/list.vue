@@ -312,12 +312,17 @@ const handleReset = () => {
   }
 };
 // 表格 修改状态
-const changeStatus = async (id, status) => {
-  console.log(id, status);
-  let res = await getChangeStatus(id, status);
-  console.log(res);
-  if (res.msg == "ok") {
-    toast("修改状态成功", "success");
+const changeStatus = async (item) => {
+  item.loading=true
+  try{
+    let res = await getChangeStatus(item.id, item.status);
+    if (res.msg == "ok") {
+      toast("修改状态成功", "success");
+      item.loading=false
+    }
+  }catch(error){
+    item.loading=false
+    console.log(error)
   }
 };
 
