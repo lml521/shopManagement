@@ -3,9 +3,14 @@
     <!-- 封装表格 -->
     <el-table :data="tableData" :stripe="stripe" style="width: 100%">
       <template v-for="item in tableHeader"  >
+
+        <el-table-column v-if="item.type=='selection'||item.type=='index'" 
+        :type="item.type" width="55" />
+
+        <!-- selection/  -->
         <!-- 一般数据 -->
         <el-table-column
-          v-if="!item.type&&!item.hidden"
+          v-else-if="!item.type&&!item.hidden"
           :prop="item.prop"
           :label="item.label"
           :width="item.width"

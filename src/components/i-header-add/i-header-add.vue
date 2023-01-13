@@ -2,9 +2,14 @@
 
      <div class="flex items-center mb-4">
         <template v-for="(item,index) in buttonList">
-        <el-button :type="item.type" :size="item.size" v-if="item.align=='left'" 
+<div v-if="item.align=='left'" >
+  <el-button :type="item.type" :size="item.size" 
+  class="mr-2"
         @click="$emit(item.event)" >
-            {{item.name}}</el-button>
+            {{item.name}}
+          </el-button>
+</div> 
+      
         
       
        <div :class="item.class" v-else-if="item.align=='right'"> 

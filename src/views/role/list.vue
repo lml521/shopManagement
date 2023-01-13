@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 管理员管理 -->
+    <!-- 角色管理 -->
     <el-card>
       <!-- 头部 添加 按钮 -->
       <i-header-add
