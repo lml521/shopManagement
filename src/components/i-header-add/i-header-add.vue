@@ -2,9 +2,9 @@
 
      <div class="flex items-center mb-4">
         <template v-for="(item,index) in buttonList">
-<div v-if="item.align=='left'" >
-    <template v-if="item.popconfirm">
-      <el-popconfirm
+    <div v-if="item.align=='left'" >
+        <template v-if="item.popconfirm">
+           <el-popconfirm
               :key="item.name"
                  
                 :confirm-button-text="item.confirm"
@@ -74,5 +74,4 @@ const props = defineProps({
     default: false,
   },
 });
-
 </script>

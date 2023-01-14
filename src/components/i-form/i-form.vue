@@ -167,6 +167,7 @@
     class="mx-1 mb-1"
     closable
     @close="$emit(item.tagEvent,index)"
+
   >
     {{ tag }}
   </el-tag>
@@ -178,10 +179,21 @@
         <el-input v-if="item.inputShow" :size="item.inputSize" 
         v-focus="true"
          v-model="modelValue[item.prop]" :style="{width:item.inputWidth}"
-         @blur="$emit(item.inputEvent,modelValue[item.prop])" 
-        
-         ></el-input>
-  
+
+         @blur="$emit(item.inputEvent,modelValue[item.prop])"
+         @keyup.native.enter="keyup"
+       >
+       </el-input>
+      
+       <!-- 
+         回车事件和失焦事件同时触发的问题
+
+         方法一:常见的解决方法就是将回车事件指向当前元素的失焦事件
+         @blur="$emit(item.inputEvent,modelValue[item.prop])"
+         @keyup.native.enter="$event.target.blur"
+
+      
+       -->
         </el-form-item>
 
 
@@ -232,6 +244,9 @@ const props = defineProps({
     default: false,
   },
 });
+const keyup=(e)=>{
+  e.target.blur()
+}
 
 const ruleFormRef = ref();
 /**

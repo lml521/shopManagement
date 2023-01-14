@@ -28,15 +28,9 @@ app.config.globalProperties.$mitt = mitt();
 const iconList = [];
 
 app.directive("focus", {
-  created:(el)=>{
-    // 注意：渲染组件需要时间，并且时间没有JS执行的快；所以获取不到
-    nextTick(()=>{
-      console.log(el.children[0].children[0])
-    el.children[0].children[0].focus();
-    })
-   
+  mounted:(el)=>{
+      el.children[0].children[0].focus();
   },
-  
 });
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";

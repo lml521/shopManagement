@@ -363,7 +363,6 @@ const getDefaultShowNodes = (num, children) => {
 
 // 表单 规格值 按钮 事件
 const handelShowButton=()=>{
-  console.log(1234567)
   data.formList[3].buttonShow=false
   data.formList[3].inputShow=true
 }
@@ -377,7 +376,7 @@ const handelShowInput=(e)=>{
 const handelTabDelete=(id)=>{
   console.log(id)
   data.formList[3].TabList.splice(id,1)
-  
+
 }
 
 
