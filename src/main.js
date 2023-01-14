@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, nextTick } from "vue";
 import "./style.css";
 import App from "./App.vue";
 
@@ -29,13 +29,14 @@ const iconList = [];
 
 app.directive("focus", {
   created:(el)=>{
-    console.log(el.children[0].children[0]);
+    // 注意：渲染组件需要时间，并且时间没有JS执行的快；所以获取不到
+    nextTick(()=>{
+      console.log(el.children[0].children[0])
     el.children[0].children[0].focus();
+    })
+   
   },
-  inserted: (el) => {
-    console.log(el.children[0]);
-    el.focus();
-  },
+  
 });
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
