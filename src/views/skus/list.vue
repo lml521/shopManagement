@@ -20,6 +20,7 @@
         @handleDelete="handleDelete"
         @changeStatus="changeStatus"
         @handleRight="handleRight"
+        @handleSelectionChange="handleSelectionChange"
       >
       </iTable>
 
@@ -39,7 +40,9 @@
             v-model="fromItem"
             ref="ruleFormRef"
             formSize="default"
-            @uploadImg="uploadImg"
+            @handelShowButton="handelShowButton"
+            @handelShowInput="handelShowInput"
+            @handelTabDelete="handelTabDelete"
           >
           </i-form>
         </div>
@@ -111,6 +114,11 @@ const headerButton = ref([
     type: "danger",
     size: "small",
     align: "left",
+
+          title: "是否要删除选中记录?",
+          confirm: "确认",
+          cancel: "取消",
+          popconfirm: true,
   },
   {
     icon: "Refresh",
@@ -197,13 +205,32 @@ const data = reactive({
     },
     {
       label: "排序",
-      type: "textarea",
+      type: "inputNumber",
       prop: "desc", 
     },
     {
       label: "状态",
       type: "switch",
       prop: "status",
+    },
+    {
+      label: "规格值",
+      type: "specification",
+      prop: "default",
+      // button  属性设置
+      buttonTitle:"+ 添加值",
+      buttonShow:true,
+      buttonSize:"small",
+      buttonEvent:"handelShowButton",
+      // input 框设置
+      inputShow:false,
+      inputSize:"small",
+      inputWidth:"80px",
+      inputEvent:"handelShowInput",
+
+      // tab事件
+      tagEvent:"handelTabDelete",
+      TabList:[]
     },
   ],
   // 表单验证
@@ -219,8 +246,9 @@ const data = reactive({
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
   name:"",
-  desc:"",
-  status:1
+  desc:50,
+  status:1,
+  default:"",
 });
 
 const id = ref(0); //id 点击 当前行 获取 当前行的id
@@ -278,13 +306,28 @@ const handleAdd = () => {
   data.drawerShow = true;
   data.title = "新增";
 };
+const selectionList=ref([])
+const handleSelectionChange=(e)=>{
+  console.log(123)
+  let id ;
+  e.forEach(item=>{
+    id= item.id
+   selectionList.value.push(id)
+  })
+  console.log(selectionList.value)
+}
 // 编辑
 const handleEdit = (e) => {
+  console.log(e)
   data.drawerShow = true;
   data.title = "修改";
-  fromItem.desc=e.desc
+
   fromItem.name=e.name
+  fromItem.order=e.order
   fromItem.status=e.status
+
+  data.formList[3].TabList=e.default.split(',')
+
   id.value = e.id
   console.log(e)
 };
@@ -297,8 +340,6 @@ const handleRight=async(e)=>{
     activeRulesList.value.push(nodeKey)
   })
  
-  console.log(activeRulesList.value)
-
   let res = await getRuleList()
   if (res.msg == "ok") {
   rightList.value= res.data.rules
@@ -320,6 +361,36 @@ const getDefaultShowNodes = (num, children) => {
 };
 
 
+// 表单 规格值 按钮 事件
+const handelShowButton=()=>{
+  console.log(1234567)
+  data.formList[3].buttonShow=false
+  data.formList[3].inputShow=true
+}
+
+const handelShowInput=(e)=>{
+  data.formList[3].TabList.push(e)
+  fromItem.default=""
+  data.formList[3].buttonShow=true
+  data.formList[3].inputShow=false
+}
+const handelTabDelete=(id)=>{
+  console.log(id)
+  data.formList[3].TabList.splice(id,1)
+  
+}
+
+
+
+// 批量删除 
+const handleBatchDelete=async()=>{
+  let res = await getDelete({ids:selectionList.value});
+  if (res.msg == "ok") {
+    toast("删除成功", "success");
+    init();
+  }
+}
+
 // 删除
 const handleDelete = async (e) => {
   let res = await getDelete({ids:[e.id]});
@@ -332,27 +403,18 @@ const handleDelete = async (e) => {
 // 模态框 取消 按钮
 const handleClose = () => {
   data.drawerShow = false;
-  if(data.title!="权限配置"){
      ruleFormRef.value.ruleFormRef.resetFields();
-  }
+     data.formList[3].TabList=[]
+  
  
 };
 
 // 模态框 提交 按钮
 const submitForm = async () => {
-  if(data.title=="权限配置"){
-    let res =await setRules({id:id.value,rule_ids:changeRulesList.value})
-    if (res.msg == "ok") {
-      toast("配置成功", "success");
-      init();
-      handleClose();
-    }
-    return
-  }
-
-
+  fromItem.default=data.formList[3].TabList.join(',')
   // 使用 ref 获取子组件方法
   await ruleFormRef.value.ruleFormRef.validate((valid, fields) => {
+
     if (valid) {
       console.log("submit!");
       if (data.title == "新增") {
@@ -368,6 +430,8 @@ const submitForm = async () => {
 
 // 添加 提交 事件
 const handleAddSubmit = async () => {
+
+
   try {
     let res = await getAdd(fromItem);
     if (res.msg == "ok") {
@@ -379,10 +443,7 @@ const handleAddSubmit = async () => {
     console.log(error);
   }
 };
-// 批量删除
-const handleBatchDelete=()=>{
-
-}
+ 
 // 编辑 提交事件
 const handleEditSubmit = async () => {
   try {

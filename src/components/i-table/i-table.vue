@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- 封装表格 -->
-    <el-table :data="tableData" :stripe="stripe" style="width: 100%">
+    <el-table :data="tableData" :stripe="stripe" style="width: 100%"
+    @selection-change="$emit('handleSelectionChange',$event)">
       <template v-for="item in tableHeader"  >
 
         <el-table-column v-if="item.type=='selection'||item.type=='index'" 

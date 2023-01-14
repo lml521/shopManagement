@@ -3,15 +3,35 @@
      <div class="flex items-center mb-4">
         <template v-for="(item,index) in buttonList">
 <div v-if="item.align=='left'" >
-  <el-button :type="item.type" :size="item.size" 
+    <template v-if="item.popconfirm">
+      <el-popconfirm
+              :key="item.name"
+                 
+                :confirm-button-text="item.confirm"
+                :cancel-button-text="item.cancel"
+                :title="item.title"
+                @confirm="$emit(item.event)">
+                <template #reference>
+                  <el-button
+                    :size="item.size"
+                    :type="item.type"
+                   
+                  >
+                    {{ item.name }}
+                  </el-button>
+                </template>
+              </el-popconfirm>
+
+
+    </template>
+
+  <el-button :type="item.type" :size="item.size" v-else
   class="mr-2"
         @click="$emit(item.event)" >
             {{item.name}}
           </el-button>
-</div> 
-      
-        
-      
+
+</div>
        <div :class="item.class" v-else-if="item.align=='right'"> 
           <el-link class="px-2">
           <el-tooltip

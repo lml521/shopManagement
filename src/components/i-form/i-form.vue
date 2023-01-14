@@ -139,6 +139,7 @@
           </el-option>
           </el-select> 
         </el-form-item>
+
         <!-- 开关  -->
         <el-form-item
           v-else-if="item.type == 'switch'"
@@ -151,6 +152,39 @@
             :inactive-value="0"
           />
         </el-form-item>
+
+
+        <!-- 添加规格 -->
+         <el-form-item
+          v-else-if="item.type == 'specification'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+
+        <el-tag
+        v-if="item.TabList"
+    v-for="(tag,index) in item.TabList"
+    class="mx-1 mb-1"
+    closable
+    @close="$emit(item.tagEvent,index)"
+  >
+    {{ tag }}
+  </el-tag>
+        <el-button :size="item.buttonSize"
+
+         v-if="item.buttonShow" @click="$emit(item.buttonEvent)">
+          {{item.buttonTitle}} 
+        </el-button>
+        <el-input v-if="item.inputShow" :size="item.inputSize" 
+        v-focus="true"
+         v-model="modelValue[item.prop]" :style="{width:item.inputWidth}"
+         @blur="$emit(item.inputEvent,modelValue[item.prop])" 
+        
+         ></el-input>
+  
+        </el-form-item>
+
+
       </template>
     </el-form>
   </div>
