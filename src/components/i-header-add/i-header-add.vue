@@ -3,7 +3,7 @@
      <div class="flex items-center mb-4">
         <template v-for="(item,index) in buttonList">
     <div v-if="item.align=='left'" >
-        <template v-if="item.popconfirm">
+        <template v-if="item.popconfirm&&!item.hidden">
            <el-popconfirm
               :key="item.name"
                  
@@ -25,7 +25,7 @@
 
     </template>
 
-  <el-button :type="item.type" :size="item.size" v-else
+  <el-button :type="item.type" :size="item.size" v-else-if="!item.hidden"
   class="mr-2"
         @click="$emit(item.event)" >
             {{item.name}}

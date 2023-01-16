@@ -1,5 +1,7 @@
 <template>
+
   <div>
+
     <!-- 封装表格 -->
     <el-table
       :data="tableData"
@@ -8,13 +10,14 @@
       @selection-change="$emit('handleSelectionChange', $event)"
     >
       <template v-for="item in tableHeader">
-        <el-table-column
+
+        <!-- 复选框  -->
+         <el-table-column
           v-if="item.type == 'selection' || item.type == 'index'"
           :type="item.type"
           width="55"
         />
-
-        <!-- selection/  -->
+ 
         <!-- 一般数据 -->
         <el-table-column
           v-else-if="!item.type && !item.hidden"
@@ -26,6 +29,63 @@
           :key="item.prop"
         >
         </el-table-column>
+
+          <!-- 状态 开关  -->
+          <el-table-column
+          :label="item.label"
+          :width="item.width"
+          :align="item.align"
+          :rowspan="item.rowspan"
+          v-else-if="item.type == 'switch'"
+        >
+          <template #default="scope">
+            <el-switch
+              :loading="scope.row.loading"
+              :active-value="item.active"
+              :inactive-value="item.inactive"
+              v-model="scope.row[item.prop]"
+              @change="$emit(item.event, scope.row)"
+            />
+          </template>
+        </el-table-column>
+
+        <!-- tag标签 -->
+        <el-table-column
+          :label="item.label"
+          :width="item.width"
+          :align="item.align"
+          :rowspan="item.rowspan"
+          v-else-if="item.type == 'tag'"
+        >
+        <template #default="scope">
+            <el-tag   :type="scope.row[item.prop]?item.tagList.type1:item.tagList.type2">
+            {{ scope.row[item.prop]?item.tagList.text1:item.tagList.text2}}</el-tag>
+          </template>
+        <!-- danger -->
+        </el-table-column>
+
+          <!-- 审核状态 ischeck -->
+          <el-table-column
+          :label="item.label"
+          :width="item.width"
+          :align="item.align"
+          :rowspan="item.rowspan"
+          v-else-if="item.type == 'ischeck'"
+        >
+        <template #default="scope">
+          <div v-if="scope.row[item.prop]==0" class="flex  column">
+            <el-button type="success" size="small" plain >审核通过</el-button>
+            <el-button type="danger" size="small" plain class="mt-2 !ml-0">审核拒绝</el-button>
+          </div>
+          <div v-else-if="scope.row[item.prop]==1"> 通过 </div>
+          <div v-else-if="scope.row[item.prop]==2"> 拒绝 </div>
+           </template>
+        <!-- danger -->
+        </el-table-column>
+
+
+
+
         <!-- userInfo 用户信息 头像  -->
         <el-table-column
           :label="item.label"
@@ -35,7 +95,7 @@
           v-else-if="item.type == 'userInfo'"
         >
           <template #default="scope">
-            <div class="flex items-center">
+            <div class="flex">
               <div>
                 <el-image
                   class="w-10 h-10 rounded-1/2 border mr-3"
@@ -53,6 +113,40 @@
             </div>
           </template>
         </el-table-column>
+
+
+        <!-- 商品  goodsInfo -->
+        <el-table-column
+          :label="item.label"
+          :width="item.width"
+          :align="item.align"
+          :rowspan="item.rowspan"
+          v-else-if="item.type == 'goodsInfo'"
+        >
+          <template #default="scope">
+            <div class="flex items-center">
+              <div>
+                <el-image
+                  class="el-image mr-3 rounded w-20 h-20 "
+                  :src="
+                    scope.row.cover ||
+                    'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                  "
+                  fit="cover"
+                ></el-image>
+              </div>
+              <div class="flex-1">
+                <div>{{ scope.row.title }}</div>
+                <div class=""><span class="text-rose-500">￥{{ scope.row.min_price }}</span> 
+                <div class="el-divider el-divider--vertical" role="separator" style="--el-border-style:solid;"></div>
+                 <span class="text-gray-500 text-xs">￥{{ scope.row.min_oprice }}</span></div>
+                <div class="text-gray-400 text-xs mb-1">分类：{{ scope.row.category.name }}</div>
+                <div class="text-gray-400 text-xs ">创建时间：{{ scope.row.category.create_time }}</div>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+
 
         <!-- 优惠券 部分  -->
         <el-table-column
@@ -144,24 +238,7 @@
           </template>
         </el-table-column>
 
-        <!-- 状态 开关  -->
-        <el-table-column
-          :label="item.label"
-          :width="item.width"
-          :align="item.align"
-          :rowspan="item.rowspan"
-          v-else-if="item.type == 'switch'"
-        >
-          <template #default="scope">
-            <el-switch
-              :loading="scope.row.loading"
-              :active-value="item.active"
-              :inactive-value="item.inactive"
-              v-model="scope.row[item.prop]"
-              @change="$emit(item.event, scope.row)"
-            />
-          </template>
-        </el-table-column>
+      
         <!-- 按钮 -->
         <el-table-column
           v-else-if="item.type == 'button'"
@@ -245,4 +322,12 @@ const froStatus = (row) => {
 .active div {
   @apply text-red-400;
 }
+.flex-col{
+  -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
 </style>

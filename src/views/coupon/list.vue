@@ -5,6 +5,7 @@
       <!-- 头部 添加 按钮 -->
       <i-header-add
         :buttonList="headerButton"
+        
         @handleAdd="handleAdd"
         @handleBatchDelete="handleBatchDelete"
         @init="init"

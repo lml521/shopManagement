@@ -180,7 +180,7 @@ a{
 	flex-direction: column-reverse !important;
 }
 .column{
-	flex-direction: column;
+	flex-direction: column !important;
 }
 
 .flex-wrap {
