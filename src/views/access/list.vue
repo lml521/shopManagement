@@ -144,10 +144,12 @@ const data = reactive({
         {
           value: "菜单",
           label: 1,
+          border:true
         },
         {
           value: "规则",
           label: 0,
+          border:true
         },
       ],
     },

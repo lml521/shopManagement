@@ -46,7 +46,7 @@
         >
           <el-radio-group v-model="modelValue[item.prop]" 
           @change="$emit(item.event,$event)">
-            <el-radio :label="ele.label" border v-for="ele in item.button">{{ele.value}}</el-radio>
+            <el-radio :label="ele.label" :border="ele.border" v-for="ele in item.button">{{ele.value}}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -63,6 +63,24 @@
             :placeholder="item.placeholder"
           />
         </el-form-item>
+
+        <!-- 时间 选择 区间 datetimerange -->
+        <el-form-item
+          v-else-if="item.type == 'datetimerange'"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          
+        <el-date-picker
+      v-model="modelValue[item.prop]"
+      type="datetimerange"
+      range-separator="To"
+      start-placeholder="开始时间"
+      end-placeholder="结束时间"
+    />
+
+        </el-form-item>
+
 
         <!-- 上传图片  -->
         <el-form-item
@@ -153,7 +171,26 @@
           />
         </el-form-item>
 
+        <!-- 后面带有按钮 的 表单  -->
+      
 
+      <el-form-item
+          v-if="item.type=='inputButton' "
+          :label="item.label"
+          :prop="item.prop"
+          :key="index"
+          v-bind="item"
+        >
+          <el-input
+            :style="{ width: item.width }"
+            v-model="modelValue[item.prop]"
+            :placeholder="item.placeholder"
+          >
+          <template #append>
+              <el-button >{{ item.buttonContent }}</el-button>
+          </template>
+      </el-input>
+        </el-form-item>
         <!-- 添加规格 -->
          <el-form-item
           v-else-if="item.type == 'specification'"
@@ -167,19 +204,16 @@
     class="mx-1 mb-1"
     closable
     @close="$emit(item.tagEvent,index)"
-
   >
     {{ tag }}
   </el-tag>
         <el-button :size="item.buttonSize"
-
          v-if="item.buttonShow" @click="$emit(item.buttonEvent)">
           {{item.buttonTitle}} 
         </el-button>
         <el-input v-if="item.inputShow" :size="item.inputSize" 
         v-focus="true"
          v-model="modelValue[item.prop]" :style="{width:item.inputWidth}"
-
          @blur="$emit(item.inputEvent,modelValue[item.prop])"
          @keyup.native.enter="keyup"
        >

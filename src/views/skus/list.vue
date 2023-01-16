@@ -19,7 +19,6 @@
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         @changeStatus="changeStatus"
-        @handleRight="handleRight"
         @handleSelectionChange="handleSelectionChange"
       >
       </iTable>
@@ -33,7 +32,6 @@
 
         <!-- 模态框 内容 表单-->
         <template #content>
-          <div  v-if="data.title!== '权限配置'">
           <i-form
             :formList="data.formList"
             :rules="data.rules"
@@ -45,20 +43,7 @@
             @handelTabDelete="handelTabDelete"
           >
           </i-form>
-        </div>
-        <div v-else>
-
-          <i-tree 
-          :tableData="rightList" 
-          :defaultProps="defaultProps"
-          :defaultShowNodes="data.defaultShowNodes"
-          :iconHidden="true" 
-          :showCheckbox="true"
-          :activeRulesList="activeRulesList"
-          @currentChange="currentChange"
-      >
-      </i-tree>
-        </div>
+         
         </template>
 
         <!-- 模态框 按钮 -->
@@ -87,13 +72,11 @@ import iTable from "@/components/i-table/i-table.vue"; //表格
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗 抽屉
 import iForm from "@/components/i-form/i-form.vue"; //表单 
 import iPagination from "@/components/i-pagination/i-pagination.vue"; //分页
-import iTree from "@/components/i-tree/i-tree.vue"
 import { toast } from "@/common/util"; //文字 提示信息
 import {
   getTableList,
   getChangeStatus,
   getDelete,
-  getRuleList,
   getAdd,
   getEdit,
   setRules,
@@ -130,6 +113,14 @@ const headerButton = ref([
     placement: "top",
   },
 ]);
+
+
+
+// 验证 修改密码 与 确认密码 是否一致
+const validatePass2 = (rule, value, callback) => {
+  console.log(value,data.formList.TabList)
+      return  "规格值必填"
+    }
 
 const data = reactive({
   //表格头部数据
@@ -195,7 +186,6 @@ const data = reactive({
   pageSize: 10, //每页显示多少条
   current: 1, //当前页数
   drawerShow: false, //抽屉模态框 显示隐藏
-  defaultShowNodes: [],
   // 表单展示数据
   formList: [
     {
@@ -237,12 +227,14 @@ const data = reactive({
   rules: {
     name: {
       required: true,
-      message: "角色名称必填",
+      message: "规格名称必填",
       trigger: ["blur", "change"],
     },
-  },
+  }
+
 });
- 
+
+
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
   name:"",
@@ -254,17 +246,7 @@ const fromItem = reactive({
 const id = ref(0); //id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref 
 const loading = ref(false); //loading 加载 开关
-
-// 权限数据 
-const rightList =ref([])
-
-const activeRulesList=ref([])
-
-const defaultProps = {
-  children: "child",
-  label: "name",
-};
-
+ 
 // 获取 表格数据
 const init = () => {
   loading.value = true;
@@ -282,10 +264,7 @@ const init = () => {
 };
 init();
 
-let changeRulesList =ref([])
-const currentChange=(e)=>{
-  changeRulesList.value =e
-}
+ 
 // 表格 修改状态
 const changeStatus = async (item) => {
   item.loading=true
@@ -307,8 +286,8 @@ const handleAdd = () => {
   data.title = "新增";
 };
 const selectionList=ref([])
+// 切换状态
 const handleSelectionChange=(e)=>{
-  console.log(123)
   let id ;
   e.forEach(item=>{
     id= item.id
@@ -318,7 +297,6 @@ const handleSelectionChange=(e)=>{
 }
 // 编辑
 const handleEdit = (e) => {
-  console.log(e)
   data.drawerShow = true;
   data.title = "修改";
 
@@ -327,38 +305,9 @@ const handleEdit = (e) => {
   fromItem.status=e.status
 
   data.formList[3].TabList=e.default.split(',')
-
   id.value = e.id
-  console.log(e)
 };
-// 点击 权限 设置 按钮
-const handleRight=async(e)=>{
-  id.value=e.id
-  let nodeKey=''
-  e.rules.forEach(item=>{
-    nodeKey=item.id
-    activeRulesList.value.push(nodeKey)
-  })
- 
-  let res = await getRuleList()
-  if (res.msg == "ok") {
-  rightList.value= res.data.rules
-  getDefaultShowNodes(2, res.data.rules);
-  }
-  data.drawerShow = true;
-  data.title = "权限配置";
-}
-const getDefaultShowNodes = (num, children) => {
-  --num;
-  if (num >= 0) {
-    for (var i = 0; i < children.length; i++) {
-      data.defaultShowNodes.push(children[i].id);
-      if (children[i].children) {
-        getDefaultShowNodes(num, children[i].children);
-      }
-    }
-  }
-};
+
 
 
 // 表单 规格值 按钮 事件
@@ -367,19 +316,21 @@ const handelShowButton=()=>{
   data.formList[3].inputShow=true
 }
 
+// 表单 规格值 input 回车 失焦 事件
 const handelShowInput=(e)=>{
-  data.formList[3].TabList.push(e)
+  if(e){
+   data.formList[3].TabList.push(e)
+  }
+ 
+
   fromItem.default=""
   data.formList[3].buttonShow=true
   data.formList[3].inputShow=false
 }
+// 表单 中 tab 删除 事件
 const handelTabDelete=(id)=>{
-  console.log(id)
   data.formList[3].TabList.splice(id,1)
-
 }
-
-
 
 // 批量删除 
 const handleBatchDelete=async()=>{
@@ -404,8 +355,6 @@ const handleClose = () => {
   data.drawerShow = false;
      ruleFormRef.value.ruleFormRef.resetFields();
      data.formList[3].TabList=[]
-  
- 
 };
 
 // 模态框 提交 按钮
@@ -429,8 +378,6 @@ const submitForm = async () => {
 
 // 添加 提交 事件
 const handleAddSubmit = async () => {
-
-
   try {
     let res = await getAdd(fromItem);
     if (res.msg == "ok") {
