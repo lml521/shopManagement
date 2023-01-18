@@ -9,7 +9,7 @@ export const getTableList = (page,params) => {
         params
     })
 } 
-
+ 
 // 删除
 export const getDelete =(id)=>{
     return request({

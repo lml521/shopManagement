@@ -21,6 +21,7 @@
         >
           <el-input
             :style="{ width: item.width }"
+            :maxlength="item.length"
             v-model="modelValue[item.prop]"
             :placeholder="item.placeholder"
           />
@@ -172,8 +173,6 @@
         </el-form-item>
 
         <!-- 后面带有按钮 的 表单  -->
-      
-
       <el-form-item
           v-if="item.type=='inputButton' "
           :label="item.label"

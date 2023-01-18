@@ -2,7 +2,7 @@
   <div>
 
 
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+    <el-tabs v-model="activeName" class="demo-tabs" >
     <el-tab-pane :label="item.label" :name="item.name" v-for="(item,index) in tabsList"
      :key="index"></el-tab-pane>
   </el-tabs>
@@ -110,7 +110,6 @@ import {watch} from "vue"
 import { toast } from "@/common/util";//文字 提示信息
 import {
   getTableList,
-   
 } from "@/api/goods.js"; //api
 import { reactive, ref } from "vue";
 
@@ -134,8 +133,6 @@ const RequestList = ref([
 // 头部 表单 v-model 绑定的数据
 const RequestItem = ref({
   tab:"all",
-  title: "",
-  category_id:"",
 });
 
 // 添加按钮 部分数据
@@ -219,54 +216,7 @@ const tabsList =ref([
 
 ])
 
-// 头部 tab 绑定数据 
-const activeName=ref("all")
 
-const handleClick=(e)=>{
-  console.log(e)
-}
-
-const isHidden=(num,num1)=>{
-  num.forEach(item=>{
-    headerButton.value[item].hidden=false
-
-  })
-  num1.forEach(item=>{
-    headerButton.value[item].hidden=true
-
-  })
-}
-
-watch(()=>activeName.value,(newVal)=>{
-  switch(newVal){
-    case 'all':
-      isHidden([0,1,2,3],[4,5])
-      init()
-    break;
-    case 'checking':
-     isHidden([0,1],[2,3,4,5])
-     init()
-     break;
-     case 'saling':
-     isHidden([0,1,3],[2,4,5])
-     init()
-     break;
-     case 'off':
-     isHidden([0,1,2],[3,4,5])
-     init()
-     break;
-     case 'min_stock':
-     isHidden([0,1],[2,3,4,5])
-     init()
-     break;
-     case 'delete':
-     isHidden([0,4,5],[2,3])
-     init()
-     break;
-     default:
-      break;
-  }
-})
 
 
 const data = reactive({
@@ -280,7 +230,6 @@ const data = reactive({
       label: "商品",
       width: "300px",
     },
-    
     {
       prop: "sale_count",
       label: "实际销量",
@@ -364,32 +313,88 @@ const data = reactive({
   // 表单展示数据
   formList: [
     {
-      label: "用户名",
-      prop: "username",
-      placeholder: "请填写用户名",
+      label: "商品名称",
+      placeholder: "请输入商品名称，不能超过60个字符",
+      length:60,
+      prop:"title",
     },
     {
-      label: "密码",
-      prop: "password",
-      placeholder: "请填写密码",
-    },
-    {
-      label: "头像",
+      label: "封面",
       type: "uploadImg",
       event: "uploadImg",
-      prop: "avatar",
-      placeholder: "请填写密码",
-    },
-    {
-      label: "所属角色",
+      prop: "cover",
+    }, {
+      label: "商品分类",
       type: "select",
-      prop: "role_id",
-      placeholder: "请填写密码",
+      prop: "category_id",
+      placeholder: "选择所属商品分类",
     },
     {
-      label: "状态",
-      type: "switch",
-      prop: "status",
+      label: "商品描述",
+      type: "textarea",
+      prop: "desc",
+      placeholder: "选填，商品卖点",
+    },
+    {
+      label: "单位",
+      width:"60%",
+      prop: "unit",
+      placeholder: "选填，商品卖点",
+    },{
+      label: "总库存",
+      width:"50%",
+      type:"inputButton",
+      prop: "stock",
+      buttonContent:"件"
+    },{
+      label: "库存预警",
+      width:"50%",
+      type:"inputButton",
+      prop: "min_stock",
+      buttonContent:"件"
+    },{
+      label: "最低销售价",
+      width:"50%",
+      type:"inputButton",
+      prop: "min_price",
+      buttonContent:"元"
+    },{
+      label: "最低原价",
+      width:"50%",
+      type:"inputButton",
+      prop: "min_oprice",
+      buttonContent:"元"
+    },
+    {
+      label: "库存显示",
+      prop: "stock_display",
+      type: "borderRadio",
+      event: "changeRadio",
+      button: [
+        {
+          value: "隐藏",
+          label: 0,
+        },
+        {
+          value: "显示",
+          label: 1,
+        },
+      ],
+    }, {
+      label: "是否上架",
+      prop: "stock",
+      type: "borderRadio",
+      event: "changeRadio",
+      button: [
+        {
+          value: "放入仓库",
+          label: 0,
+        },
+        {
+          value: "立即上架",
+          label: 1,
+        },
+      ],
     },
   ],
 });
@@ -415,11 +420,17 @@ const dialogList = reactive({
 
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
-  username: "",
-  password: "",
-  avatar: "",
-  role_id: "",
-  status: 1,
+  title: "",
+  cover:"",
+  category_id:"",
+  desc:"",
+  unit:"件",
+  stock:100,
+  min_stock:10,
+  min_price:0,
+  min_oprice:0,
+  stock_display:1,
+  stock:1,
 });
 
 const rolesList = ref([]);// 表单中 下拉菜单 展示 数据
@@ -428,11 +439,58 @@ const ruleFormRef = ref(); //模态框表单 ref
 const url = ref();// 点击 选中的图片 路径  
 const loading = ref(false);//loading 加载 开关
 
+
+// 头部 tab 绑定数据 
+const activeName=ref("all")
+// 切换 头部 tab 
+const isHidden=(num,num1)=>{
+  num.forEach(item=>{
+    headerButton.value[item].hidden=false
+
+  })
+  num1.forEach(item=>{
+    headerButton.value[item].hidden=true
+
+  })
+}
+// 监听头部数据
+watch(()=>activeName.value,(newVal)=>{
+  switch(newVal){
+    case 'all':
+      isHidden([0,1,2,3],[4,5])
+      init()
+    break;
+    case 'checking':
+     isHidden([0,1],[2,3,4,5])
+     init()
+     break;
+     case 'saling':
+     isHidden([0,1,3],[2,4,5])
+     init()
+     break;
+     case 'off':
+     isHidden([0,1,2],[3,4,5])
+     init()
+     break;
+     case 'min_stock':
+     isHidden([0,1],[2,3,4,5])
+     init()
+     break;
+     case 'delete':
+     isHidden([0,4,5],[2,3])
+     init()
+     break;
+     default:
+      break;
+  }
+})
+
+
 // 获取 表格数据
 const init = () => { 
   loading.value = true; 
   try {
-    getTableList(data.current,{tab:activeName.value}).then((res) => {
+    getTableList(data.current,RequestItem.value).then((res) => {
       if (res.msg == "ok") { 
         rolesList.value=res.data.cates
         data.tableData = res.data.list;
@@ -450,16 +508,7 @@ init();
 const handleSearch = async (e) => {
   loading.value = true;
   data.current = 1;
-  try {
-    let res = await getSearch(data.current, e.title);
-    if (res.msg == "ok") {
-      data.tableData = res.data.list;
-      data.total = res.data.totalCount;
-    }
-    loading.value = false;
-  } catch (error) {
-    console.log(error);
-  }
+  init()
 };
 // 头部展开收起
 const isUnfold=()=>{
