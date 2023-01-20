@@ -215,10 +215,6 @@ const tabsList =ref([
   },
 
 ])
-
-
-
-
 const data = reactive({
   //表格头部数据
   tableHeader: [
@@ -432,7 +428,6 @@ const fromItem = reactive({
   stock_display:1,
   stock:1,
 });
-
 const rolesList = ref([]);// 表单中 下拉菜单 展示 数据
 const id = ref(0);//id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
@@ -484,8 +479,6 @@ watch(()=>activeName.value,(newVal)=>{
       break;
   }
 })
-
-
 // 获取 表格数据
 const init = () => { 
   loading.value = true; 
