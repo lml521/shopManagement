@@ -36,7 +36,6 @@
         v-loading="loading"
         :tableHeader="data.tableHeader"
         :tableData="data.tableData"
-        
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         @changeStatus="changeStatus"
@@ -134,7 +133,6 @@ const RequestList = ref([
 const RequestItem = ref({
   tab:"all",
 });
-
 // 添加按钮 部分数据
 const headerButton = ref([
   {
@@ -213,7 +211,6 @@ const tabsList =ref([
     label:"回收站",
     name:"delete",
   },
-
 ])
 const data = reactive({
   //表格头部数据
@@ -431,13 +428,13 @@ const fromItem = reactive({
 const rolesList = ref([]);// 表单中 下拉菜单 展示 数据
 const id = ref(0);//id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
-const url = ref();// 点击 选中的图片 路径  
+const url = ref();// 点击 选中的图片 路径
 const loading = ref(false);//loading 加载 开关
 
 
-// 头部 tab 绑定数据 
+// 头部 tab 绑定数据
 const activeName=ref("all")
-// 切换 头部 tab 
+// 切换 头部 tab
 const isHidden=(num,num1)=>{
   num.forEach(item=>{
     headerButton.value[item].hidden=false
