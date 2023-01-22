@@ -430,8 +430,6 @@ const id = ref(0);//id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
 const url = ref();// 点击 选中的图片 路径
 const loading = ref(false);//loading 加载 开关
-
-
 // 头部 tab 绑定数据
 const activeName=ref("all")
 // 切换 头部 tab
