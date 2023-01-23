@@ -111,8 +111,6 @@ import {
   getTableList,
 } from "@/api/goods.js"; //api
 import { reactive, ref } from "vue";
-
-
 // 头部表单 按钮  展示数据
 const RequestList = ref([
   {
@@ -391,7 +389,6 @@ const data = reactive({
     },
   ],
 });
-
 // 模态框 对话框 数据
 const dialogList = reactive({
   dialogVisible: false,//对话框 展示隐藏
@@ -410,7 +407,6 @@ const dialogList = reactive({
     },
   ],
 });
-
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
   title: "",
