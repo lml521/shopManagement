@@ -231,10 +231,7 @@ const data = reactive({
       trigger: ["blur", "change"],
     },
   }
-
 });
-
-
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
   name:"",
@@ -242,11 +239,9 @@ const fromItem = reactive({
   status:1,
   default:"",
 });
-
 const id = ref(0); //id 点击 当前行 获取 当前行的id
-const ruleFormRef = ref(); //模态框表单 ref 
-const loading = ref(false); //loading 加载 开关
- 
+const ruleFormRef = ref(); //模态框表单 ref
+const loading = ref(false); //loading 加载 开
 // 获取 表格数据
 const init = () => {
   loading.value = true;
@@ -263,8 +258,6 @@ const init = () => {
   }
 };
 init();
-
- 
 // 表格 修改状态
 const changeStatus = async (item) => {
   item.loading=true
@@ -279,7 +272,6 @@ const changeStatus = async (item) => {
     console.log(error)
   }
 };
-
 // 添加表格数据
 const handleAdd = () => {
   data.drawerShow = true;
@@ -307,9 +299,6 @@ const handleEdit = (e) => {
   data.formList[3].TabList=e.default.split(',')
   id.value = e.id
 };
-
-
-
 // 表单 规格值 按钮 事件
 const handelShowButton=()=>{
   data.formList[3].buttonShow=false
