@@ -96,7 +96,7 @@
 <!-- 响应式api ，ref,一个变量响应式，普通类型，
     script里面count.value,template里面直接{{count}}-->
 
-<!-- 响应式api , reactive，用于对象 
+<!-- 响应式api , reactive，用于对象
     script里面form.count++,template里面直接{{form.count}}-->
 <script setup>
 import { ref, reactive } from "vue";
