@@ -44,11 +44,11 @@
         </div>
         <div v-else>
 
-          <i-tree 
-          :tableData="rightList" 
+          <i-tree
+          :tableData="rightList"
           :defaultProps="defaultProps"
           :defaultShowNodes="data.defaultShowNodes"
-          :iconHidden="true" 
+          :iconHidden="true"
           :showCheckbox="true"
           :activeRulesList="activeRulesList"
           @currentChange="currentChange"
@@ -72,7 +72,6 @@
         :pageSize="data.pageSize"
         @handleCurrentChange="handleCurrentChange"
       ></i-pagination>
- 
     </el-card>
   </div>
 </template>
@@ -210,7 +209,6 @@ const data = reactive({
     },
   },
 });
- 
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
   name:"",
