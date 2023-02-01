@@ -289,9 +289,7 @@ const handleRight=async(e)=>{
     nodeKey=item.id
     activeRulesList.value.push(nodeKey)
   })
- 
   console.log(activeRulesList.value)
-
   let res = await getRuleList()
   if (res.msg == "ok") {
   rightList.value= res.data.rules
