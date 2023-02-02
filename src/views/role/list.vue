@@ -217,19 +217,16 @@ const fromItem = reactive({
 });
 
 const id = ref(0); //id 点击 当前行 获取 当前行的id
-const ruleFormRef = ref(); //模态框表单 ref 
+const ruleFormRef = ref(); //模态框表单 ref
 const loading = ref(false); //loading 加载 开关
 
 // 权限数据 
 const rightList =ref([])
-
 const activeRulesList=ref([])
-
 const defaultProps = {
   children: "child",
   label: "name",
 };
-
 // 获取 表格数据
 const init = () => {
   loading.value = true;
@@ -246,7 +243,6 @@ const init = () => {
   }
 };
 init();
-
 let changeRulesList =ref([])
 const currentChange=(e)=>{
   changeRulesList.value =e
@@ -265,7 +261,6 @@ const changeStatus = async (item) => {
     console.log(error)
   }
 };
-
 // 添加表格数据
 const handleAdd = () => {
   data.drawerShow = true;
