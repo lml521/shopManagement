@@ -26,13 +26,11 @@ app.config.globalProperties.$mitt = mitt();
 
 // 引入 图标
 const iconList = [];
-
 app.directive("focus", {
   mounted:(el)=>{
       el.children[0].children[0].focus();
   },
 });
-
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   let item = { name: key, id: key };
