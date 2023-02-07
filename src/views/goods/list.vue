@@ -185,7 +185,6 @@ const headerButton = ref([
     
   },
 ]);
-
 // 头部 tab 数据 
 const tabsList =ref([
   {
@@ -552,7 +551,6 @@ const handleClose = () => {
   data.drawerShow = false;
   ruleFormRef.value.ruleFormRef.resetFields();
 };
-
 // 模态框 提交 按钮
 const submitForm = async () => {
       if (data.title == "新增") {
@@ -561,7 +559,6 @@ const submitForm = async () => {
         handleEditSubmit();
       }
 };
-
 // 添加 提交 事件
 const handleAddSubmit = async () => {
   try {
@@ -575,7 +572,6 @@ const handleAddSubmit = async () => {
     console.log(error);
   }
 };
-
 // 编辑 提交事件
 const handleEditSubmit = async () => {
   try {
@@ -607,12 +603,10 @@ const handleSubmit = () => {
 const changeImage = (e) => {
   url.value = e;
 };
-
 // 切换分页 当前页 数据
 const handleCurrentChange = (e) => {
   data.current = e;
   init();
 };
 </script>
-
 <style lang="scss" scoped></style>
