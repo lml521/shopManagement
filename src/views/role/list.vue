@@ -220,7 +220,7 @@ const id = ref(0); //id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
 const loading = ref(false); //loading 加载 开关
 
-// 权限数据 
+// 权限数据
 const rightList =ref([])
 const activeRulesList=ref([])
 const defaultProps = {
@@ -321,7 +321,6 @@ const handleClose = () => {
   if(data.title!="权限配置"){
      ruleFormRef.value.ruleFormRef.resetFields();
   }
- 
 };
 
 // 模态框 提交 按钮
@@ -335,8 +334,6 @@ const submitForm = async () => {
     }
     return
   }
-
-
   // 使用 ref 获取子组件方法
   await ruleFormRef.value.ruleFormRef.validate((valid, fields) => {
     if (valid) {
@@ -351,7 +348,6 @@ const submitForm = async () => {
     }
   });
 };
-
 // 添加 提交 事件
 const handleAddSubmit = async () => {
   try {
