@@ -304,8 +304,6 @@ const getDefaultShowNodes = (num, children) => {
     }
   }
 };
-
-
 // 删除
 const handleDelete = async (e) => {
   let res = await getDelete(e.id);
