@@ -378,5 +378,3 @@ const handleCurrentChange = (e) => {
   init();
 };
 </script>
-
-<style lang="scss" scoped></style>
