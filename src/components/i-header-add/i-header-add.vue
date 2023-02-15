@@ -24,13 +24,11 @@
 
 
     </template>
-
   <el-button :type="item.type" :size="item.size" v-else-if="!item.hidden"
   class="mr-2"
         @click="$emit(item.event)" >
             {{item.name}}
           </el-button>
-
 </div>
        <div :class="item.class" v-else-if="item.align=='right'"> 
           <el-link class="px-2">
@@ -39,12 +37,10 @@
             effect="dark"
             :content="item.content"
             :placement="item.placement"
-           
           >
           <el-icon @click="$emit(item.event)">
             <component :is="item.icon"/>
         </el-icon>
-    
       </el-tooltip>
     </el-link>
        </div>

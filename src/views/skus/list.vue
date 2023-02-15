@@ -43,7 +43,6 @@
             @handelTabDelete="handelTabDelete"
           >
           </i-form>
-         
         </template>
 
         <!-- 模态框 按钮 -->
@@ -61,7 +60,6 @@
         :pageSize="data.pageSize"
         @handleCurrentChange="handleCurrentChange"
       ></i-pagination>
- 
     </el-card>
   </div>
 </template>
@@ -97,7 +95,6 @@ const headerButton = ref([
     type: "danger",
     size: "small",
     align: "left",
-
           title: "是否要删除选中记录?",
           confirm: "确认",
           cancel: "取消",
@@ -113,7 +110,6 @@ const headerButton = ref([
     placement: "top",
   },
 ]);
-
 
 
 // 验证 修改密码 与 确认密码 是否一致
@@ -158,7 +154,6 @@ const data = reactive({
       align: "center",
       width: "180px",
       buttons: [
-        
         {
           name: "修改",
           size: "small",
@@ -196,7 +191,7 @@ const data = reactive({
     {
       label: "排序",
       type: "inputNumber",
-      prop: "desc", 
+      prop: "desc",
     },
     {
       label: "状态",
@@ -291,11 +286,9 @@ const handleSelectionChange=(e)=>{
 const handleEdit = (e) => {
   data.drawerShow = true;
   data.title = "修改";
-
   fromItem.name=e.name
   fromItem.order=e.order
   fromItem.status=e.status
-
   data.formList[3].TabList=e.default.split(',')
   id.value = e.id
 };
@@ -310,7 +303,6 @@ const handelShowInput=(e)=>{
   if(e){
    data.formList[3].TabList.push(e)
   }
- 
 
   fromItem.default=""
   data.formList[3].buttonShow=true
@@ -321,7 +313,7 @@ const handelTabDelete=(id)=>{
   data.formList[3].TabList.splice(id,1)
 }
 
-// 批量删除 
+// 批量删除
 const handleBatchDelete=async()=>{
   let res = await getDelete({ids:selectionList.value});
   if (res.msg == "ok") {
@@ -378,7 +370,7 @@ const handleAddSubmit = async () => {
     console.log(error);
   }
 };
- 
+
 // 编辑 提交事件
 const handleEditSubmit = async () => {
   try {
@@ -393,7 +385,6 @@ const handleEditSubmit = async () => {
   }
 };
 
- 
 // 切换分页 当前页 数据
 const handleCurrentChange = (e) => {
   data.current = e;
