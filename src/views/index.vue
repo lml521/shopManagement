@@ -74,14 +74,11 @@
         </el-card>
       </el-col>
     </el-row>
-    
     <!-- 分类组件开发与跳转 -->
     <IndexNavs></IndexNavs>
-
     <el-row :gutter="20" class="mt-5">
       <el-col :span="12">
         <IndexChart></IndexChart>
-  
     </el-col>
     <el-col :span="12">
       <IndexCard title="店铺及商品提示"
@@ -119,9 +116,7 @@ getStatistics2().then(res=>{
 data.goods = res.data.goods;
     data.order = res.data.order;
 })
-
 </script>
-
 <style lang="scss" scoped>
 :deep(.el-card__header) {
   --tw-bg-opacity: 1;
