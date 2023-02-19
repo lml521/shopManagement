@@ -3,63 +3,34 @@
     <!-- 规格管理 -->
     <el-card>
       <!-- 头部 添加 按钮 -->
-      <i-header-add
-        :buttonList="headerButton"
-        @handleAdd="handleAdd"
-        @handleBatchDelete="handleBatchDelete"
-        @init="init"
-      >
+      <i-header-add :buttonList="headerButton" @handleAdd="handleAdd" @handleBatchDelete="handleBatchDelete" @init="init">
       </i-header-add>
 
       <!-- 表格  -->
-      <iTable
-        v-loading="loading"
-        :tableHeader="data.tableHeader"
-        :tableData="data.tableData"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @changeStatus="changeStatus"
-        @handleSelectionChange="handleSelectionChange"
-      >
+      <iTable v-loading="loading" :tableHeader="data.tableHeader" :tableData="data.tableData" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" @changeStatus="changeStatus" @handleSelectionChange="handleSelectionChange">
       </iTable>
 
       <!-- 抽屉 模态框  -->
-      <i-drawer
-        :title="data.title"
-        v-model="data.drawerShow"
-        @handleClose="handleClose"
-      >
+      <i-drawer :title="data.title" v-model="data.drawerShow" @handleClose="handleClose">
 
         <!-- 模态框 内容 表单-->
         <template #content>
-          <i-form
-            :formList="data.formList"
-            :rules="data.rules"
-            v-model="fromItem"
-            ref="ruleFormRef"
-            formSize="default"
-            @handelShowButton="handelShowButton"
-            @handelShowInput="handelShowInput"
-            @handelTabDelete="handelTabDelete"
-          >
+          <i-form :formList="data.formList" :rules="data.rules" v-model="fromItem" ref="ruleFormRef" formSize="default"
+            @handelShowButton="handelShowButton" @handelShowInput="handelShowInput" @handelTabDelete="handelTabDelete">
           </i-form>
         </template>
 
         <!-- 模态框 按钮 -->
         <template #buttons>
-          <el-button type="primary" @click="submitForm" :loading="loading"
-            >提交</el-button>
+          <el-button type="primary" @click="submitForm" :loading="loading">提交</el-button>
           <el-button @click="handleClose">取消</el-button>
         </template>
       </i-drawer>
 
       <!-- 分页 -->
-      <i-pagination
-        :current="data.current"
-        :total="data.total"
-        :pageSize="data.pageSize"
-        @handleCurrentChange="handleCurrentChange"
-      ></i-pagination>
+      <i-pagination :current="data.current" :total="data.total" :pageSize="data.pageSize"
+        @handleCurrentChange="handleCurrentChange"></i-pagination>
     </el-card>
   </div>
 </template>
@@ -68,7 +39,7 @@
 import iHeaderAdd from "@/components/i-header-add/i-header-add.vue"; //头部 添加 按钮 部分
 import iTable from "@/components/i-table/i-table.vue"; //表格
 import iDrawer from "@/components/i-drawer/i-drawer.vue"; //模态窗 抽屉
-import iForm from "@/components/i-form/i-form.vue"; //表单 
+import iForm from "@/components/i-form/i-form.vue"; //表单
 import iPagination from "@/components/i-pagination/i-pagination.vue"; //分页
 import { toast } from "@/common/util"; //文字 提示信息
 import {
@@ -89,16 +60,16 @@ const headerButton = ref([
     type: "primary",
     size: "small",
     align: "left",
-  },{
+  }, {
     name: "批量删除",
     event: "handleBatchDelete",
     type: "danger",
     size: "small",
     align: "left",
-          title: "是否要删除选中记录?",
-          confirm: "确认",
-          cancel: "取消",
-          popconfirm: true,
+    title: "是否要删除选中记录?",
+    confirm: "确认",
+    cancel: "取消",
+    popconfirm: true,
   },
   {
     icon: "Refresh",
@@ -114,15 +85,15 @@ const headerButton = ref([
 
 // 验证 修改密码 与 确认密码 是否一致
 const validatePass2 = (rule, value, callback) => {
-  console.log(value,data.formList.TabList)
-      return  "规格值必填"
-    }
+  console.log(value, data.formList.TabList)
+  return "规格值必填"
+}
 
 const data = reactive({
   //表格头部数据
   tableHeader: [
     {
-      type:"selection",
+      type: "selection",
     },
     {
       prop: "name",
@@ -132,7 +103,7 @@ const data = reactive({
       prop: "default",
       label: "规格值",
     },
-    {},{
+    {}, {
       prop: "order",
       label: "排序",
     },
@@ -203,19 +174,19 @@ const data = reactive({
       type: "specification",
       prop: "default",
       // button  属性设置
-      buttonTitle:"+ 添加值",
-      buttonShow:true,
-      buttonSize:"small",
-      buttonEvent:"handelShowButton",
+      buttonTitle: "+ 添加值",
+      buttonShow: true,
+      buttonSize: "small",
+      buttonEvent: "handelShowButton",
       // input 框设置
-      inputShow:false,
-      inputSize:"small",
-      inputWidth:"80px",
-      inputEvent:"handelShowInput",
+      inputShow: false,
+      inputSize: "small",
+      inputWidth: "80px",
+      inputEvent: "handelShowInput",
 
       // tab事件
-      tagEvent:"handelTabDelete",
-      TabList:[]
+      tagEvent: "handelTabDelete",
+      TabList: []
     },
   ],
   // 表单验证
@@ -229,10 +200,10 @@ const data = reactive({
 });
 // 模态框 表单 v-model绑定的数据
 const fromItem = reactive({
-  name:"",
-  desc:50,
-  status:1,
-  default:"",
+  name: "",
+  desc: 50,
+  status: 1,
+  default: "",
 });
 const id = ref(0); //id 点击 当前行 获取 当前行的id
 const ruleFormRef = ref(); //模态框表单 ref
@@ -255,15 +226,15 @@ const init = () => {
 init();
 // 表格 修改状态
 const changeStatus = async (item) => {
-  item.loading=true
-  try{
+  item.loading = true
+  try {
     let res = await getChangeStatus(item.id, item.status);
     if (res.msg == "ok") {
       toast("修改状态成功", "success");
-      item.loading=false
+      item.loading = false
     }
-  }catch(error){
-    item.loading=false
+  } catch (error) {
+    item.loading = false
     console.log(error)
   }
 };
@@ -272,13 +243,13 @@ const handleAdd = () => {
   data.drawerShow = true;
   data.title = "新增";
 };
-const selectionList=ref([])
+const selectionList = ref([])
 // 切换状态
-const handleSelectionChange=(e)=>{
-  let id ;
-  e.forEach(item=>{
-    id= item.id
-   selectionList.value.push(id)
+const handleSelectionChange = (e) => {
+  let id;
+  e.forEach(item => {
+    id = item.id
+    selectionList.value.push(id)
   })
   console.log(selectionList.value)
 }
@@ -286,36 +257,36 @@ const handleSelectionChange=(e)=>{
 const handleEdit = (e) => {
   data.drawerShow = true;
   data.title = "修改";
-  fromItem.name=e.name
-  fromItem.order=e.order
-  fromItem.status=e.status
-  data.formList[3].TabList=e.default.split(',')
+  fromItem.name = e.name
+  fromItem.order = e.order
+  fromItem.status = e.status
+  data.formList[3].TabList = e.default.split(',')
   id.value = e.id
 };
 // 表单 规格值 按钮 事件
-const handelShowButton=()=>{
-  data.formList[3].buttonShow=false
-  data.formList[3].inputShow=true
+const handelShowButton = () => {
+  data.formList[3].buttonShow = false
+  data.formList[3].inputShow = true
 }
 
 // 表单 规格值 input 回车 失焦 事件
-const handelShowInput=(e)=>{
-  if(e){
-   data.formList[3].TabList.push(e)
+const handelShowInput = (e) => {
+  if (e) {
+    data.formList[3].TabList.push(e)
   }
 
-  fromItem.default=""
-  data.formList[3].buttonShow=true
-  data.formList[3].inputShow=false
+  fromItem.default = ""
+  data.formList[3].buttonShow = true
+  data.formList[3].inputShow = false
 }
 // 表单 中 tab 删除 事件
-const handelTabDelete=(id)=>{
-  data.formList[3].TabList.splice(id,1)
+const handelTabDelete = (id) => {
+  data.formList[3].TabList.splice(id, 1)
 }
 
 // 批量删除
-const handleBatchDelete=async()=>{
-  let res = await getDelete({ids:selectionList.value});
+const handleBatchDelete = async () => {
+  let res = await getDelete({ ids: selectionList.value });
   if (res.msg == "ok") {
     toast("删除成功", "success");
     init();
@@ -324,7 +295,7 @@ const handleBatchDelete=async()=>{
 
 // 删除
 const handleDelete = async (e) => {
-  let res = await getDelete({ids:[e.id]});
+  let res = await getDelete({ ids: [e.id] });
   if (res.msg == "ok") {
     toast("删除成功", "success");
     init();
@@ -334,13 +305,13 @@ const handleDelete = async (e) => {
 // 模态框 取消 按钮
 const handleClose = () => {
   data.drawerShow = false;
-     ruleFormRef.value.ruleFormRef.resetFields();
-     data.formList[3].TabList=[]
+  ruleFormRef.value.ruleFormRef.resetFields();
+  data.formList[3].TabList = []
 };
 
 // 模态框 提交 按钮
 const submitForm = async () => {
-  fromItem.default=data.formList[3].TabList.join(',')
+  fromItem.default = data.formList[3].TabList.join(',')
   // 使用 ref 获取子组件方法
   await ruleFormRef.value.ruleFormRef.validate((valid, fields) => {
 
