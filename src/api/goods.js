@@ -8,8 +8,7 @@ export const getTableList = (page,params) => {
         method: "GET",
         params
     })
-} 
- 
+}
 // 删除
 export const getDelete =(id)=>{
     return request({
@@ -17,7 +16,6 @@ export const getDelete =(id)=>{
         method:"POST",
     })
 }
-
 // 添加
 export const getAdd=(data)=>{
     return request({
@@ -26,7 +24,6 @@ export const getAdd=(data)=>{
         data,
     })
 }
-
 // 修改
 export const getEdit=(id,data)=>{
     return request({
@@ -37,10 +34,8 @@ export const getEdit=(id,data)=>{
 }
 // 失效
 export const getLoseEfficacy=(data)=>{
-    
     return request({
         url:`/admin/coupon/${data.id}/update_status?tab=${data.tab}`,
         method:"GET",
-        
     })
 }

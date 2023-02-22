@@ -15,7 +15,6 @@ export const getinfo=()=>{
         method: "POST",
     })
 }
-
 // 退出登录
 export const logout=()=>{
     return request({
@@ -23,7 +22,6 @@ export const logout=()=>{
         method: "POST",
     })
 }
-
 // 修改密码
 export const updatePassword=(data)=>{
     return request({

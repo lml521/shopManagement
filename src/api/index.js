@@ -7,7 +7,6 @@ export const getStatistics1 = () => {
         method: "GET",
     })
 }
-
 // 主控台 店铺及商品提示  店铺及商品提示 数据
 export const getStatistics2 = () => {
     return request({
@@ -15,7 +14,6 @@ export const getStatistics2 = () => {
         method: "GET",
     })
 }
-
 // 主控台 订单统计 数据
 export const getStatistics3 = (data) => {
     console.log(data)
