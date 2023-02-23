@@ -7,7 +7,7 @@ export const getTableList = (page) => {
         method: "GET",
     })
 }
-// 请求 权限 数据 
+// 请求 权限 数据
 export const getRuleList = (page) => {
     return request({
         url:`/admin/skus/1`,
@@ -22,9 +22,7 @@ export const setRules = (data) => {
         data
     })
 }
-
- 
-// 切换 状态 值 
+// 切换 状态 值
 export const getChangeStatus=(id,status)=>{
     return request({
         url:`/admin/skus/${id}/update_status`,
@@ -34,7 +32,6 @@ export const getChangeStatus=(id,status)=>{
         }
     })
 }
-
 // 删除
 export const getDelete =(data)=>{
     return request({
@@ -43,7 +40,6 @@ export const getDelete =(data)=>{
         data
     })
 }
-
 // 添加
 export const getAdd=(data)=>{
     return request({
@@ -52,7 +48,6 @@ export const getAdd=(data)=>{
         data,
     })
 }
-
 // 修改
 export const getEdit=(id,data)=>{
     return request({
