@@ -8,7 +8,6 @@ export const getSubmit =(data)=>{
         data
     })
 }
-
 // 图库管理 侧边数据
 export const imageNameList = (page) => {
     return request({
